@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth"><head>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wyllams Brito — Product &amp; UX Designer</title>
-    
-    <!-- Tailwind CSS via CDN -->
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Fontshare Satoshi & Google Fonts Fondamento -->
+
+    <!-- Fontes -->
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fondamento:ital@0;1&amp;display=swap" rel="stylesheet">
-    
-    <!-- Tailwind Configuração Avançada -->
+
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -21,46 +21,67 @@
                         offwhite: '#FAFAFA',
                         pureblack: '#000000',
                         accent: {
-                            DEFAULT: '#49A046', 
+                            DEFAULT: '#49A046',
                             hover: '#3a8038',
                             light: 'rgba(73, 160, 70, 0.1)'
                         }
                     },
                     fontFamily: {
                         display: ['Fondamento', 'serif'],
-                        sans: ['Satoshi', 'Inter', 'sans-serif'],
+                        sans: ['Satoshi', 'Inter', 'sans-serif']
                     }
                 }
             }
-        }
+        };
     </script>
-    
+
     <style>
-        /* Regras globais de responsividade para imagens */
         img {
             max-width: 100%;
             height: auto;
         }
 
-        /* Efeito Plantasia: Sombreamento Retro/Vintage */
+        /* Wordmark principal */
         .plantasia-shadow {
             color: #49A046;
-            text-shadow: 
-                2px 2px 0px #FAFAFA, 
-                4px 4px 0px #316E2F, 
-                7px 7px 0px #1A3A19; 
+            text-shadow:
+                2px 2px 0 #FAFAFA,
+                4px 4px 0 #316E2F,
+                7px 7px 0 #1A3A19;
             position: relative;
         }
-        
+
         .dark .plantasia-shadow {
-            text-shadow: 
-                2px 2px 0px #000000, 
-                4px 4px 0px #224D20, 
-                6px 6px 0px #112610,
+            text-shadow:
+                2px 2px 0 #000000,
+                4px 4px 0 #224D20,
+                6px 6px 0 #112610,
                 0 0 25px rgba(73, 160, 70, 0.35);
         }
 
-        /* Sombreamento sutil diretamente na fonte do texto para títulos das seções */
+        /* WB com a mesma família do wordmark e sombra preta */
+        .wordmark-abbreviation {
+            font-family: 'Fondamento', serif;
+            font-weight: 700;
+            color: #49A046;
+            text-shadow: 2px 2px 0 #000000;
+            cursor: pointer;
+            transition:
+                transform 0.2s ease,
+                text-shadow 0.2s ease;
+        }
+
+        .wordmark-abbreviation:hover,
+        .wordmark-abbreviation:focus-visible {
+            transform: translate(-1px, -1px);
+            text-shadow: 3px 3px 0 #000000;
+        }
+
+        .wordmark-abbreviation:active {
+            transform: translate(1px, 1px);
+            text-shadow: 1px 1px 0 #000000;
+        }
+
         .subtle-text-shadow {
             text-shadow: 0 2px 12px rgba(73, 160, 70, 0.3);
         }
@@ -69,66 +90,88 @@
             text-wrap: balance;
         }
 
-        /* Hover animado no Nav */
         .nav-glow {
             position: relative;
             transition: all 0.3s ease;
             z-index: 1;
         }
+
         .nav-glow:hover {
             color: #49A046;
             text-shadow: 0 0 12px rgba(73, 160, 70, 0.4);
         }
+
         .nav-glow::before {
             content: '';
             position: absolute;
             inset: -6px -12px;
-            background: radial-gradient(ellipse at center, rgba(73, 160, 70, 0.12) 0%, transparent 70%);
+            background: radial-gradient(
+                ellipse at center,
+                rgba(73, 160, 70, 0.12) 0%,
+                transparent 70%
+            );
             border-radius: 50%;
             z-index: -1;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
+
         .nav-glow:hover::before {
             opacity: 1;
         }
 
-        /* Animação Marquee Infinita */
         .animate-marquee {
             animation: marquee 25s linear infinite;
         }
+
         @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-100%); }
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-100%);
+            }
         }
 
-        /* Animações Orgânicas de Scroll */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Micro-interações flutuantes */
         .hover-float {
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition:
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
         .hover-float:hover {
             transform: translateY(-6px);
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
         ::-webkit-scrollbar-thumb {
             background: rgba(73, 160, 70, 0.3);
             border-radius: 9999px;
         }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(73, 160, 70, 0.6); }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(73, 160, 70, 0.6);
+        }
 
         select.custom-dropdown {
             -webkit-appearance: none;
@@ -136,427 +179,743 @@
             appearance: none;
         }
 
-        body, div, section, button, a, select {
+        body,
+        div,
+        section,
+        button,
+        a,
+        select {
             transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* ==========================================
-           MEDIA QUERIES DE ADAPTAÇÃO RESPONSIVA
-           ========================================== */
+        section[id] {
+            scroll-margin-top: 6rem;
+        }
 
-        /* 1. Celular (até 600px) */
+        button:focus-visible,
+        a:focus-visible,
+        select:focus-visible {
+            outline: 2px solid #49A046;
+            outline-offset: 4px;
+        }
+
+        [id$="-fullscreen-wrapper"]:fullscreen {
+            background: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         @media (max-width: 600px) {
             body {
                 font-size: 14px;
             }
+
             .hero-title-container {
                 font-size: 3.5rem !important;
             }
-            button, a {
+
+            button,
+            a {
                 min-height: 44px;
                 min-width: 44px;
             }
+
             .stack-mobile {
                 flex-direction: column !important;
             }
         }
 
-        /* 2. Tablet (até 1024px) */
         @media (max-width: 1024px) {
             .max-w-7xl {
                 padding-left: 1.5rem;
                 padding-right: 1.5rem;
             }
+
             #about .grid {
                 grid-template-columns: 1fr !important;
             }
+
             #about .sticky {
                 position: relative !important;
                 top: 0 !important;
             }
+
+            #about .md\:col-span-4,
+            #about .md\:col-span-8 {
+                grid-column: auto !important;
+            }
         }
 
-        /* 3. Desktop (acima de 1024px) */
         @media (min-width: 1025px) {
             .desktop-container {
                 max-width: 100%;
             }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+            html.scroll-smooth {
+                scroll-behavior: auto;
+            }
+
+            .animate-marquee {
+                animation: none;
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none;
+            }
+
+            *,
+            *::before,
+            *::after {
+                transition-duration: 0s !important;
+            }
+        }
     </style>
 </head>
-<body class="bg-offwhite text-neutral-900 dark:bg-pureblack dark:text-[#f4f1ea] transition-colors duration-500 font-sans selection:bg-accent selection:text-white pt-16">
 
-    <!-- BARRA DE NAVEGAÇÃO PRINCIPAL -->
+<body class="bg-offwhite text-neutral-900 dark:bg-pureblack dark:text-[#f4f1ea] transition-colors duration-500 font-sans selection:bg-accent selection:text-white pt-20">
+
+    <!-- Navegação principal -->
     <header id="main-header">
         <nav class="fixed top-0 left-0 right-0 z-40 border-b border-neutral-200/80 dark:border-neutral-800/60 bg-offwhite/80 dark:bg-pureblack/80 backdrop-blur-xl transition-all duration-300">
             <div class="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-20">
-                
-                <button onclick="switchView('portfolio')" class="font-display font-bold text-2xl tracking-tight nav-glow transition-colors duration-300">
+
+                <button
+                    type="button"
+                    onclick="switchView('portfolio')"
+                    aria-label="Voltar ao início do portfólio de Wyll Brito"
+                    data-i18n-aria="home-label"
+                    class="wordmark-abbreviation text-2xl tracking-tight px-2 py-2"
+                >
                     WB
                 </button>
-                
-                <!-- Links em Fonte Satoshi -->
+
                 <div id="main-nav-links" class="hidden md:flex items-center gap-10">
-                    <button data-i18n="nav-work" onclick="scrollToSection('work')" class="font-sans text-xs uppercase tracking-widest font-semibold text-neutral-600 dark:text-neutral-400 nav-glow p-2">Projetos</button>
-                    <button data-i18n="nav-about" onclick="scrollToSection('about')" class="font-sans text-xs uppercase tracking-widest font-semibold text-neutral-600 dark:text-neutral-400 nav-glow p-2">Sobre Mim</button>
-                    <button data-i18n="nav-contact" onclick="scrollToSection('contact')" class="font-sans text-xs uppercase tracking-widest font-semibold text-neutral-600 dark:text-neutral-400 nav-glow p-2">Contato</button>
+                    <button
+                        type="button"
+                        data-i18n="nav-work"
+                        onclick="scrollToSection('work')"
+                        class="font-sans text-xs tracking-widest font-semibold text-neutral-600 dark:text-neutral-400 nav-glow p-2"
+                    >
+                        Projetos
+                    </button>
+
+                    <button
+                        type="button"
+                        data-i18n="nav-about"
+                        onclick="scrollToSection('about')"
+                        class="font-sans text-xs tracking-widest font-semibold text-neutral-600 dark:text-neutral-400 nav-glow p-2"
+                    >
+                        Sobre mim
+                    </button>
+
+                    <button
+                        type="button"
+                        data-i18n="nav-contact"
+                        onclick="scrollToSection('contact')"
+                        class="font-sans text-xs tracking-widest font-semibold text-neutral-600 dark:text-neutral-400 nav-glow p-2"
+                    >
+                        Contato
+                    </button>
                 </div>
-                
+
                 <div class="flex items-center gap-4">
-                    <!-- Dropdown Elegante de Idiomas (Sem Borda, Com Destaque Nav-Glow e Tamanho Ajustado) -->
                     <div class="relative group">
-                        <select onchange="changeLang(this.value)" class="custom-dropdown bg-transparent px-5 py-3 rounded-xl font-sans text-xs uppercase tracking-widest font-semibold text-neutral-600 dark:text-neutral-400 hover:text-accent dark:hover:text-accent transition-all cursor-pointer outline-none pr-8 nav-glow">
+                        <select
+                            aria-label="Selecionar idioma"
+                            data-i18n-aria="language-label"
+                            onchange="changeLang(this.value)"
+                            class="custom-dropdown bg-transparent px-5 py-3 rounded-xl font-sans text-xs tracking-widest font-semibold text-neutral-600 dark:text-neutral-400 hover:text-accent dark:hover:text-accent transition-all cursor-pointer pr-8 nav-glow"
+                        >
                             <option value="pt" class="bg-offwhite dark:bg-pureblack text-neutral-900 dark:text-white">PT</option>
                             <option value="en" class="bg-offwhite dark:bg-pureblack text-neutral-900 dark:text-white">EN</option>
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center px-1 text-neutral-400 group-hover:text-accent transition-colors">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+
+                        <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 right-2 flex items-center px-1 text-neutral-400 group-hover:text-accent transition-colors">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
                         </div>
                     </div>
 
-                    <!-- Botão de Tema (Sem Borda, Com Destaque Nav-Glow e Tamanho Aumentado) -->
-                    <button onclick="toggleTheme()" class="w-12 h-12 flex items-center justify-center rounded-xl hover:text-accent transition-colors duration-300 bg-transparent nav-glow">
-                        <svg id="theme-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <button
+                        type="button"
+                        aria-label="Alternar tema"
+                        data-i18n-aria="theme-label"
+                        onclick="toggleTheme()"
+                        class="w-12 h-12 flex items-center justify-center rounded-xl hover:text-accent transition-colors duration-300 bg-transparent nav-glow"
+                    >
+                        <svg id="theme-icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
                     </button>
                 </div>
             </div>
         </nav>
     </header>
 
-    <!-- BARRA DE NAVEGAÇÃO FIXA PARA PÁGINAS INTERNAS -->
+    <!-- Navegação das páginas internas -->
     <header id="project-header" class="hidden">
         <nav class="fixed top-0 left-0 right-0 z-40 border-b border-neutral-200/80 dark:border-neutral-800/60 bg-offwhite/80 dark:bg-pureblack/80 backdrop-blur-xl transition-all duration-300">
             <div class="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-20">
-                <!-- Botão Voltar (Sem Borda, Com Destaque Nav-Glow e Tamanho Aumentado) -->
-                <button onclick="switchView('portfolio')" class="font-sans text-xs uppercase tracking-widest font-bold text-neutral-700 dark:text-neutral-300 hover:text-accent dark:hover:text-accent flex items-center gap-2 px-5 py-3 rounded-xl transition-all group/back nav-glow">
-                    <span class="transform group-hover/back:-translate-x-1 transition-transform text-base">←</span>
-                    <span data-i18n="back-btn">voltar</span>
+
+                <button
+                    type="button"
+                    onclick="switchView('portfolio')"
+                    class="font-sans text-xs tracking-widest font-bold text-neutral-700 dark:text-neutral-300 hover:text-accent dark:hover:text-accent flex items-center gap-2 px-5 py-3 rounded-xl transition-all group/back nav-glow"
+                >
+                    <span aria-hidden="true" class="transform group-hover/back:-translate-x-1 transition-transform text-base">←</span>
+                    <span data-i18n="back-btn">Voltar</span>
                 </button>
-                
+
                 <div class="flex items-center gap-4">
                     <div class="relative group">
-                        <select onchange="changeLang(this.value)" class="custom-dropdown bg-transparent px-5 py-3 rounded-xl font-sans text-xs uppercase tracking-widest font-semibold text-neutral-600 dark:text-neutral-400 hover:text-accent dark:hover:text-accent transition-all cursor-pointer outline-none pr-8 nav-glow">
+                        <select
+                            aria-label="Selecionar idioma"
+                            data-i18n-aria="language-label"
+                            onchange="changeLang(this.value)"
+                            class="custom-dropdown bg-transparent px-5 py-3 rounded-xl font-sans text-xs tracking-widest font-semibold text-neutral-600 dark:text-neutral-400 hover:text-accent dark:hover:text-accent transition-all cursor-pointer pr-8 nav-glow"
+                        >
                             <option value="pt" class="bg-offwhite dark:bg-pureblack text-neutral-900 dark:text-white">PT</option>
                             <option value="en" class="bg-offwhite dark:bg-pureblack text-neutral-900 dark:text-white">EN</option>
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center px-1 text-neutral-400 group-hover:text-accent transition-colors">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+
+                        <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 right-2 flex items-center px-1 text-neutral-400 group-hover:text-accent transition-colors">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
                         </div>
                     </div>
-                    <button onclick="toggleTheme()" class="w-12 h-12 flex items-center justify-center rounded-xl hover:text-accent transition-colors duration-300 bg-transparent nav-glow">
-                        <svg id="theme-icon-proj" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+
+                    <button
+                        type="button"
+                        aria-label="Alternar tema"
+                        data-i18n-aria="theme-label"
+                        onclick="toggleTheme()"
+                        class="w-12 h-12 flex items-center justify-center rounded-xl hover:text-accent transition-colors duration-300 bg-transparent nav-glow"
+                    >
+                        <svg id="theme-icon-proj" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
                     </button>
                 </div>
             </div>
         </nav>
     </header>
 
-    <!-- CITAÇÃO INSPIRADORA -->
-    <aside id="quote-banner" aria-label="Citação Inspiradora" class="mt-4 border-b border-neutral-200/80 dark:border-neutral-800/60 bg-neutral-100/50 dark:bg-neutral-900/20 px-6 md:px-12 py-6 transition-colors duration-300">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <blockquote class="text-xs md:text-sm leading-relaxed italic max-w-4xl font-display opacity-85 font-normal border-l-2 border-accent pl-4">
-                "If you can't draw as well as someone, or use the software as well, or if you do not have as much money to buy supplies, or if you do not have access to the tools they have, beat them by being more thoughtful. Thoughtfulness is free and burns on time and empathy."
-            </blockquote>
-            <cite class="text-[11px] uppercase tracking-widest shrink-0 not-italic font-sans text-accent">
-                — Frank Chimero
-            </cite>
-        </div>
-    </aside>
-
     <main>
-        <!-- VISTA PRINCIPAL DO PORTFÓLIO -->
+        <!-- Portfólio -->
         <div id="view-portfolio">
-            
-            <!-- HERO SECTION -->
-            <section id="hero" class="min-h-[calc(100vh-6rem)] flex flex-col justify-between border-b border-neutral-200/80 dark:border-neutral-800/60">
-                
-                <!-- Letreiro Infinito -->
+
+            <!-- Apresentação -->
+            <section id="hero" class="min-h-[calc(100vh-5rem)] flex flex-col justify-between border-b border-neutral-200/80 dark:border-neutral-800/60">
+
+                <!-- Letreiro superior -->
                 <div class="relative flex overflow-hidden border-y border-neutral-200 dark:border-neutral-800/80 bg-neutral-100/30 dark:bg-neutral-900/30 py-3.5">
                     <div class="animate-marquee whitespace-nowrap flex items-center min-w-full shrink-0">
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
                     </div>
+
                     <div aria-hidden="true" class="animate-marquee whitespace-nowrap flex items-center min-w-full shrink-0">
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
                     </div>
                 </div>
 
                 <div class="max-w-7xl mx-auto w-full px-6 md:px-12 grid grid-cols-1 md:grid-cols-12 gap-16 my-auto py-24 items-center reveal active">
                     <div class="md:col-span-8 flex flex-col justify-center md:border-r border-neutral-200/80 dark:border-neutral-800/80 md:pr-16">
-                        <div data-i18n="hero-tag" class="font-sans text-xs uppercase tracking-widest text-accent mb-6 flex items-center gap-3 font-bold">
-                            <span class="w-1.5 h-1.5 rounded-full bg-accent animate-ping"></span>
-                            UX DESIGNER - 2026
+
+                        <!-- Ponto piscante removido -->
+                        <div data-i18n="hero-tag" class="font-sans text-xs tracking-widest text-accent mb-6 font-bold">
+                            UX Designer — 2026
                         </div>
-                        
-                        <!-- NOME -->
-                        <h1 id="hero-title-container" class="hero-title-container text-[5.5rem] md:text-[8rem] font-bold mb-12 font-display plantasia-shadow leading-[1.1] tracking-tight" style="margin-bottom: 4rem;">
-                            <span id="word-wyll" class="block transition-transform duration-75 inline-block" style="transform: translate(9px, 6px);">wyll</span>
-                            <span id="word-brito" class="block transition-transform duration-75 inline-block" style="transform: translate(20px, 6px);">brito.</span>
+
+                        <!-- Grafia da marca preservada -->
+                        <h1
+                            id="hero-title-container"
+                            aria-label="Wyll Brito"
+                            class="hero-title-container text-[5.5rem] md:text-[8rem] font-bold mb-16 font-display plantasia-shadow leading-[1.1] tracking-tight"
+                        >
+                            <span id="word-wyll" class="block transition-transform duration-75" style="transform: translate(9px, 6px);">wyll</span>
+                            <span id="word-brito" class="block transition-transform duration-75" style="transform: translate(20px, 6px);">brito.</span>
                         </h1>
-                        
+
                         <p data-i18n="hero-desc" class="text-neutral-600 dark:text-neutral-400 text-lg md:text-xl max-w-xl leading-relaxed font-normal">
-                            estudante de Design de Produto com paixão por UX, solucionando problemas reais, transformando estruturas complexas em experiências intuitivas e, acima de tudo, humanas.
+                            Estudante de design de produto com paixão por UX, solucionando problemas reais e transformando estruturas complexas em experiências intuitivas e, acima de tudo, humanas.
                         </p>
-                        
+
                         <div class="flex flex-wrap items-center gap-5 mt-12">
-                            <button data-i18n="hero-btn-work" onclick="scrollToSection('work')" class="bg-accent text-white px-8 py-4 font-semibold text-xs uppercase tracking-widest hover:bg-accent-hover transition-all duration-300 shadow-xl shadow-accent/20 rounded-xl hover:-translate-y-1">
-                                Ver Projetos
+                            <button
+                                type="button"
+                                data-i18n="hero-btn-work"
+                                onclick="scrollToSection('work')"
+                                class="bg-accent text-white px-8 py-4 font-semibold text-xs tracking-widest hover:bg-accent-hover transition-all duration-300 shadow-xl shadow-accent/20 rounded-xl hover:-translate-y-1"
+                            >
+                                Ver projetos
                             </button>
-                            <button data-i18n="hero-btn-contact" onclick="scrollToSection('contact')" class="border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 px-8 py-4 font-semibold text-xs uppercase tracking-widest hover:border-accent hover:text-accent transition-all duration-300 rounded-xl hover:-translate-y-1">
+
+                            <button
+                                type="button"
+                                data-i18n="hero-btn-contact"
+                                onclick="scrollToSection('contact')"
+                                class="border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 px-8 py-4 font-semibold text-xs tracking-widest hover:border-accent hover:text-accent transition-all duration-300 rounded-xl hover:-translate-y-1"
+                            >
                                 Contato
                             </button>
                         </div>
                     </div>
 
-                    <div class="md:col-span-4 flex flex-col justify-center md:pl-12 gap-8 hidden md:flex">
+                    <div class="md:col-span-4 hidden md:flex flex-col justify-center md:pl-12 gap-8">
                         <div class="border-t border-neutral-200/80 dark:border-neutral-800/80 pt-6">
-                            <div data-i18n="hero-status-title" class="font-sans text-xs text-neutral-400 mb-2 uppercase tracking-widest font-bold">Atualmente</div>
-                            <div data-i18n="hero-status-desc" class="font-semibold text-sm">UX Designer</div>
+                            <div data-i18n="hero-status-title" class="font-sans text-xs tracking-widest font-bold text-neutral-400 mb-2">
+                                Atualmente
+                            </div>
+                            <div data-i18n="hero-status-desc" class="font-semibold text-sm">
+                                UX Designer
+                            </div>
                         </div>
+
                         <div class="border-t border-neutral-200/80 dark:border-neutral-800/80 pt-6">
-                            <div data-i18n="hero-base-title" class="font-sans text-xs text-neutral-400 mb-2 uppercase tracking-widest font-bold">Base</div>
-                            <div data-i18n="hero-base-desc" class="font-semibold text-sm">Curitiba, PR — Brasil</div>
+                            <div data-i18n="hero-base-title" class="font-sans text-xs tracking-widest font-bold text-neutral-400 mb-2">
+                                Base
+                            </div>
+                            <div data-i18n="hero-base-desc" class="font-semibold text-sm">
+                                Curitiba, PR — Brasil
+                            </div>
                         </div>
+
                         <div class="border-t border-neutral-200/80 dark:border-neutral-800/80 pt-6">
-                            <div data-i18n="hero-avail-title" class="font-sans text-xs text-neutral-400 mb-2 uppercase tracking-widest font-bold">Disponibilidade</div>
+                            <div data-i18n="hero-avail-title" class="font-sans text-xs tracking-widest font-bold text-neutral-400 mb-2">
+                                Disponibilidade
+                            </div>
                             <div class="flex items-center gap-2.5 mt-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-accent animate-pulse"></span>
-                                <span data-i18n="hero-avail-desc" class="text-sm font-semibold text-accent">Disponível para projetos</span>
+                                <span aria-hidden="true" class="w-2.5 h-2.5 rounded-full bg-accent"></span>
+                                <span data-i18n="hero-avail-desc" class="text-sm font-semibold text-accent">
+                                    Disponível para projetos
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Letreiro Infinito Inferior -->
+                <!-- Letreiro inferior -->
                 <div class="relative flex overflow-hidden border-y border-neutral-200 dark:border-neutral-800/80 bg-neutral-100/30 dark:bg-neutral-900/30 py-3.5">
                     <div class="animate-marquee whitespace-nowrap flex items-center min-w-full shrink-0" style="animation-direction: reverse;">
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
                     </div>
+
                     <div aria-hidden="true" class="animate-marquee whitespace-nowrap flex items-center min-w-full shrink-0" style="animation-direction: reverse;">
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
-                        <span class="font-display text-xs uppercase tracking-widest px-8 text-accent">⛤ human centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
                     </div>
                 </div>
             </section>
 
-            <!-- WORK SECTION -->
+            <!-- Projetos -->
             <section id="work" class="max-w-7xl mx-auto px-6 md:px-12 py-32">
                 <div class="mb-24 border-b border-neutral-200/80 dark:border-neutral-800/80 pb-6 reveal active">
-                    <h2 data-i18n="work-title" class="text-5xl md:text-6xl font-normal font-display text-balance">Meus Projetos</h2>
+                    <h2 data-i18n="work-title" class="text-5xl md:text-6xl font-normal font-display text-balance">
+                        Meus projetos
+                    </h2>
                 </div>
 
                 <div class="space-y-32">
-                    <!-- Project 1 -->
-                    <article class="border-b border-neutral-200/80 dark:border-neutral-800/80 pb-20 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center group reveal active">
-                        <a href="https://www.figma.com/proto/yNHqX5cQlKm59C2xhXnvaJ/UX-Case-Study" target="_blank" class="block overflow-hidden rounded-2xl bg-neutral-200 dark:bg-neutral-900 aspect-video border border-neutral-200/80 dark:border-neutral-800/80 shadow-md hover-float relative focus:outline-none focus:ring-2 focus:ring-accent">
-                            <img src="https://i.imgur.com/tkiP1oM.jpg" alt="Cafeteria UX Case" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+
+                    <!-- Projeto 1 -->
+                    <article class="border-b border-neutral-200/80 dark:border-neutral-800/80 pb-20 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center group reveal">
+                        <a
+                            href="https://www.figma.com/proto/yNHqX5cQlKm59C2xhXnvaJ/UX-Case-Study"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="block w-full overflow-hidden rounded-2xl bg-neutral-200 dark:bg-neutral-900 aspect-video border border-neutral-200/80 dark:border-neutral-800/80 shadow-md hover-float relative focus:ring-2 focus:ring-accent"
+                        >
+                            <img
+                                src="https://i.imgur.com/tkiP1oM.jpg"
+                                alt="Otimizando UX em uma cafeteria to-go"
+                                loading="lazy"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            >
                         </a>
+
                         <div class="flex flex-col justify-center min-w-0">
-                            <!-- Tag com borda limpa/elegante, sem aspecto acadêmico verde -->
-                            <div data-i18n="proj1-tag" class="font-sans text-[10px] text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full inline-block w-max mb-5 uppercase tracking-wider font-semibold bg-neutral-100/60 dark:bg-neutral-900/60">UX Case Study</div>
-                            
-                            <a href="https://www.figma.com/proto/yNHqX5cQlKm59C2xhXnvaJ/UX-Case-Study" target="_blank" class="focus:outline-none">
-                                <h3 data-i18n="proj1-title" class="text-4xl md:text-5xl font-bold font-display mb-6 text-balance hover:text-accent transition-colors w-full">Otimizando UX em Cafeteria To-Go</h3>
+                            <div data-i18n="proj1-tag" class="font-sans text-[10px] text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full inline-block w-max mb-5 tracking-wider font-semibold bg-neutral-100/60 dark:bg-neutral-900/60">
+                                Estudo de caso de UX
+                            </div>
+
+                            <a
+                                href="https://www.figma.com/proto/yNHqX5cQlKm59C2xhXnvaJ/UX-Case-Study"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-left w-full"
+                            >
+                                <h3 data-i18n="proj1-title" class="text-4xl md:text-5xl font-bold font-display mb-6 text-balance hover:text-accent transition-colors w-full">
+                                    Otimizando UX em uma cafeteria to-go
+                                </h3>
                             </a>
-                            
+
                             <p data-i18n="proj1-desc" class="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed mb-8 font-normal">
-                                como utilizei de conhecimentos em arquitetura da informação para redesenhar aplicativo de autoatendimento da cafeteria e reduzir fluxo exaustivo de 12 telas pela metade, sob a perspectiva de quem atua na linha de frente do café.
+                                Como utilizei conhecimentos em arquitetura da informação para redesenhar o aplicativo de autoatendimento da cafeteria e reduzir pela metade um fluxo exaustivo de 12 telas, sob a perspectiva de quem atua na linha de frente do café.
                             </p>
-                            <a href="https://www.figma.com/proto/yNHqX5cQlKm59C2xhXnvaJ/UX-Case-Study" target="_blank" class="inline-flex items-center gap-2 text-sm font-bold text-accent hover:text-accent-hover transition-colors duration-200 group/link focus:outline-none p-1">
-                                <span data-i18n="proj1-btn">Ver Prototipagem no Figma ↗</span> 
-                                <span class="transform group-hover/link:translate-x-1 transition-transform"></span>
+
+                            <a
+                                href="https://www.figma.com/proto/yNHqX5cQlKm59C2xhXnvaJ/UX-Case-Study"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex items-center gap-2 text-sm font-bold text-accent hover:text-accent-hover transition-colors duration-200 p-1"
+                            >
+                                <span data-i18n="proj1-btn">Ver protótipo no Figma ↗</span>
                             </a>
                         </div>
                     </article>
 
-                    <!-- Project 2 -->
-                    <article class="border-b border-neutral-200/80 dark:border-neutral-800/80 pb-20 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center group reveal active">
-                        <button onclick="switchView('elaine')" class="block w-full overflow-hidden rounded-2xl bg-accent-light aspect-video border border-accent/20 flex items-center justify-center relative shadow-md hover-float focus:outline-none focus:ring-2 focus:ring-accent">
-                            <div class="absolute inset-0 bg-gradient-to-tr from-accent-light to-transparent z-10"></div>
-                            <img src="https://i.imgur.com/IjAAVc4.jpg" alt="Elaine Marcante Ebook" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 relative z-0">
+                    <!-- Projeto 2 -->
+                    <article class="border-b border-neutral-200/80 dark:border-neutral-800/80 pb-20 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center group reveal">
+                        <button
+                            type="button"
+                            onclick="switchView('elaine')"
+                            class="block w-full overflow-hidden rounded-2xl bg-neutral-200 dark:bg-neutral-900 aspect-video border border-neutral-200/80 dark:border-neutral-800/80 shadow-md hover-float relative focus:ring-2 focus:ring-accent"
+                        >
+                            <img
+                                src="https://i.imgur.com/IjAAVc4.jpg"
+                                alt="E-book e identidade visual: Elaine Marcante"
+                                loading="lazy"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            >
                         </button>
+
                         <div class="flex flex-col justify-center min-w-0">
-                            <!-- Tag com borda limpa/elegante, sem aspecto acadêmico verde -->
-                            <div data-i18n="proj2-tag" class="font-sans text-[10px] text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full inline-block w-max mb-5 uppercase tracking-wider font-semibold bg-neutral-100/60 dark:bg-neutral-900/60">Identidade Visual &amp; E-book</div>
-                            
-                            <button onclick="switchView('elaine')" class="text-left w-full focus:outline-none">
-                                <h3 data-i18n="proj2-title" class="text-4xl md:text-5xl font-bold font-display mb-6 text-balance hover:text-accent transition-colors w-full">Ebook + Identidade Visual: Elaine Marcante</h3>
+                            <div data-i18n="proj2-tag" class="font-sans text-[10px] text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full inline-block w-max mb-5 tracking-wider font-semibold bg-neutral-100/60 dark:bg-neutral-900/60">
+                                Identidade visual e e-book
+                            </div>
+
+                            <button type="button" onclick="switchView('elaine')" class="text-left w-full">
+                                <h3 data-i18n="proj2-title" class="text-4xl md:text-5xl font-bold font-display mb-6 text-balance hover:text-accent transition-colors w-full">
+                                    E-book e identidade visual: Elaine Marcante
+                                </h3>
                             </button>
-                            
+
                             <p data-i18n="proj2-desc" class="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed mb-8 font-normal">
-                                livro virtual (ebook) profissional, identidade visual com logo, aplicações e conceitos para empreendedora no ramo de arvores de natal.
+                                E-book profissional e identidade visual com logomarca, aplicações e conceitos para uma empreendedora no ramo de árvores de Natal.
                             </p>
-                            <button onclick="switchView('elaine')" class="inline-flex items-center gap-2 text-sm font-bold text-accent hover:text-accent-hover transition-colors duration-200 group/link focus:outline-none p-1">
-                                <span data-i18n="proj-btn-view">Ver Projeto Completo →</span> 
-                                <span class="transform group-hover/link:translate-x-1 transition-transform"></span>
+
+                            <button
+                                type="button"
+                                onclick="switchView('elaine')"
+                                class="inline-flex items-center gap-2 text-sm font-bold text-accent hover:text-accent-hover transition-colors duration-200 p-1"
+                            >
+                                <span data-i18n="proj-btn-view">Ver projeto completo →</span>
                             </button>
                         </div>
                     </article>
 
-                    <!-- Project 3 -->
-                    <article class="border-b border-neutral-200/80 dark:border-neutral-800/80 pb-20 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center group reveal active">
-                        <button onclick="switchView('solace')" class="block w-full overflow-hidden rounded-2xl bg-neutral-200/50 dark:bg-neutral-900 aspect-video border border-neutral-200/80 dark:border-neutral-800/80 flex items-center justify-center relative shadow-md hover-float focus:outline-none focus:ring-2 focus:ring-accent">
-                            <img src="https://i.imgur.com/mbCL4Wy.jpg" alt="Solace - Projeto de Mobiliário" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    <!-- Projeto 3 -->
+                    <article class="border-b border-neutral-200/80 dark:border-neutral-800/80 pb-20 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center group reveal">
+                        <button
+                            type="button"
+                            onclick="switchView('solace')"
+                            class="block w-full overflow-hidden rounded-2xl bg-neutral-200 dark:bg-neutral-900 aspect-video border border-neutral-200/80 dark:border-neutral-800/80 shadow-md hover-float relative focus:ring-2 focus:ring-accent"
+                        >
+                            <img
+                                src="https://i.imgur.com/mbCL4Wy.jpg"
+                                alt="Solace — Projeto de mobiliário"
+                                loading="lazy"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            >
                         </button>
+
                         <div class="flex flex-col justify-center min-w-0">
-                            <!-- Tag com borda limpa/elegante, sem aspecto acadêmico verde -->
-                            <div data-i18n="proj3-tag" class="font-sans text-[10px] text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full inline-block w-max mb-5 uppercase tracking-wider font-semibold bg-neutral-100/60 dark:bg-neutral-900/60">Soluções em Design</div>
-                            
-                            <button onclick="switchView('solace')" class="text-left w-full focus:outline-none">
-                                <h3 data-i18n="proj3-title" class="text-4xl md:text-5xl font-bold font-display mb-6 text-balance hover:text-accent transition-colors w-full">Solace - Projeto de Mobiliário</h3>
+                            <div data-i18n="proj3-tag" class="font-sans text-[10px] text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full inline-block w-max mb-5 tracking-wider font-semibold bg-neutral-100/60 dark:bg-neutral-900/60">
+                                Soluções em design
+                            </div>
+
+                            <button type="button" onclick="switchView('solace')" class="text-left w-full">
+                                <h3 data-i18n="proj3-title" class="text-4xl md:text-5xl font-bold font-display mb-6 text-balance hover:text-accent transition-colors w-full">
+                                    Solace — Projeto de mobiliário
+                                </h3>
                             </button>
-                            
+
                             <p data-i18n="proj3-desc" class="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed mb-8 font-normal">
-                                projeto universitário de desenvolvimento de mobília com base em briefing, pesquisa, dados ergonométricos e demais metodologias em Design.
+                                Projeto universitário de desenvolvimento de mobiliário com base em briefing, pesquisa, dados ergonômicos e outras metodologias de design.
                             </p>
-                            <button onclick="switchView('solace')" class="inline-flex items-center gap-2 text-sm font-bold text-accent hover:text-accent-hover transition-colors duration-200 group/link focus:outline-none p-1">
-                                <span data-i18n="proj-btn-view">Ver Projeto Completo →</span> 
-                                <span class="transform group-hover/link:translate-x-1 transition-transform"></span>
+
+                            <button
+                                type="button"
+                                onclick="switchView('solace')"
+                                class="inline-flex items-center gap-2 text-sm font-bold text-accent hover:text-accent-hover transition-colors duration-200 p-1"
+                            >
+                                <span data-i18n="proj-btn-view">Ver projeto completo →</span>
                             </button>
                         </div>
                     </article>
 
-                    <!-- Project 4 -->
+                    <!-- Projeto 4 -->
                     <article class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center group reveal">
-                        <button onclick="switchView('avanca')" class="block w-full overflow-hidden rounded-2xl bg-neutral-200/50 dark:bg-neutral-900 aspect-video border border-neutral-200/80 dark:border-neutral-800/80 flex items-center justify-center relative shadow-md hover-float focus:outline-none focus:ring-2 focus:ring-accent">
-                            <img src="https://i.imgur.com/yavEprd.jpg" alt="Projeto Avança" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <button
+                            type="button"
+                            onclick="switchView('avanca')"
+                            class="block w-full overflow-hidden rounded-2xl bg-neutral-200 dark:bg-neutral-900 aspect-video border border-neutral-200/80 dark:border-neutral-800/80 shadow-md hover-float relative focus:ring-2 focus:ring-accent"
+                        >
+                            <img
+                                src="https://i.imgur.com/yavEprd.jpg"
+                                alt="Projeto Avança"
+                                loading="lazy"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            >
                         </button>
+
                         <div class="flex flex-col justify-center min-w-0">
-                            <!-- Tag com borda limpa/elegante, sem aspecto acadêmico verde -->
-                            <div data-i18n="proj4-tag" class="font-sans text-[10px] text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full inline-block w-max mb-5 uppercase tracking-wider font-semibold bg-neutral-100/60 dark:bg-neutral-900/60">Processo de Aprendizagem</div>
-                            
-                            <button onclick="switchView('avanca')" class="text-left w-full focus:outline-none">
-                                <h3 data-i18n="proj4-title" class="text-4xl md:text-5xl font-bold font-display mb-6 text-balance hover:text-accent transition-colors w-full">Projeto Avança</h3>
+                            <div data-i18n="proj4-tag" class="font-sans text-[10px] text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full inline-block w-max mb-5 tracking-wider font-semibold bg-neutral-100/60 dark:bg-neutral-900/60">
+                                Processo de aprendizagem
+                            </div>
+
+                            <button type="button" onclick="switchView('avanca')" class="text-left w-full">
+                                <h3 data-i18n="proj4-title" class="text-4xl md:text-5xl font-bold font-display mb-6 text-balance hover:text-accent transition-colors w-full">
+                                    Projeto Avança
+                                </h3>
                             </button>
-                            
+
                             <p data-i18n="proj4-desc" class="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed mb-8 font-normal">
-                                projeto final de conclusão do curso de aprendizado da escola ESPRO de ensino. embora antigo, representa meu primeiro projeto completo como designer, portanto marca o nascimento e estabelecimento de uma estética pessoal.
+                                Projeto final de conclusão do curso de aprendizagem da ESPRO. Embora antigo, representa meu primeiro projeto completo como designer e marca o nascimento e o estabelecimento de uma estética pessoal.
                             </p>
-                            <button onclick="switchView('avanca')" class="inline-flex items-center gap-2 text-sm font-bold text-accent hover:text-accent-hover transition-colors duration-200 group/link focus:outline-none p-1">
-                                <span data-i18n="proj-btn-view">Ver Projeto Completo →</span> 
-                                <span class="transform group-hover/link:translate-x-1 transition-transform"></span>
+
+                            <button
+                                type="button"
+                                onclick="switchView('avanca')"
+                                class="inline-flex items-center gap-2 text-sm font-bold text-accent hover:text-accent-hover transition-colors duration-200 p-1"
+                            >
+                                <span data-i18n="proj-btn-view">Ver projeto completo →</span>
                             </button>
                         </div>
                     </article>
                 </div>
             </section>
 
-            <!-- ABOUT SECTION -->
+            <!-- Sobre mim -->
             <section id="about" class="border-t border-neutral-200/80 dark:border-neutral-800/80 bg-neutral-100/40 dark:bg-neutral-900/10 py-32 transition-colors duration-300">
                 <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-12 gap-16 items-start">
+
                     <div class="md:col-span-4 sticky top-32 reveal">
-                        <!-- Título com sombreamento sutil e sem borda -->
-                        <h2 data-i18n="about-label" class="font-display text-3xl md:text-4xl font-bold text-accent block mb-8 subtle-text-shadow">Sobre Mim</h2>
-                        
-                        <!-- Janela de Informações de Identificação com Foto Maior (Sem Bolhas) -->
+                        <h2 data-i18n="about-label" class="font-display text-3xl md:text-4xl font-bold text-accent block mb-8 subtle-text-shadow">
+                            Sobre mim
+                        </h2>
+
                         <div class="space-y-4 font-sans text-xs bg-white dark:bg-neutral-900/50 p-6 rounded-2xl border border-neutral-200/80 dark:border-neutral-800/80 backdrop-blur-md shadow-sm">
-                            
-                            <!-- Container da Foto Principal Centralizada -->
+
                             <div class="relative w-48 h-48 mx-auto my-8">
                                 <div class="overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800 aspect-square w-44 h-44 mx-auto flex items-center justify-center relative z-10 shadow-lg">
-                                    <img src="https://i.imgur.com/Vvg1TwI.jpg" alt="Wyllams Brito" class="w-full h-full object-cover">
+                                    <img
+                                        src="https://i.imgur.com/Vvg1TwI.jpg"
+                                        alt="Wyllams Brito"
+                                        loading="lazy"
+                                        class="w-full h-full object-cover"
+                                    >
                                 </div>
                             </div>
 
-                            <div class="flex justify-between border-b border-neutral-100 dark:border-neutral-800 pb-3">
-                                <span class="text-neutral-400" data-i18n="info-name-label">Nome</span> 
-                                <span class="font-semibold text-right" data-i18n="info-name-val">Wyllams (Wyll) Brito</span>
+                            <div class="flex justify-between gap-3 border-b border-neutral-100 dark:border-neutral-800 pb-3">
+                                <span data-i18n="info-name-label" class="text-neutral-400">Nome</span>
+                                <span data-i18n="info-name-val" class="font-semibold text-right leading-tight">Wyllams (Wyll) Brito</span>
                             </div>
-                            <div class="flex justify-between border-b border-neutral-100 dark:border-neutral-800 pb-3">
-                                <span class="text-neutral-400" data-i18n="info-age-label">Idade</span> 
-                                <span class="font-semibold text-right" data-i18n="info-age-val">24 anos</span>
+
+                            <div class="flex justify-between gap-3 border-b border-neutral-100 dark:border-neutral-800 pb-3">
+                                <span data-i18n="info-age-label" class="text-neutral-400">Idade</span>
+                                <span data-i18n="info-age-val" class="font-semibold text-right leading-tight">24 anos</span>
                             </div>
-                            <div class="flex justify-between border-b border-neutral-100 dark:border-neutral-800 pb-3">
-                                <span class="text-neutral-400" data-i18n="info-base-label">Baseado em</span> 
-                                <span class="font-semibold text-right" data-i18n="info-base-val">Curitiba, PR</span>
+
+                            <div class="flex justify-between gap-3 border-b border-neutral-100 dark:border-neutral-800 pb-3">
+                                <span data-i18n="info-base-label" class="text-neutral-400">Baseado em</span>
+                                <span data-i18n="info-base-val" class="font-semibold text-right leading-tight">Curitiba, PR</span>
                             </div>
-                            <div class="flex justify-between border-b border-neutral-100 dark:border-neutral-800 pb-3">
-                                <span class="text-neutral-400" data-i18n="info-lang-label">Idiomas</span> 
-                                <span class="font-semibold text-right" data-i18n="info-lang-val">Português do Brasil / Inglês</span>
+
+                            <div class="flex justify-between gap-3 border-b border-neutral-100 dark:border-neutral-800 pb-3">
+                                <span data-i18n="info-lang-label" class="text-neutral-400">Idiomas</span>
+                                <span data-i18n="info-lang-val" class="font-semibold text-right leading-tight">Português do Brasil / Inglês</span>
                             </div>
-                            <div class="flex justify-between border-b border-neutral-100 dark:border-neutral-800 pb-3">
-                                <span class="text-neutral-400" data-i18n="info-nat-label">Nacionalidade</span> 
-                                <span class="font-semibold text-right" data-i18n="info-nat-val">Brasileiro</span>
+
+                            <div class="flex justify-between gap-3 border-b border-neutral-100 dark:border-neutral-800 pb-3">
+                                <span data-i18n="info-nat-label" class="text-neutral-400">Nacionalidade</span>
+                                <span data-i18n="info-nat-val" class="font-semibold text-right leading-tight">Brasileiro</span>
                             </div>
-                            <div class="flex justify-between items-start border-b border-neutral-100 dark:border-neutral-800 pb-3">
-                                <span class="text-neutral-400" data-i18n="info-edu-label">Formação</span> 
-                                <span class="font-semibold text-right leading-tight" data-i18n="info-edu-val">
+
+                            <div class="flex justify-between gap-3 border-b border-neutral-100 dark:border-neutral-800 pb-3">
+                                <span data-i18n="info-edu-label" class="text-neutral-400">Formação</span>
+                                <span data-i18n="info-edu-val" class="font-semibold text-right leading-tight">
                                     Design<br>
-                                    <span class="text-[10px] text-neutral-500 dark:text-neutral-400 font-normal block">(Universidade Positivo) (Cursando, 2025-2028)</span>
+                                    <span class="text-[10px] text-neutral-500 dark:text-neutral-400 font-normal block">
+                                        Universidade Positivo — Cursando, 2025–2028
+                                    </span>
                                     Google UX Design Certificate
                                 </span>
                             </div>
-                            <div class="flex justify-between border-b border-neutral-100 dark:border-neutral-800 pb-3">
-                                <span class="text-neutral-400" data-i18n="info-linkedin-label">LinkedIn</span> 
-                                <a href="https://www.linkedin.com/in/wyllamsbrito/" target="_blank" class="text-accent hover:underline font-semibold text-right p-1">Wyllams Brito ↗</a>
+
+                            <div class="flex justify-between gap-3 border-b border-neutral-100 dark:border-neutral-800 pb-3">
+                                <span data-i18n="info-linkedin-label" class="text-neutral-400">LinkedIn</span>
+                                <a
+                                    href="https://www.linkedin.com/in/wyllamsbrito/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="text-accent hover:underline font-semibold text-right p-1"
+                                >
+                                    Wyllams Brito ↗
+                                </a>
                             </div>
-                            <div class="flex justify-between pb-1">
-                                <span class="text-neutral-400" data-i18n="info-email-label">E-mail</span> 
-                                <a href="mailto:wyllbrito@outlook.com" class="text-accent hover:underline font-semibold text-right p-1">wyllbrito@outlook.com</a>
+
+                            <div class="flex justify-between gap-3 pb-1">
+                                <span data-i18n="info-email-label" class="text-neutral-400">E-mail</span>
+                                <a href="mailto:wyllbrito@outlook.com" class="text-accent hover:underline font-semibold text-right p-1 break-all">
+                                    wyllbrito@outlook.com
+                                </a>
                             </div>
                         </div>
                     </div>
+
                     <div class="md:col-span-8 reveal" style="transition-delay: 0.1s;">
                         <h3 data-i18n="about-title" class="text-4xl md:text-6xl font-normal font-display leading-tight mb-10 text-neutral-900 dark:text-white text-balance">
-                            design centrado em <span class="text-accent">humanidade, clareza e empatia.</span>
+                            Design centrado em <span class="text-accent">humanidade, clareza e empatia.</span>
                         </h3>
+
                         <div class="text-neutral-600 dark:text-neutral-400 text-lg md:text-xl leading-[1.8] max-w-3xl font-normal space-y-6">
-                            <p data-i18n="about-p1">fazer design é cuidar do outro. ao se fazer design, a estética transcende a decoração e se torna ferramenta de clareza guiada objetivamente pela empatia. minha filosofia como designer é garantir que a tecnologia resolva problemas reais, transformando estruturas complexas em experiências intuitivas, funcionais e, acima de tudo, humanas.</p>
-                            
-                            <p data-i18n="about-p2">acredito que um bom design é tão ordinário quanto uma boa maçaneta.</p>
-                            
-                            <p data-i18n="about-p3">minha trajetória no design é profundamente moldada no meu contexto como ser humano. anos de experiência trabalhando em atendimento ao público desenvolveram um olhar natural para as fricções operacionais ao redor. essa vivência me permitiu olhar o mundo sob uma perspectiva trabalhada além da teoria acadêmica, compreendendo o impacto que cada projeto tem na vida de seres humanos reais.</p>
-                            
-                            <p data-i18n="about-p4">acredito em design guiado por propósito, que foge do excesso e do desnecessário. trabalho na intersecção das necessidades do negócio e do usuário, sem abrir mão de um ou de outro. estou sempre com papel e caneta a uma mão de distância, nem que seja um guardanapo, anotando ideias e pontos de aprimoramento de tudo que está ao meu redor, e além.</p>
-                            
-                            <p data-i18n="about-p5">quando não estou no mundo das ideias, você provavelmente vai me encontrar tocando baixo ou guitarra, andando de skate, fazendo crochê, experimentando cafés por aí ou procurando alguma forma de expressão de arte para agregar meu repertório.</p>
+                            <p data-i18n="about-p1">
+                                Fazer design é cuidar do outro. Ao fazer design, a estética transcende a decoração e se torna uma ferramenta de clareza guiada pela empatia. Minha filosofia como designer é garantir que a tecnologia resolva problemas reais, transformando estruturas complexas em experiências intuitivas, funcionais e, acima de tudo, humanas.
+                            </p>
+
+                            <p data-i18n="about-p2">
+                                Acredito que um bom design é tão ordinário quanto uma boa maçaneta.
+                            </p>
+
+                            <p data-i18n="about-p3">
+                                Minha trajetória no design é profundamente moldada pelo meu contexto como ser humano. Anos de experiência trabalhando em atendimento ao público desenvolveram um olhar natural para as fricções operacionais ao redor. Essa vivência me permitiu olhar o mundo sob uma perspectiva construída além da teoria acadêmica, compreendendo o impacto que cada projeto tem na vida de seres humanos reais.
+                            </p>
+
+                            <p data-i18n="about-p4">
+                                Acredito em design guiado por propósito, que foge do excesso e do desnecessário. Trabalho na intersecção das necessidades do negócio e do usuário, sem abrir mão de um ou de outro. Estou sempre com papel e caneta ao alcance da mão, nem que seja um guardanapo, anotando ideias e pontos de aprimoramento de tudo que está ao meu redor, e além.
+                            </p>
+
+                            <p data-i18n="about-p5">
+                                Quando não estou no mundo das ideias, você provavelmente vai me encontrar tocando baixo ou guitarra, andando de skate, fazendo crochê, experimentando cafés por aí ou procurando alguma forma de expressão artística para ampliar meu repertório.
+                            </p>
                         </div>
                     </div>
                 </div>
+
+                <!-- Citação movida para o encerramento de Sobre mim -->
+                <aside
+                    id="quote-banner"
+                    aria-label="Citação de Frank Chimero"
+                    data-i18n-aria="quote-label"
+                    class="max-w-7xl mx-auto px-6 md:px-12 mt-16 reveal"
+                >
+                    <figure class="border-t border-neutral-200/80 dark:border-neutral-800/60 pt-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                        <blockquote lang="en" class="text-xs md:text-sm leading-relaxed italic max-w-4xl font-display font-normal border-l-2 border-accent pl-4">
+                            “If you can't draw as well as someone, or use the software as well, or if you do not have as much money to buy supplies, or if you do not have access to the tools they have, beat them by being more thoughtful. Thoughtfulness is free and burns on time and empathy.”
+                        </blockquote>
+
+                        <figcaption class="text-[11px] tracking-widest shrink-0 font-sans text-accent">
+                            <cite class="not-italic">— Frank Chimero</cite>
+                        </figcaption>
+                    </figure>
+                </aside>
             </section>
 
-            <!-- CONTACT SECTION -->
+            <!-- Contato -->
             <section id="contact" class="border-t border-neutral-200/80 dark:border-neutral-800/80 py-32">
                 <div class="max-w-7xl mx-auto px-6 md:px-12">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
                         <div class="reveal">
-                            <!-- Título com sombreamento sutil e sem borda -->
-                            <h2 data-i18n="contact-label" class="font-display text-3xl md:text-4xl font-bold text-accent block mb-8 subtle-text-shadow">Contato</h2>
-                            
-                            <h3 data-i18n="contact-title" class="text-4xl md:text-6xl font-normal font-display mb-8 leading-tight text-neutral-900 dark:text-white text-balance">vamos criar <span class="text-accent" data-i18n="contact-action-accent">(ou aprimorar)</span> algo juntos?</h3>
-                            
-                            <p data-i18n="contact-desc" class="text-neutral-600 dark:text-neutral-400 text-lg md:text-xl leading-relaxed font-normal mb-10">envie uma mensagem para discutir projetos, parcerias, oportunidades, ou só para bater papo sobre design. :)</p>
-                            
-                            <a href="mailto:wyllbrito@outlook.com" class="text-xl md:text-2xl font-bold border-b-2 border-accent pb-1 hover:text-accent-hover transition-colors duration-300 inline-block p-1">
+                            <h2 data-i18n="contact-label" class="font-display text-3xl md:text-4xl font-bold text-accent block mb-8 subtle-text-shadow">
+                                Contato
+                            </h2>
+
+                            <h3 data-i18n="contact-title" class="text-4xl md:text-6xl font-normal font-display mb-8 leading-tight text-neutral-900 dark:text-white text-balance">
+                                Vamos criar <span class="text-accent">(ou aprimorar)</span> algo juntos?
+                            </h3>
+
+                            <p data-i18n="contact-desc" class="text-neutral-600 dark:text-neutral-400 text-lg md:text-xl leading-relaxed font-normal mb-10">
+                                Envie uma mensagem para discutir projetos, parcerias, oportunidades ou só para bater papo sobre design. :)
+                            </p>
+
+                            <a href="mailto:wyllbrito@outlook.com" class="text-xl md:text-2xl font-bold border-b-2 border-accent pb-1 hover:text-accent-hover transition-colors duration-300 inline-block p-1 break-all">
                                 wyllbrito@outlook.com
                             </a>
                         </div>
-                        
-                      <form onsubmit="handleContactSubmit(event)" class="flex flex-col gap-6 bg-white/50 dark:bg-neutral-900/40 border border-neutral-200/80 dark:border-neutral-800/80 p-8 md:p-10 rounded-3xl shadow-lg backdrop-blur-md reveal" style="transition-delay: 0.2s;">
+
+                        <form
+                            onsubmit="handleContactSubmit(event)"
+                            class="flex flex-col gap-6 bg-white/50 dark:bg-neutral-900/40 border border-neutral-200/80 dark:border-neutral-800/80 p-8 md:p-10 rounded-3xl shadow-lg backdrop-blur-md reveal"
+                            style="transition-delay: 0.2s;"
+                        >
                             <div>
-                                <label data-i18n="contact-form-name" class="block font-sans text-[10px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400 mb-3 font-bold">Seu Nome</label>
-                                <input type="text" required="" class="w-full bg-offwhite dark:bg-pureblack border border-neutral-300 dark:border-neutral-800 px-5 py-4 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent text-sm rounded-xl transition-all">
+                                <label
+                                    for="contact-name"
+                                    data-i18n="contact-form-name"
+                                    class="block font-sans text-[10px] tracking-widest text-neutral-500 dark:text-neutral-400 mb-3 font-bold"
+                                >
+                                    Seu nome
+                                </label>
+                                <input
+                                    id="contact-name"
+                                    name="name"
+                                    type="text"
+                                    autocomplete="name"
+                                    required
+                                    class="w-full bg-offwhite dark:bg-pureblack border border-neutral-300 dark:border-neutral-800 px-5 py-4 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent text-sm rounded-xl transition-all"
+                                >
                             </div>
+
                             <div>
-                                <label data-i18n="contact-form-email" class="block font-sans text-[10px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400 mb-3 font-bold">Seu E-mail</label>
-                                <input type="email" required="" class="w-full bg-offwhite dark:bg-pureblack border border-neutral-300 dark:border-neutral-800 px-5 py-4 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent text-sm rounded-xl transition-all">
+                                <label
+                                    for="contact-email"
+                                    data-i18n="contact-form-email"
+                                    class="block font-sans text-[10px] tracking-widest text-neutral-500 dark:text-neutral-400 mb-3 font-bold"
+                                >
+                                    Seu e-mail
+                                </label>
+                                <input
+                                    id="contact-email"
+                                    name="email"
+                                    type="email"
+                                    autocomplete="email"
+                                    required
+                                    class="w-full bg-offwhite dark:bg-pureblack border border-neutral-300 dark:border-neutral-800 px-5 py-4 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent text-sm rounded-xl transition-all"
+                                >
                             </div>
+
                             <div>
-                                <label data-i18n="contact-form-msg" class="block font-sans text-[10px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400 mb-3 font-bold">Mensagem</label>
-                                <textarea rows="4" required="" class="w-full bg-offwhite dark:bg-pureblack border border-neutral-300 dark:border-neutral-800 px-5 py-4 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent text-sm rounded-xl resize-none transition-all"></textarea>
+                                <label
+                                    for="contact-msg"
+                                    data-i18n="contact-form-msg"
+                                    class="block font-sans text-[10px] tracking-widest text-neutral-500 dark:text-neutral-400 mb-3 font-bold"
+                                >
+                                    Mensagem
+                                </label>
+                                <textarea
+                                    id="contact-msg"
+                                    name="message"
+                                    rows="4"
+                                    required
+                                    class="w-full bg-offwhite dark:bg-pureblack border border-neutral-300 dark:border-neutral-800 px-5 py-4 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent text-sm rounded-xl transition-all resize-none"
+                                ></textarea>
                             </div>
-                            <button data-i18n="contact-form-btn" type="submit" class="bg-accent text-white px-8 py-4 mt-2 font-bold text-xs uppercase tracking-widest hover:bg-accent-hover transition-all duration-300 rounded-xl shadow-lg shadow-accent/20 hover:-translate-y-1 min-h-[44px]">
-                                Enviar Mensagem
+
+                            <button
+                                data-i18n="contact-form-btn"
+                                type="submit"
+                                class="bg-accent text-white px-8 py-4 font-semibold text-xs tracking-widest hover:bg-accent-hover transition-all duration-300 shadow-xl shadow-accent/20 rounded-xl hover:-translate-y-1 mt-2 min-h-[44px]"
+                            >
+                                Enviar mensagem
                             </button>
                         </form>
                     </div>
@@ -564,554 +923,869 @@
             </section>
         </div>
 
-        <!-- DEDICATED PROJECT VIEWS -->
-        
-        <!-- PROJECT 02: ELAINE MARCANTE -->
+        <!-- Página do projeto Elaine Marcante -->
         <div id="view-elaine" class="hidden min-h-screen py-24 px-6 md:px-12 max-w-5xl mx-auto">
             <header class="mb-16 border-b border-neutral-200/80 dark:border-neutral-800/80 pb-12">
-                <h1 data-i18n="proj2-title" class="text-5xl md:text-7xl font-bold font-display mt-8 mb-6 text-balance">Ebook + Identidade Visual: Elaine Marcante</h1>
+                <h1 data-i18n="proj2-title" class="text-5xl md:text-7xl font-bold font-display mt-8 mb-6 text-balance">
+                    E-book e identidade visual: Elaine Marcante
+                </h1>
                 <p data-i18n="proj2-desc" class="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl leading-relaxed font-normal">
-                    livro virtual (ebook) profissional, identidade visual com logo, aplicações e conceitos para empreendedora no ramo de arvores de natal.
+                    E-book profissional e identidade visual com logomarca, aplicações e conceitos para uma empreendedora no ramo de árvores de Natal.
                 </p>
             </header>
 
             <section class="mb-16 grid grid-cols-1 md:grid-cols-3 gap-8 bg-neutral-100/50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800/80 p-8 rounded-2xl">
                 <div>
-                    <h3 data-i18n="label-role" class="font-sans text-xs uppercase tracking-widest text-accent mb-2 font-bold">Meu Papel</h3>
-                    <p data-i18n="elaine-role" class="text-sm md:text-base font-semibold">Confecção do e-book &amp; ideação de logomarca</p>
+                    <h3 data-i18n="label-role" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Meu papel</h3>
+                    <p data-i18n="elaine-role" class="text-sm md:text-base font-semibold">Confecção do e-book e ideação de logomarca</p>
                 </div>
+
                 <div>
-                    <h3 data-i18n="label-year" class="font-sans text-xs uppercase tracking-widest text-accent mb-2 font-bold">Ano de Realização</h3>
+                    <h3 data-i18n="label-year" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Ano de realização</h3>
                     <p data-i18n="elaine-year" class="text-sm md:text-base font-semibold">2026</p>
                 </div>
+
                 <div>
-                    <h3 data-i18n="label-scope" class="font-sans text-xs uppercase tracking-widest text-accent mb-2 font-bold">Escopo do Projeto</h3>
-                    <p data-i18n="elaine-scope" class="text-sm md:text-base font-semibold">Identidade Visual, E-book Editorial</p>
+                    <h3 data-i18n="label-scope" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Escopo do projeto</h3>
+                    <p data-i18n="elaine-scope" class="text-sm md:text-base font-semibold">Identidade visual e e-book editorial</p>
                 </div>
             </section>
 
             <section class="mb-20 space-y-8">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <h2 data-i18n="elaine-section-ebook" class="text-3xl md:text-4xl font-bold font-display text-balance">Ebook - Elaine Marcante</h2>
+                    <h2 data-i18n="elaine-section-ebook" class="text-3xl md:text-4xl font-bold font-display text-balance">
+                        E-book — Elaine Marcante
+                    </h2>
+
                     <div class="flex items-center gap-4">
-                        <!-- Contagem de slides apenas número, sem borda e na fonte Satoshi -->
-                        <span id="slide-counter" class="font-sans text-sm font-semibold text-neutral-700 dark:text-neutral-300">1 / 38</span>
-                        
-                        <!-- Botão de tela cheia apenas signo -->
-                        <button onclick="toggleFullscreenElaine()" aria-label="Tela Cheia" class="w-12 h-12 flex items-center justify-center rounded-xl hover:text-accent transition-all bg-transparent nav-glow">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4m-4 0l5 5m11-5V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                        <span id="slide-counter" aria-live="polite" class="font-sans text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                            1 / 38
+                        </span>
+
+                        <button
+                            type="button"
+                            onclick="toggleFullscreen('elaine')"
+                            aria-label="Alternar tela cheia"
+                            data-i18n-aria="fullscreen-label"
+                            class="w-12 h-12 flex items-center justify-center rounded-xl hover:text-accent transition-all bg-transparent nav-glow"
+                        >
+                            <svg aria-hidden="true" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4m-4 0l5 5m11-5V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                            </svg>
                         </button>
                     </div>
                 </div>
 
                 <div id="elaine-fullscreen-wrapper" class="relative rounded-3xl overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-2xl bg-transparent">
                     <div class="aspect-[4/3] md:aspect-[16/10] w-full flex items-center justify-center overflow-hidden relative">
-                        <img id="elaine-main-slide" src="https://i.imgur.com/IjAAVc4.jpg" alt="Slide 1 do Ebook" class="w-full h-full object-contain transition-all duration-500">
+                        <img
+                            id="elaine-main-slide"
+                            src="https://i.imgur.com/IjAAVc4.jpg"
+                            alt="Imagem 1"
+                            class="w-full h-full object-contain transition-all duration-500"
+                        >
                     </div>
                 </div>
 
-                <!-- Setas para passar slides abaixadas, fora do slide para não sobrepor -->
                 <div class="flex items-center justify-between pt-2">
-                    <button onclick="prevElaineSlide()" aria-label="Slide anterior" class="px-6 py-3 border border-neutral-300 dark:border-neutral-800 rounded-xl hover:border-accent hover:text-accent text-xs font-bold uppercase tracking-widest transition-all bg-white/50 dark:bg-neutral-900/50 shadow-sm">
+                    <button
+                        type="button"
+                        data-i18n="slide-prev"
+                        onclick="moveSlide('elaine', -1)"
+                        class="px-6 py-3 border border-neutral-300 dark:border-neutral-800 rounded-xl hover:border-accent hover:text-accent text-xs font-bold tracking-widest transition-all bg-white/50 dark:bg-neutral-900/50 shadow-sm"
+                    >
                         ← Anterior
                     </button>
-                    <button onclick="nextElaineSlide()" aria-label="Próximo slide" class="px-6 py-3 border border-neutral-300 dark:border-neutral-800 rounded-xl hover:border-accent hover:text-accent text-xs font-bold uppercase tracking-widest transition-all bg-white/50 dark:bg-neutral-900/50 shadow-sm">
+
+                    <button
+                        type="button"
+                        data-i18n="slide-next"
+                        onclick="moveSlide('elaine', 1)"
+                        class="px-6 py-3 border border-neutral-300 dark:border-neutral-800 rounded-xl hover:border-accent hover:text-accent text-xs font-bold tracking-widest transition-all bg-white/50 dark:bg-neutral-900/50 shadow-sm"
+                    >
                         Próximo →
                     </button>
                 </div>
 
                 <div class="space-y-3 pt-6">
-                    <div data-i18n="preview-pages" class="font-sans text-xs uppercase tracking-widest text-neutral-500 dark:text-neutral-400 font-semibold">Pré-visualização das Páginas</div>
+                    <div data-i18n="preview-pages" class="font-sans text-xs tracking-widest text-neutral-500 dark:text-neutral-400 font-semibold">
+                        Pré-visualização das páginas
+                    </div>
                     <div id="elaine-thumbnails" class="flex gap-3 overflow-x-auto pb-4 pt-1"></div>
                 </div>
             </section>
 
             <section class="mb-20 space-y-6">
-                <h2 data-i18n="elaine-section-logo" class="text-3xl md:text-4xl font-bold font-display text-balance">Apresentação - Logomarca</h2>
+                <h2 data-i18n="elaine-section-logo" class="text-3xl md:text-4xl font-bold font-display text-balance">
+                    Apresentação da logomarca
+                </h2>
+
                 <div class="overflow-hidden rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100/50 dark:bg-neutral-900/30 shadow-xl">
-                    <img src="https://i.imgur.com/g6vCW5w.jpg" alt="Apresentação Logomarca Elaine Marcante" class="w-full h-auto object-cover">
+                    <img
+                        src="https://i.imgur.com/g6vCW5w.jpg"
+                        alt="Apresentação da logomarca"
+                        loading="lazy"
+                        class="w-full h-auto object-cover"
+                    >
                 </div>
             </section>
         </div>
 
-        <!-- PROJECT 03: SOLACE -->
+        <!-- Página do projeto Solace -->
         <div id="view-solace" class="hidden min-h-screen py-24 px-6 md:px-12 max-w-5xl mx-auto">
             <header class="mb-16 border-b border-neutral-200/80 dark:border-neutral-800/80 pb-12">
-                <h1 data-i18n="proj3-title" class="text-5xl md:text-7xl font-bold font-display mt-8 mb-6 text-balance">Solace - Projeto de Mobiliário</h1>
+                <h1 data-i18n="proj3-title" class="text-5xl md:text-7xl font-bold font-display mt-8 mb-6 text-balance">
+                    Solace — Projeto de mobiliário
+                </h1>
                 <p data-i18n="proj3-desc" class="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl leading-relaxed font-normal">
-                    projeto universitário de desenvolvimento de mobília com base em briefing, pesquisa, dados ergonométricos e demais metodologias em Design.
+                    Projeto universitário de desenvolvimento de mobiliário com base em briefing, pesquisa, dados ergonômicos e outras metodologias de design.
                 </p>
             </header>
 
             <section class="mb-16 grid grid-cols-1 md:grid-cols-3 gap-8 bg-neutral-100/50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800/80 p-8 rounded-2xl">
                 <div>
-                    <h3 data-i18n="label-role" class="font-sans text-xs uppercase tracking-widest text-accent mb-2 font-bold">Meu Papel</h3>
-                    <p data-i18n="solace-role" class="text-sm md:text-base font-semibold">Construção do Memorial Descritivo e Pesquisador</p>
+                    <h3 data-i18n="label-role" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Meu papel</h3>
+                    <p data-i18n="solace-role" class="text-sm md:text-base font-semibold">Construção do memorial descritivo e pesquisa</p>
                 </div>
+
                 <div>
-                    <h3 data-i18n="label-year" class="font-sans text-xs uppercase tracking-widest text-accent mb-2 font-bold">Ano de Realização</h3>
+                    <h3 data-i18n="label-year" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Ano de realização</h3>
                     <p data-i18n="solace-year" class="text-sm md:text-base font-semibold">2026</p>
                 </div>
+
                 <div>
-                    <h3 data-i18n="label-scope" class="font-sans text-xs uppercase tracking-widest text-accent mb-2 font-bold">Escopo do Projeto</h3>
-                    <p data-i18n="solace-scope" class="text-sm md:text-base font-semibold">Design de Mobiliário, Ergonomia</p>
+                    <h3 data-i18n="label-scope" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Escopo do projeto</h3>
+                    <p data-i18n="solace-scope" class="text-sm md:text-base font-semibold">Design de mobiliário e ergonomia</p>
                 </div>
             </section>
 
             <section class="mb-20 space-y-6">
-                <h2 data-i18n="solace-section-report" class="text-3xl md:text-4xl font-bold font-display text-balance">Relatório do projeto</h2>
+                <h2 data-i18n="solace-section-report" class="text-3xl md:text-4xl font-bold font-display text-balance">
+                    Relatório do projeto
+                </h2>
+
                 <div class="overflow-hidden rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100/50 dark:bg-neutral-900/30 shadow-xl">
-                    <img src="https://i.imgur.com/bUrHstq.jpg" alt="Relatório do projeto Solace" class="w-full h-auto object-cover">
+                    <img
+                        src="https://i.imgur.com/bUrHstq.jpg"
+                        alt="Relatório do projeto"
+                        loading="lazy"
+                        class="w-full h-auto object-cover"
+                    >
                 </div>
             </section>
 
             <section class="mb-20 space-y-6">
-                <h2 data-i18n="solace-section-memorial" class="text-3xl md:text-4xl font-bold font-display text-balance">Memorial Descritivo</h2>
+                <h2 data-i18n="solace-section-memorial" class="text-3xl md:text-4xl font-bold font-display text-balance">
+                    Memorial descritivo
+                </h2>
+
                 <div class="overflow-hidden rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100/50 dark:bg-neutral-900/30 shadow-xl">
-                    <img src="https://i.imgur.com/z2Vzd4A.jpg" alt="Memorial Descritivo Solace" class="w-full h-auto object-cover">
+                    <img
+                        src="https://i.imgur.com/z2Vzd4A.jpg"
+                        alt="Memorial descritivo"
+                        loading="lazy"
+                        class="w-full h-auto object-cover"
+                    >
                 </div>
             </section>
 
             <section class="mb-20 space-y-8">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <h2 data-i18n="solace-section-images" class="text-3xl md:text-4xl font-bold font-display text-balance">Imagens do Mobiliário</h2>
+                    <h2 data-i18n="solace-section-images" class="text-3xl md:text-4xl font-bold font-display text-balance">
+                        Imagens do mobiliário
+                    </h2>
+
                     <div class="flex items-center gap-4">
-                        <!-- Contagem de slides apenas número, sem borda e na fonte Satoshi -->
-                        <span id="solace-counter" class="font-sans text-sm font-semibold text-neutral-700 dark:text-neutral-300">1 / 9</span>
-                        
-                        <!-- Botão de tela cheia apenas signo -->
-                        <button onclick="toggleFullscreenSolace()" aria-label="Tela Cheia" class="w-12 h-12 flex items-center justify-center rounded-xl hover:text-accent transition-all bg-transparent nav-glow">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4m-4 0l5 5m11-5V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                        <span id="solace-counter" aria-live="polite" class="font-sans text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                            1 / 9
+                        </span>
+
+                        <button
+                            type="button"
+                            onclick="toggleFullscreen('solace')"
+                            aria-label="Alternar tela cheia"
+                            data-i18n-aria="fullscreen-label"
+                            class="w-12 h-12 flex items-center justify-center rounded-xl hover:text-accent transition-all bg-transparent nav-glow"
+                        >
+                            <svg aria-hidden="true" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4m-4 0l5 5m11-5V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                            </svg>
                         </button>
                     </div>
                 </div>
 
                 <div id="solace-fullscreen-wrapper" class="relative rounded-3xl overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-2xl bg-transparent">
                     <div class="aspect-[4/3] md:aspect-[16/10] w-full flex items-center justify-center overflow-hidden relative">
-                        <img id="solace-main-slide" src="https://i.imgur.com/LqoBsgV.jpg" alt="Slide 1 do Mobiliário" class="w-full h-full object-contain transition-all duration-500">
+                        <img
+                            id="solace-main-slide"
+                            src="https://i.imgur.com/LqoBsgV.jpg"
+                            alt="Imagem 1"
+                            class="w-full h-full object-contain transition-all duration-500"
+                        >
                     </div>
                 </div>
 
-                <!-- Setas para passar slides abaixadas, fora do slide para não sobrepor -->
                 <div class="flex items-center justify-between pt-2">
-                    <button onclick="prevSolaceSlide()" aria-label="Slide anterior" class="px-6 py-3 border border-neutral-300 dark:border-neutral-800 rounded-xl hover:border-accent hover:text-accent text-xs font-bold uppercase tracking-widest transition-all bg-white/50 dark:bg-neutral-900/50 shadow-sm">
+                    <button
+                        type="button"
+                        data-i18n="slide-prev"
+                        onclick="moveSlide('solace', -1)"
+                        class="px-6 py-3 border border-neutral-300 dark:border-neutral-800 rounded-xl hover:border-accent hover:text-accent text-xs font-bold tracking-widest transition-all bg-white/50 dark:bg-neutral-900/50 shadow-sm"
+                    >
                         ← Anterior
                     </button>
-                    <button onclick="nextSolaceSlide()" aria-label="Próximo slide" class="px-6 py-3 border border-neutral-300 dark:border-neutral-800 rounded-xl hover:border-accent hover:text-accent text-xs font-bold uppercase tracking-widest transition-all bg-white/50 dark:bg-neutral-900/50 shadow-sm">
+
+                    <button
+                        type="button"
+                        data-i18n="slide-next"
+                        onclick="moveSlide('solace', 1)"
+                        class="px-6 py-3 border border-neutral-300 dark:border-neutral-800 rounded-xl hover:border-accent hover:text-accent text-xs font-bold tracking-widest transition-all bg-white/50 dark:bg-neutral-900/50 shadow-sm"
+                    >
                         Próximo →
                     </button>
                 </div>
 
                 <div class="space-y-3 pt-6">
-                    <div data-i18n="preview-pages" class="font-sans text-xs uppercase tracking-widest text-neutral-500 dark:text-neutral-400 font-semibold">Pré-visualização das Páginas</div>
+                    <div data-i18n="preview-pages" class="font-sans text-xs tracking-widest text-neutral-500 dark:text-neutral-400 font-semibold">
+                        Pré-visualização das páginas
+                    </div>
                     <div id="solace-thumbnails" class="flex gap-3 overflow-x-auto pb-4 pt-1"></div>
                 </div>
             </section>
         </div>
 
-        <!-- PROJECT 04: AVANÇA -->
+        <!-- Página do Projeto Avança -->
         <div id="view-avanca" class="hidden min-h-screen py-24 px-6 md:px-12 max-w-5xl mx-auto">
             <header class="mb-16 border-b border-neutral-200/80 dark:border-neutral-800/80 pb-12">
-                <span data-i18n="avanca-meta" class="font-sans text-[10px] font-bold uppercase tracking-widest bg-neutral-100 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-4 py-2 rounded-full">Processo de Aprendizagem · ESPRO · 2022</span>
-                <h1 data-i18n="avanca-title" class="text-5xl md:text-7xl font-bold font-display mt-8 mb-6 text-balance">Projeto Avança</h1>
+                <span data-i18n="avanca-meta" class="font-sans text-[10px] font-bold tracking-widest bg-neutral-100 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-4 py-2 rounded-full">
+                    Processo de aprendizagem · ESPRO · 2022
+                </span>
+
+                <h1 data-i18n="avanca-title" class="text-5xl md:text-7xl font-bold font-display mt-8 mb-6 text-balance">
+                    Projeto Avança
+                </h1>
+
                 <p data-i18n="avanca-desc" class="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl leading-relaxed font-normal">
-                    Projeto final de conclusão do curso de aprendizado da escola ESPRO de ensino. Apresentação cobrindo trajetória pessoal, inspirações, cotidiano na empresa Solistica e reflexões de futuro.
+                    Projeto final de conclusão do curso de aprendizagem da ESPRO. Apresentação sobre trajetória pessoal, inspirações, cotidiano na empresa Solistica e reflexões sobre o futuro.
                 </p>
             </header>
 
             <section class="mb-16 grid grid-cols-1 md:grid-cols-3 gap-8 bg-neutral-100/50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800/80 p-8 rounded-2xl">
                 <div>
-                    <h3 data-i18n="label-role" class="font-sans text-xs uppercase tracking-widest text-accent mb-2 font-bold">Meu Papel</h3>
-                    <p data-i18n="avanca-role" class="text-sm md:text-base font-semibold">Aprendiz &amp; Criador</p>
+                    <h3 data-i18n="label-role" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Meu papel</h3>
+                    <p data-i18n="avanca-role" class="text-sm md:text-base font-semibold">Aprendiz e criador</p>
                 </div>
+
                 <div>
-                    <h3 data-i18n="label-year" class="font-sans text-xs uppercase tracking-widest text-accent mb-2 font-bold">Ano de Realização</h3>
+                    <h3 data-i18n="label-year" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Ano de realização</h3>
                     <p data-i18n="avanca-year" class="text-sm md:text-base font-semibold">2022</p>
                 </div>
+
                 <div>
-                    <h3 data-i18n="label-scope" class="font-sans text-xs uppercase tracking-widest text-accent mb-2 font-bold">Escopo do Projeto</h3>
-                    <p data-i18n="avanca-scope" class="text-sm md:text-base font-semibold">Apresentação Pessoal, Vídeo Institucional</p>
+                    <h3 data-i18n="label-scope" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Escopo do projeto</h3>
+                    <p data-i18n="avanca-scope" class="text-sm md:text-base font-semibold">Apresentação pessoal e vídeo institucional</p>
                 </div>
             </section>
 
             <section class="mb-20 space-y-6">
-                <h2 data-i18n="avanca-video-title" class="text-3xl md:text-4xl font-bold font-display text-balance">Apresentação em Vídeo</h2>
+                <h2 data-i18n="avanca-video-title" class="text-3xl md:text-4xl font-bold font-display text-balance">
+                    Apresentação em vídeo
+                </h2>
+
                 <div class="overflow-hidden rounded-2xl bg-neutral-200 dark:bg-neutral-900 aspect-video border border-neutral-200/80 dark:border-neutral-800/80 shadow-lg relative">
-                    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/4B6s227A8VI?si=_PQI2nf24O6TveH9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin" allowfullscreen class="w-full h-full absolute inset-0"></iframe>
+                    <iframe
+                        width="560"
+                        height="315"
+                        src="https://www.youtube-nocookie.com/embed/4B6s227A8VI?si=_PQI2nf24O6TveH9"
+                        title="Apresentação do Projeto Avança"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin"
+                        allowfullscreen
+                        loading="lazy"
+                        class="w-full h-full absolute inset-0 border-0"
+                    ></iframe>
                 </div>
             </section>
         </div>
     </main>
 
-    <!-- FOOTER -->
+    <!-- Rodapé -->
     <footer class="border-t border-neutral-200/80 dark:border-neutral-800/80 px-6 md:px-12 py-10 text-neutral-500 font-sans text-xs transition-colors duration-300">
-        <div class="max-w-7xl mx-auto flex flex-col items-center justify-center">
-            <span data-i18n="footer-rights">© 2026 Wyllams Brito. Todos os direitos reservados.</span>
+        <div class="max-w-7xl mx-auto flex flex-col items-center justify-center text-center">
+            <span data-i18n="footer-rights">
+                © 2026 Wyllams Brito. Todos os direitos reservados.
+            </span>
+
+            <p data-i18n="footer-credit" class="mt-3 max-w-2xl text-[10px] leading-relaxed text-neutral-500 dark:text-neutral-400 opacity-70">
+                Codificado cuidadosamente em conjunto com o Figma Make, idealizado cuidadosamente por mim.
+            </p>
         </div>
     </footer>
 
-    <!-- LOGICS -->
     <script>
-        // Função para envio de email a partir do formulário de contato
-        function handleContactSubmit(event) {
-            event.preventDefault();
-            const form = event.target;
-            const name = form.querySelector('input[type="text"]').value;
-            const email = form.querySelector('input[type="email"]').value;
-            const message = form.querySelector('textarea').value;
-            
-            const subject = encodeURIComponent(`Contato do Portfólio - ${name}`);
-            const body = encodeURIComponent(`Nome: ${name}\nE-mail: ${email}\n\nMensagem:\n${message}`);
-            
-            window.location.href = `mailto:wyllbrito@outlook.com?subject=${subject}&body=${body}`;
-        }
-
-        // === SLIDER EBOOK ELAINE MARCANTE ===
-        const elaineSlides = [
-            "https://i.imgur.com/IjAAVc4.jpg", "https://i.imgur.com/iuO6sZO.jpg", "https://i.imgur.com/wh7qu0r.jpg", 
-            "https://i.imgur.com/alQXJez.jpg", "https://i.imgur.com/jArC4VP.jpg", "https://i.imgur.com/0Wikesi.jpg", 
-            "https://i.imgur.com/DZBD6ru.jpg", "https://i.imgur.com/yrMyyet.jpg", "https://i.imgur.com/FftFmJJ.jpg", 
-            "https://i.imgur.com/qYaCVno.jpg", "https://i.imgur.com/kXx9E6P.jpg", "https://i.imgur.com/yLAPbJ3.jpg", 
-            "https://i.imgur.com/gH7bB4Z.jpg", "https://i.imgur.com/7S2RK4D.jpg", "https://i.imgur.com/WAsdcqO.jpg", 
-            "https://i.imgur.com/9ZuBil4.jpg", "https://i.imgur.com/IRF1n50.jpg", "https://i.imgur.com/yPohOdY.jpg", 
-            "https://i.imgur.com/Hvq7gVv.jpg", "https://i.imgur.com/jnvNpy5.jpg", "https://i.imgur.com/ADQDlxb.jpg", 
-            "https://i.imgur.com/TCBuvB4.jpg", "https://i.imgur.com/hApOFXa.jpg", "https://i.imgur.com/adsX1j5.jpg", 
-            "https://i.imgur.com/omVAsqx.jpg", "https://i.imgur.com/Gve66bg.jpg", "https://i.imgur.com/dbORsOR.jpg", 
-            "https://i.imgur.com/EsiLo3q.jpg", "https://i.imgur.com/s6BikmN.jpg", "https://i.imgur.com/qFA8MjR.jpg", 
-            "https://i.imgur.com/j3MD096.jpg", "https://i.imgur.com/tc5ymTq.jpg", "https://i.imgur.com/E6NpXqI.jpg", 
-            "https://i.imgur.com/PJNVlx1.jpg", "https://i.imgur.com/arwVZZI.jpg", "https://i.imgur.com/uPviNmz.jpg", 
-            "https://i.imgur.com/j3dlB8k.jpg", "https://i.imgur.com/o9xfz47.jpg"
-        ];
-        let currentElaineIndex = 0;
-
-        function initElaineSlider() {
-            const thumbContainer = document.getElementById('elaine-thumbnails');
-            if (!thumbContainer) return;
-            thumbContainer.innerHTML = '';
-            elaineSlides.forEach((url, idx) => {
-                const btn = document.createElement('button');
-                btn.className = `shrink-0 w-24 h-16 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${idx === currentElaineIndex ? 'border-accent scale-105 shadow-md shadow-accent/20' : 'border-neutral-300 dark:border-neutral-800 opacity-60 hover:opacity-100'}`;
-                btn.onclick = () => setElaineSlide(idx);
-                btn.innerHTML = `<img src="${url}" alt="Miniatura ${idx + 1}" class="w-full h-full object-cover">`;
-                thumbContainer.appendChild(btn);
-            });
-            updateElaineSlideDisplay();
-        }
-
-        function setElaineSlide(index) {
-            currentElaineIndex = index;
-            updateElaineSlideDisplay();
-        }
-
-        function nextElaineSlide() {
-            currentElaineIndex = (currentElaineIndex + 1) % elaineSlides.length;
-            updateElaineSlideDisplay();
-        }
-
-        function prevElaineSlide() {
-            currentElaineIndex = (currentElaineIndex - 1 + elaineSlides.length) % elaineSlides.length;
-            updateElaineSlideDisplay();
-        }
-
-        function updateElaineSlideDisplay() {
-            const mainImg = document.getElementById('elaine-main-slide');
-            const counter = document.getElementById('slide-counter');
-            if (mainImg) {
-                mainImg.style.opacity = '0.4';
-                setTimeout(() => {
-                    mainImg.src = elaineSlides[currentElaineIndex];
-                    mainImg.style.opacity = '1';
-                }, 150);
-            }
-            if (counter) {
-                counter.innerText = `${currentElaineIndex + 1} / ${elaineSlides.length}`;
-            }
-            const thumbs = document.getElementById('elaine-thumbnails')?.children;
-            if (thumbs) {
-                Array.from(thumbs).forEach((thumb, idx) => {
-                    if (idx === currentElaineIndex) {
-                        thumb.className = "shrink-0 w-24 h-16 rounded-xl overflow-hidden border-2 border-accent scale-105 shadow-md shadow-accent/20 transition-all cursor-pointer";
-                        thumb.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
-                    } else {
-                        thumb.className = "shrink-0 w-24 h-16 rounded-xl overflow-hidden border-2 border-neutral-300 dark:border-neutral-800 opacity-60 hover:opacity-100 transition-all cursor-pointer";
-                    }
-                });
-            }
-        }
-
-        function toggleFullscreenElaine() {
-            const elem = document.getElementById('elaine-fullscreen-wrapper');
-            if (!document.fullscreenElement) {
-                elem?.requestFullscreen().catch(err => {
-                    alert(`Erro ao tentar ativar tela cheia: ${err.message}`);
-                });
-            } else {
-                document.exitFullscreen();
-            }
-        }
-
-        // === SLIDER SOLACE ===
-        const solaceSlides = [
-            "https://i.imgur.com/LqoBsgV.jpg", "https://i.imgur.com/iLTXTDp.jpg", "https://i.imgur.com/E5wB6FH.jpg", 
-            "https://i.imgur.com/CRiBmaW.jpg", "https://i.imgur.com/FaCd3EL.jpg", "https://i.imgur.com/zSXa04E.jpg", 
-            "https://i.imgur.com/WltHSm7.jpg", "https://i.imgur.com/LC3sAna.jpg", "https://i.imgur.com/yfGQ6ir.jpg"
-        ];
-        let currentSolaceIndex = 0;
-
-        function initSolaceSlider() {
-            const thumbContainer = document.getElementById('solace-thumbnails');
-            if (!thumbContainer) return;
-            thumbContainer.innerHTML = '';
-            solaceSlides.forEach((url, idx) => {
-                const btn = document.createElement('button');
-                btn.className = `shrink-0 w-24 h-16 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${idx === currentSolaceIndex ? 'border-accent scale-105 shadow-md shadow-accent/20' : 'border-neutral-300 dark:border-neutral-800 opacity-60 hover:opacity-100'}`;
-                btn.onclick = () => setSolaceSlide(idx);
-                btn.innerHTML = `<img src="${url}" alt="Miniatura ${idx + 1}" class="w-full h-full object-cover">`;
-                thumbContainer.appendChild(btn);
-            });
-            updateSolaceSlideDisplay();
-        }
-
-        function setSolaceSlide(index) {
-            currentSolaceIndex = index;
-            updateSolaceSlideDisplay();
-        }
-
-        function nextSolaceSlide() {
-            currentSolaceIndex = (currentSolaceIndex + 1) % solaceSlides.length;
-            updateSolaceSlideDisplay();
-        }
-
-        function prevSolaceSlide() {
-            currentSolaceIndex = (currentSolaceIndex - 1 + solaceSlides.length) % solaceSlides.length;
-            updateSolaceSlideDisplay();
-        }
-
-        function updateSolaceSlideDisplay() {
-            const mainImg = document.getElementById('solace-main-slide');
-            const counter = document.getElementById('solace-counter');
-            if (mainImg) {
-                mainImg.style.opacity = '0.4';
-                setTimeout(() => {
-                    mainImg.src = solaceSlides[currentSolaceIndex];
-                    mainImg.style.opacity = '1';
-                }, 150);
-            }
-            if (counter) {
-                counter.innerText = `${currentSolaceIndex + 1} / ${solaceSlides.length}`;
-            }
-            const thumbs = document.getElementById('solace-thumbnails')?.children;
-            if (thumbs) {
-                Array.from(thumbs).forEach((thumb, idx) => {
-                    if (idx === currentSolaceIndex) {
-                        thumb.className = "shrink-0 w-24 h-16 rounded-xl overflow-hidden border-2 border-accent scale-105 shadow-md shadow-accent/20 transition-all cursor-pointer";
-                        thumb.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
-                    } else {
-                        thumb.className = "shrink-0 w-24 h-16 rounded-xl overflow-hidden border-2 border-neutral-300 dark:border-neutral-800 opacity-60 hover:opacity-100 transition-all cursor-pointer";
-                    }
-                });
-            }
-        }
-
-        function toggleFullscreenSolace() {
-            const elem = document.getElementById('solace-fullscreen-wrapper');
-            if (!document.fullscreenElement) {
-                elem?.requestFullscreen().catch(err => {
-                    alert(`Erro ao tentar ativar tela cheia: ${err.message}`);
-                });
-            } else {
-                document.exitFullscreen();
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            initElaineSlider();
-            initSolaceSlider();
-        });
-
-        // === i18n TRANSLATION DICTIONARY ===
+        // Textos padronizados em português e inglês.
         const translations = {
             pt: {
-                "nav-work": "Projetos", "nav-about": "Sobre Mim", "nav-contact": "Contato",
-                "hero-tag": `<span class="w-1.5 h-1.5 rounded-full bg-accent animate-ping"></span> UX DESIGNER - 2026`,
-                "hero-desc": "estudante de Design de Produto com paixão por UX, solucionando problemas reais, transformando estruturas complexas em experiências intuitivas e, acima de tudo, humanas.",
-                "hero-btn-work": "Ver Projetos", "hero-btn-contact": "Contato",
-                "hero-status-title": "Atualmente", "hero-status-desc": "UX Designer",
-                "hero-base-title": "Base", "hero-base-desc": "Curitiba, PR — Brasil",
-                "hero-avail-title": "Disponibilidade", "hero-avail-desc": "Disponível para projetos",
-                "work-title": "Meus Projetos",
-                "proj1-tag": "UX Case Study", "proj1-title": "Otimizando UX em Cafeteria To-Go",
-                "proj1-desc": "como utilizei de conhecimentos em arquitetura da informação para redesenhar aplicativo de autoatendimento da cafeteria e reduzir fluxo exaustivo de 12 telas pela metade, sob a perspectiva de quem atua na linha de frente do café.",
-                "proj1-btn": "Ver Prototipagem no Figma ↗",
-                "proj2-tag": "Identidade Visual & E-book", "proj2-title": "Ebook + Identidade Visual: Elaine Marcante",
-                "proj2-desc": "livro virtual (ebook) profissional, identidade visual com logo, aplicações e conceitos para empreendedora no ramo de arvores de natal.",
-                "proj-btn-view": "Ver Projeto Completo →", "proj-cover-placeholder": "Sem Capa (Adicionar em breve)",
-                "proj3-tag": "Soluções em Design", "proj3-title": "Solace - Projeto de Mobiliário",
-                "proj3-desc": "projeto universitário de desenvolvimento de mobília com base em briefing, pesquisa, dados ergonométricos e demais metodologias em Design.",
-                "proj4-tag": "Processo de Aprendizagem", "proj4-title": "Projeto Avança",
-                "proj4-desc": "projeto final de conclusão do curso de aprendizado da escola ESPRO de ensino. embora antigo, representa meu primeiro projeto completo como designer, portanto marca o nascimento e estabelecimento de uma estética pessoal.",
-                "about-label": "Sobre Mim", 
-                "about-title": `design centrado em <span class="text-accent">humanidade, clareza e empatia.</span>`,
-                "about-p1": "fazer design é cuidar do outro. ao se fazer design, a estética transcende a decoração e se torna ferramenta de clareza guiada objetivamente pela empatia. minha filosofia como designer é garantir que a tecnologia resolva problemas reais, transformando estruturas complexas em experiências intuitivas, funcionais e, acima de tudo, humanas.",
-                "about-p2": "acredito que um bom design é tão ordinário quanto uma boa maçaneta.",
-                "about-p3": "minha trajetória no design é profundamente moldada no meu contexto como ser humano. anos de experiência trabalhando em atendimento ao público desenvolveram um olhar natural para as fricções operacionais ao redor. essa vivência me permitiu olhar o mundo sob uma perspectiva trabalhada além da teoria acadêmica, compreendendo o impacto que cada projeto tem na vida de seres humanos reais.",
-                "about-p4": "acredito em design guiado por propósito, que foge do excesso e do desnecessário. trabalho na intersecção das necessidades do negócio e do usuário, sem abrir mão de um ou de outro. estou sempre com papel e caneta a uma mão de distância, nem que seja um guardanapo, anotando ideias e pontos de aprimoramento de tudo que está ao meu redor, e além.",
-                "about-p5": "quando não estou no mundo das ideias, você provavelmente vai me encontrar tocando baixo ou guitarra, andando de skate, fazendo crochê, experimentando cafés por aí ou procurando alguma forma de expressão de arte para agregar meu repertório.",
-                "contact-label": "Contato", 
-                "contact-title": `vamos criar <span class="text-accent" data-i18n="contact-action-accent">(ou aprimorar)</span> algo juntos?`,
-                "contact-action-accent": "(ou aprimorar)",
-                "contact-desc": "envie uma mensagem para discutir projetos, parcerias, oportunidades, ou só para bater papo sobre design. :)",
-                "contact-form-name": "Seu Nome", "contact-form-email": "Seu E-mail",
-                "contact-form-msg": "Mensagem", "contact-form-btn": "Enviar Mensagem",
+                "nav-work": "Projetos",
+                "nav-about": "Sobre mim",
+                "nav-contact": "Contato",
+
+                "hero-tag": "UX Designer — 2026",
+                "hero-desc": "Estudante de design de produto com paixão por UX, solucionando problemas reais e transformando estruturas complexas em experiências intuitivas e, acima de tudo, humanas.",
+                "hero-btn-work": "Ver projetos",
+                "hero-btn-contact": "Contato",
+                "hero-status-title": "Atualmente",
+                "hero-status-desc": "UX Designer",
+                "hero-base-title": "Base",
+                "hero-base-desc": "Curitiba, PR — Brasil",
+                "hero-avail-title": "Disponibilidade",
+                "hero-avail-desc": "Disponível para projetos",
+
+                "work-title": "Meus projetos",
+
+                "proj1-tag": "Estudo de caso de UX",
+                "proj1-title": "Otimizando UX em uma cafeteria to-go",
+                "proj1-desc": "Como utilizei conhecimentos em arquitetura da informação para redesenhar o aplicativo de autoatendimento da cafeteria e reduzir pela metade um fluxo exaustivo de 12 telas, sob a perspectiva de quem atua na linha de frente do café.",
+                "proj1-btn": "Ver protótipo no Figma ↗",
+
+                "proj2-tag": "Identidade visual e e-book",
+                "proj2-title": "E-book e identidade visual: Elaine Marcante",
+                "proj2-desc": "E-book profissional e identidade visual com logomarca, aplicações e conceitos para uma empreendedora no ramo de árvores de Natal.",
+                "proj-btn-view": "Ver projeto completo →",
+
+                "proj3-tag": "Soluções em design",
+                "proj3-title": "Solace — Projeto de mobiliário",
+                "proj3-desc": "Projeto universitário de desenvolvimento de mobiliário com base em briefing, pesquisa, dados ergonômicos e outras metodologias de design.",
+
+                "proj4-tag": "Processo de aprendizagem",
+                "proj4-title": "Projeto Avança",
+                "proj4-desc": "Projeto final de conclusão do curso de aprendizagem da ESPRO. Embora antigo, representa meu primeiro projeto completo como designer e marca o nascimento e o estabelecimento de uma estética pessoal.",
+
+                "about-label": "Sobre mim",
+                "about-title": 'Design centrado em <span class="text-accent">humanidade, clareza e empatia.</span>',
+                "about-p1": "Fazer design é cuidar do outro. Ao fazer design, a estética transcende a decoração e se torna uma ferramenta de clareza guiada pela empatia. Minha filosofia como designer é garantir que a tecnologia resolva problemas reais, transformando estruturas complexas em experiências intuitivas, funcionais e, acima de tudo, humanas.",
+                "about-p2": "Acredito que um bom design é tão ordinário quanto uma boa maçaneta.",
+                "about-p3": "Minha trajetória no design é profundamente moldada pelo meu contexto como ser humano. Anos de experiência trabalhando em atendimento ao público desenvolveram um olhar natural para as fricções operacionais ao redor. Essa vivência me permitiu olhar o mundo sob uma perspectiva construída além da teoria acadêmica, compreendendo o impacto que cada projeto tem na vida de seres humanos reais.",
+                "about-p4": "Acredito em design guiado por propósito, que foge do excesso e do desnecessário. Trabalho na intersecção das necessidades do negócio e do usuário, sem abrir mão de um ou de outro. Estou sempre com papel e caneta ao alcance da mão, nem que seja um guardanapo, anotando ideias e pontos de aprimoramento de tudo que está ao meu redor, e além.",
+                "about-p5": "Quando não estou no mundo das ideias, você provavelmente vai me encontrar tocando baixo ou guitarra, andando de skate, fazendo crochê, experimentando cafés por aí ou procurando alguma forma de expressão artística para ampliar meu repertório.",
+
+                "contact-label": "Contato",
+                "contact-title": 'Vamos criar <span class="text-accent">(ou aprimorar)</span> algo juntos?',
+                "contact-desc": "Envie uma mensagem para discutir projetos, parcerias, oportunidades ou só para bater papo sobre design. :)",
+                "contact-form-name": "Seu nome",
+                "contact-form-email": "Seu e-mail",
+                "contact-form-msg": "Mensagem",
+                "contact-form-btn": "Enviar mensagem",
+
                 "footer-rights": "© 2026 Wyllams Brito. Todos os direitos reservados.",
-                "back-btn": "voltar",
-                "label-role": "Meu Papel", "label-year": "Ano de Realização", "label-scope": "Escopo do Projeto",
-                "elaine-role": "Confecção do e-book & ideação de logomarca", "elaine-year": "2026", "elaine-scope": "Identidade Visual, E-book Editorial",
-                "solace-role": "Construção do Memorial Descritivo e Pesquisador", "solace-year": "2026", "solace-scope": "Design de Mobiliário, Ergonomia",
-                "avanca-meta": "Processo de Aprendizagem · ESPRO · 2022", "avanca-title": "Projeto Avança",
-                "avanca-desc": "Projeto final de conclusão do curso de aprendizado da escola ESPRO de ensino. Apresentação cobrindo trajetória pessoal, inspirações, cotidiano na empresa Solistica e reflexões de futuro.",
-                "avanca-video-title": "Apresentação em Vídeo",
-                "info-name-label": "Nome", "info-name-val": "Wyllams (Wyll) Brito",
-                "info-age-label": "Idade", "info-age-val": "24 anos",
-                "info-base-label": "Baseado em", "info-base-val": "Curitiba, PR",
-                "info-lang-label": "Idiomas", "info-lang-val": "Português do Brasil / Inglês",
-                "info-nat-label": "Nacionalidade", "info-nat-val": "Brasileiro",
-                "info-edu-label": "Formação", "info-edu-val": "Design<br><span class=\"text-[10px] text-neutral-500 dark:text-neutral-400 font-normal block\">(Universidade Positivo) (Cursando, 2025-2028)</span>Google UX Design Certificate",
-                "info-linkedin-label": "LinkedIn", "info-email-label": "E-mail",
-                "elaine-section-ebook": "Ebook - Elaine Marcante", "elaine-section-logo": "Apresentação - Logomarca",
-                "solace-section-report": "Relatório do projeto", "solace-section-memorial": "Memorial Descritivo", "solace-section-images": "Imagens do Mobiliário",
-                "preview-pages": "Pré-visualização das Páginas",
-                "avanca-role": "Aprendiz & Criador", "avanca-year": "2022", "avanca-scope": "Apresentação Pessoal, Vídeo Institucional"
+                "footer-credit": "Codificado cuidadosamente em conjunto com o Figma Make, idealizado cuidadosamente por mim.",
+
+                "back-btn": "Voltar",
+                "label-role": "Meu papel",
+                "label-year": "Ano de realização",
+                "label-scope": "Escopo do projeto",
+
+                "elaine-role": "Confecção do e-book e ideação de logomarca",
+                "elaine-year": "2026",
+                "elaine-scope": "Identidade visual e e-book editorial",
+
+                "solace-role": "Construção do memorial descritivo e pesquisa",
+                "solace-year": "2026",
+                "solace-scope": "Design de mobiliário e ergonomia",
+
+                "avanca-meta": "Processo de aprendizagem · ESPRO · 2022",
+                "avanca-title": "Projeto Avança",
+                "avanca-desc": "Projeto final de conclusão do curso de aprendizagem da ESPRO. Apresentação sobre trajetória pessoal, inspirações, cotidiano na empresa Solistica e reflexões sobre o futuro.",
+                "avanca-video-title": "Apresentação em vídeo",
+
+                "info-name-label": "Nome",
+                "info-name-val": "Wyllams (Wyll) Brito",
+                "info-age-label": "Idade",
+                "info-age-val": "24 anos",
+                "info-base-label": "Baseado em",
+                "info-base-val": "Curitiba, PR",
+                "info-lang-label": "Idiomas",
+                "info-lang-val": "Português do Brasil / Inglês",
+                "info-nat-label": "Nacionalidade",
+                "info-nat-val": "Brasileiro",
+                "info-edu-label": "Formação",
+                "info-edu-val": 'Design<br><span class="text-[10px] text-neutral-500 dark:text-neutral-400 font-normal block">Universidade Positivo — Cursando, 2025–2028</span>Google UX Design Certificate',
+                "info-linkedin-label": "LinkedIn",
+                "info-email-label": "E-mail",
+
+                "elaine-section-ebook": "E-book — Elaine Marcante",
+                "elaine-section-logo": "Apresentação da logomarca",
+                "solace-section-report": "Relatório do projeto",
+                "solace-section-memorial": "Memorial descritivo",
+                "solace-section-images": "Imagens do mobiliário",
+                "preview-pages": "Pré-visualização das páginas",
+
+                "avanca-role": "Aprendiz e criador",
+                "avanca-year": "2022",
+                "avanca-scope": "Apresentação pessoal e vídeo institucional",
+
+                "slide-prev": "← Anterior",
+                "slide-next": "Próximo →",
+                "marquee": "⛤ Human-centered designer",
+
+                "home-label": "Voltar ao início do portfólio de Wyll Brito",
+                "language-label": "Selecionar idioma",
+                "theme-label": "Alternar tema",
+                "fullscreen-label": "Alternar tela cheia",
+                "quote-label": "Citação de Frank Chimero",
+                "thumbnail-label": "Ver imagem",
+                "slide-label": "Imagem",
+                "fullscreen-error": "Não foi possível ativar a tela cheia."
             },
+
             en: {
-                "nav-work": "Projects", "nav-about": "About Me", "nav-contact": "Contact",
-                "hero-tag": `<span class="w-1.5 h-1.5 rounded-full bg-accent animate-ping"></span> UX DESIGNER - 2026`,
-                "hero-desc": "Product Design student passionate about UX, solving real-world problems, turning complex structures into intuitive and, above all, human experiences.",
-                "hero-btn-work": "View Projects", "hero-btn-contact": "Contact",
-                "hero-status-title": "Currently", "hero-status-desc": "UX Designer",
-                "hero-base-title": "Based in", "hero-base-desc": "Curitiba, PR — Brazil",
-                "hero-avail-title": "Availability", "hero-avail-desc": "Available for projects",
-                "work-title": "My Projects",
-                "proj1-tag": "UX Case Study", "proj1-title": "Optimizing UX in a To-Go Coffee Shop",
-                "proj1-desc": "how I applied information architecture to redesign a coffee shop self-service app, cutting an exhausting 12-screen flow in half, from the perspective of front-line staff.",
-                "proj1-btn": "View Prototype on Figma ↗",
-                "proj2-tag": "Visual Identity & E-book", "proj2-title": "E-book + Visual Identity: Elaine Marcante",
-                "proj2-desc": "professional e-book, visual identity including logo, applications and concepts for an entrepreneur in the Christmas tree business.",
-                "proj-btn-view": "View Full Project →", "proj-cover-placeholder": "No Cover (Adding soon)",
-                "proj3-tag": "Design Solutions", "proj3-title": "Solace - Furniture Design",
-                "proj3-desc": "university furniture design project based on briefing, research, ergonomic data, and other Design methodologies.",
-                "proj4-tag": "Learning Process", "proj4-title": "Project Avança",
-                "proj4-desc": "final project for the ESPRO school learning course. although old, it represents my first complete project as a designer, thus marking the birth and establishment of a personal aesthetic.",
-                "about-label": "About Me", 
-                "about-title": `design centered on <span class="text-accent">humanity, clarity, and empathy.</span>`,
-                "about-p1": "designing is caring for others. when designing, aesthetics transcends decoration and becomes a tool of clarity guided objectively by empathy. my philosophy as a designer is to ensure that technology solves real problems, transforming complex structures into intuitive, functional, and, above all, human experiences.",
-                "about-p2": "i believe that good design is as ordinary as a good doorknob.",
-                "about-p3": "my journey in design is deeply shaped by my context as a human being. years of experience working in customer service developed a natural eye for operational frictions around me. this experience allowed me to look at the world from a perspective crafted beyond academic theory, understanding the impact that each project has on the lives of real humans.",
-                "about-p4": "i believe in purpose-driven design, which runs away from excess and the unnecessary. i work at the intersection of business and user needs, without giving up one or the other. i am always with pen and paper an arm's length away, even if it's a napkin, noting ideas and points of improvement of everything around me, and beyond.",
-                "about-p5": "when i'm not in the world of ideas, you'll probably find me playing bass or guitar, skateboarding, crocheting, trying out coffee shops or looking for some form of art expression to add to my repertoire.",
-                "contact-label": "Contact", 
-                "contact-title": `let's create <span class="text-accent" data-i18n="contact-action-accent">(or enhance)</span> something together?`,
-                "contact-action-accent": "(or enhance)",
-                "contact-desc": "send a message to discuss projects, partnerships, opportunities, or just to chat about design. :)",
-                "contact-form-name": "Your Name", "contact-form-email": "Your E-mail",
-                "contact-form-msg": "Message", "contact-form-btn": "Send Message",
+                "nav-work": "Projects",
+                "nav-about": "About me",
+                "nav-contact": "Contact",
+
+                "hero-tag": "UX Designer — 2026",
+                "hero-desc": "Product design student passionate about UX, solving real-world problems and turning complex structures into intuitive and, above all, human experiences.",
+                "hero-btn-work": "View projects",
+                "hero-btn-contact": "Contact",
+                "hero-status-title": "Currently",
+                "hero-status-desc": "UX Designer",
+                "hero-base-title": "Based in",
+                "hero-base-desc": "Curitiba, PR — Brazil",
+                "hero-avail-title": "Availability",
+                "hero-avail-desc": "Available for projects",
+
+                "work-title": "My projects",
+
+                "proj1-tag": "UX case study",
+                "proj1-title": "Optimizing UX in a to-go coffee shop",
+                "proj1-desc": "How I applied information architecture to redesign a coffee shop self-service app, cutting an exhausting 12-screen flow in half, from the perspective of front-line staff.",
+                "proj1-btn": "View prototype on Figma ↗",
+
+                "proj2-tag": "Visual identity and e-book",
+                "proj2-title": "E-book and visual identity: Elaine Marcante",
+                "proj2-desc": "Professional e-book and visual identity including a logo, applications and concepts for an entrepreneur in the Christmas tree business.",
+                "proj-btn-view": "View full project →",
+
+                "proj3-tag": "Design solutions",
+                "proj3-title": "Solace — Furniture design",
+                "proj3-desc": "University furniture design project based on a brief, research, ergonomic data and other design methodologies.",
+
+                "proj4-tag": "Learning process",
+                "proj4-title": "Project Avança",
+                "proj4-desc": "Final project for the ESPRO learning course. Although an early project, it represents my first complete project as a designer and marks the beginning and establishment of a personal aesthetic.",
+
+                "about-label": "About me",
+                "about-title": 'Design centered on <span class="text-accent">humanity, clarity and empathy.</span>',
+                "about-p1": "Designing is caring for others. In design, aesthetics transcends decoration and becomes a tool for clarity guided by empathy. My philosophy as a designer is to ensure that technology solves real problems, transforming complex structures into intuitive, functional and, above all, human experiences.",
+                "about-p2": "I believe that good design is as ordinary as a good doorknob.",
+                "about-p3": "My journey in design is deeply shaped by my context as a human being. Years of experience working in customer service developed a natural eye for operational friction around me. This experience allowed me to look at the world from a perspective built beyond academic theory, understanding the impact that each project has on the lives of real people.",
+                "about-p4": "I believe in purpose-driven design that avoids excess and the unnecessary. I work at the intersection of business and user needs, without giving up one or the other. I always keep pen and paper within reach, even if it is a napkin, noting ideas and opportunities to improve everything around me, and beyond.",
+                "about-p5": "When I'm not in the world of ideas, you'll probably find me playing bass or guitar, skateboarding, crocheting, trying out coffee shops or looking for a form of artistic expression to expand my repertoire.",
+
+                "contact-label": "Contact",
+                "contact-title": `Let's create <span class="text-accent">(or enhance)</span> something together?`,
+                "contact-desc": "Send a message to discuss projects, partnerships, opportunities or just to chat about design. :)",
+                "contact-form-name": "Your name",
+                "contact-form-email": "Your e-mail",
+                "contact-form-msg": "Message",
+                "contact-form-btn": "Send message",
+
                 "footer-rights": "© 2026 Wyllams Brito. All rights reserved.",
-                "back-btn": "back",
-                "label-role": "My Role", "label-year": "Year of Completion", "label-scope": "Project Scope",
-                "elaine-role": "E-book production & logomark ideation", "elaine-year": "2026", "elaine-scope": "Visual Identity, Editorial E-book",
-                "solace-role": "Descriptive Memorial Construction & Researcher", "solace-year": "2026", "solace-scope": "Furniture Design, Ergonomics",
-                "avanca-meta": "Learning Process · ESPRO · 2022", "avanca-title": "Project Avança",
-                "avanca-desc": "Final graduation project for the ESPRO learning school course. Presentation covering personal background, inspirations, daily routine at Solistica, and future reflections.",
-                "avanca-video-title": "Video Presentation",
-                "info-name-label": "Name", "info-name-val": "Wyllams (Wyll) Brito",
-                "info-age-label": "Age", "info-age-val": "24 years old",
-                "info-base-label": "Based in", "info-base-val": "Curitiba, PR",
-                "info-lang-label": "Languages", "info-lang-val": "Brazilian Portuguese / English",
-                "info-nat-label": "Nationality", "info-nat-val": "Brazilian",
-                "info-edu-label": "Education", "info-edu-val": "Design<br><span class=\"text-[10px] text-neutral-500 dark:text-neutral-400 font-normal block\">(Universidade Positivo) (Enrolled, 2025-2028)</span>Google UX Design Certificate",
-                "info-linkedin-label": "LinkedIn", "info-email-label": "E-mail",
-                "elaine-section-ebook": "E-book - Elaine Marcante", "elaine-section-logo": "Logo Presentation",
-                "solace-section-report": "Project Report", "solace-section-memorial": "Descriptive Memorial", "solace-section-images": "Furniture Images",
-                "preview-pages": "Page Preview",
-                "avanca-role": "Apprentice & Creator", "avanca-year": "2022", "avanca-scope": "Personal Presentation, Institutional Video"
+                "footer-credit": "Carefully coded together with Figma Make, carefully conceived by me.",
+
+                "back-btn": "Back",
+                "label-role": "My role",
+                "label-year": "Year of completion",
+                "label-scope": "Project scope",
+
+                "elaine-role": "E-book production and logomark ideation",
+                "elaine-year": "2026",
+                "elaine-scope": "Visual identity and editorial e-book",
+
+                "solace-role": "Descriptive report development and research",
+                "solace-year": "2026",
+                "solace-scope": "Furniture design and ergonomics",
+
+                "avanca-meta": "Learning process · ESPRO · 2022",
+                "avanca-title": "Project Avança",
+                "avanca-desc": "Final project for the ESPRO learning course. Presentation covering personal background, inspirations, daily routine at Solistica and reflections on the future.",
+                "avanca-video-title": "Video presentation",
+
+                "info-name-label": "Name",
+                "info-name-val": "Wyllams (Wyll) Brito",
+                "info-age-label": "Age",
+                "info-age-val": "24 years old",
+                "info-base-label": "Based in",
+                "info-base-val": "Curitiba, PR",
+                "info-lang-label": "Languages",
+                "info-lang-val": "Brazilian Portuguese / English",
+                "info-nat-label": "Nationality",
+                "info-nat-val": "Brazilian",
+                "info-edu-label": "Education",
+                "info-edu-val": 'Design<br><span class="text-[10px] text-neutral-500 dark:text-neutral-400 font-normal block">Universidade Positivo — Enrolled, 2025–2028</span>Google UX Design Certificate',
+                "info-linkedin-label": "LinkedIn",
+                "info-email-label": "E-mail",
+
+                "elaine-section-ebook": "E-book — Elaine Marcante",
+                "elaine-section-logo": "Logo presentation",
+                "solace-section-report": "Project report",
+                "solace-section-memorial": "Descriptive report",
+                "solace-section-images": "Furniture images",
+                "preview-pages": "Page preview",
+
+                "avanca-role": "Apprentice and creator",
+                "avanca-year": "2022",
+                "avanca-scope": "Personal presentation and institutional video",
+
+                "slide-prev": "← Previous",
+                "slide-next": "Next →",
+                "marquee": "⛤ Human-centered designer",
+
+                "home-label": "Return to the beginning of Wyll Brito’s portfolio",
+                "language-label": "Select language",
+                "theme-label": "Toggle theme",
+                "fullscreen-label": "Toggle fullscreen",
+                "quote-label": "Quote by Frank Chimero",
+                "thumbnail-label": "View image",
+                "slide-label": "Image",
+                "fullscreen-error": "Unable to activate fullscreen."
             }
         };
 
-        function changeLang(lang) {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) {
-                    el.innerHTML = translations[lang][key];
+        let currentLang = 'pt';
+
+        // Páginas do e-book na ordem original.
+        const elaineSlides = [
+            'IjAAVc4',
+            'iuO6sZO',
+            'wh7qu0r',
+            'alQXJez',
+            'jArC4VP',
+            '0Wikesi',
+            'DZBD6ru',
+            'yrMyyet',
+            'FftFmJJ',
+            'qYaCVno',
+            'kXx9E6P',
+            'yLAPbJ3',
+            'gH7bB4Z',
+            '7S2RK4D',
+            'WAsdcqO',
+            '9ZuBil4',
+            'IRF1n50',
+            'yPohOdY',
+            'Hvq7gVv',
+            'jnvNpy5',
+            'ADQDlxb',
+            'TCBuvB4',
+            'hApOFXa',
+            'adsX1j5',
+            'omVAsqx',
+            'Gve66bg',
+            'dbORsOR',
+            'EsiLo3q',
+            's6BikmN',
+            'qFA8MjR',
+            'j3MD096',
+            'tc5ymTq',
+            'E6NpXqI',
+            'PJNVlx1',
+            'arwVZZI',
+            'uPviNmz',
+            'j3dlB8k',
+            'o9xfz47'
+        ];
+
+        const solaceSlides = [
+            'LqoBsgV',
+            'iLTXTDp',
+            'E5wB6FH',
+            'CRiBmaW',
+            'FaCd3EL',
+            'zSXa04E',
+            'WltHSm7',
+            'LC3sAna',
+            'yfGQ6ir'
+        ];
+
+        const sliders = {
+            elaine: {
+                slides: elaineSlides.map(id => `https://i.imgur.com/${id}.jpg`),
+                index: 0,
+                counter: 'slide-counter'
+            },
+            solace: {
+                slides: solaceSlides.map(id => `https://i.imgur.com/${id}.jpg`),
+                index: 0,
+                counter: 'solace-counter'
+            }
+        };
+
+        // Abre o aplicativo de e-mail com os dados do formulário.
+        function handleContactSubmit(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const name = form.elements.name.value.trim();
+            const email = form.elements.email.value.trim();
+            const message = form.elements.message.value.trim();
+
+            const subject = encodeURIComponent(
+                currentLang === 'pt'
+                    ? `Contato do portfólio — ${name}`
+                    : `Portfolio contact — ${name}`
+            );
+
+            const body = encodeURIComponent(
+                currentLang === 'pt'
+                    ? `Nome: ${name}\nE-mail: ${email}\n\nMensagem:\n${message}`
+                    : `Name: ${name}\nE-mail: ${email}\n\nMessage:\n${message}`
+            );
+
+            window.location.href =
+                `mailto:wyllbrito@outlook.com?subject=${subject}&body=${body}`;
+        }
+
+        // Inicializa as miniaturas de uma galeria.
+        function initSlider(project) {
+            const state = sliders[project];
+            const container = document.getElementById(`${project}-thumbnails`);
+
+            container.replaceChildren();
+
+            state.slides.forEach((url, index) => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.onclick = () => setSlide(project, index);
+
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = '';
+                img.loading = 'lazy';
+                img.className = 'w-full h-full object-cover';
+
+                button.appendChild(img);
+                container.appendChild(button);
+            });
+
+            updateSlide(project);
+        }
+
+        function setSlide(project, index) {
+            const state = sliders[project];
+
+            if (
+                !state ||
+                !Number.isInteger(index) ||
+                index < 0 ||
+                index >= state.slides.length
+            ) {
+                return;
+            }
+
+            state.index = index;
+            updateSlide(project, true);
+        }
+
+        function moveSlide(project, direction) {
+            const state = sliders[project];
+
+            if (!state) return;
+
+            setSlide(
+                project,
+                (state.index + direction + state.slides.length) %
+                    state.slides.length
+            );
+        }
+
+        function updateSlide(project, scrollThumbnail = false) {
+            const state = sliders[project];
+            const dictionary = translations[currentLang];
+            const main = document.getElementById(`${project}-main-slide`);
+
+            main.src = state.slides[state.index];
+
+            const titleKey =
+                project === 'elaine'
+                    ? 'elaine-section-ebook'
+                    : 'solace-section-images';
+
+            main.alt =
+                `${dictionary['slide-label']} ${state.index + 1} — ` +
+                dictionary[titleKey];
+
+            document.getElementById(state.counter).textContent =
+                `${state.index + 1} / ${state.slides.length}`;
+
+            const thumbnails =
+                document.getElementById(`${project}-thumbnails`).children;
+
+            Array.from(thumbnails).forEach((button, index) => {
+                const active = index === state.index;
+
+                button.className =
+                    'shrink-0 w-24 h-16 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ' +
+                    (
+                        active
+                            ? 'border-accent scale-105 shadow-md shadow-accent/20'
+                            : 'border-neutral-300 dark:border-neutral-800 opacity-60 hover:opacity-100'
+                    );
+
+                button.setAttribute(
+                    'aria-label',
+                    `${dictionary['thumbnail-label']} ${index + 1}`
+                );
+
+                button.setAttribute('aria-pressed', String(active));
+
+                const viewVisible =
+                    !document.getElementById(`view-${project}`)
+                        .classList.contains('hidden');
+
+                if (active && scrollThumbnail && viewVisible) {
+                    button.scrollIntoView({
+                        behavior: motionBehavior(),
+                        inline: 'nearest',
+                        block: 'nearest'
+                    });
                 }
             });
-            const viewElaine = document.getElementById('view-elaine');
-            const viewSolace = document.getElementById('view-solace');
-            if (viewElaine && !viewElaine.classList.contains('hidden')) {
-                updateElaineSlideDisplay();
-            }
-            if (viewSolace && !viewSolace.classList.contains('hidden')) {
-                updateSolaceSlideDisplay();
+        }
+
+        async function toggleFullscreen(project) {
+            const element =
+                document.getElementById(`${project}-fullscreen-wrapper`);
+
+            try {
+                if (document.fullscreenElement) {
+                    await document.exitFullscreen();
+                } else if (element?.requestFullscreen) {
+                    await element.requestFullscreen();
+                } else {
+                    alert(translations[currentLang]['fullscreen-error']);
+                }
+            } catch {
+                alert(translations[currentLang]['fullscreen-error']);
             }
         }
 
-        // Lógica de Fade in Orgânico
-        document.addEventListener("DOMContentLoaded", () => {
-            const reveals = document.querySelectorAll(".reveal");
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("active");
-                    }
+        // Atualiza todos os textos e sincroniza os seletores de idioma.
+        function changeLang(lang) {
+            if (!Object.hasOwn(translations, lang)) return;
+
+            currentLang = lang;
+            document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.dataset.i18n;
+
+                if (Object.hasOwn(translations[lang], key)) {
+                    element.innerHTML = translations[lang][key];
+                }
+            });
+
+            document.querySelectorAll('[data-i18n-aria]').forEach(element => {
+                const key = element.dataset.i18nAria;
+
+                if (Object.hasOwn(translations[lang], key)) {
+                    element.setAttribute(
+                        'aria-label',
+                        translations[lang][key]
+                    );
+                }
+            });
+
+            document.querySelectorAll('select.custom-dropdown')
+                .forEach(select => {
+                    select.value = lang;
                 });
-            }, { threshold: 0.1 });
-            reveals.forEach((element) => observer.observe(element));
-        });
+
+            Object.keys(sliders).forEach(project => updateSlide(project));
+        }
+
+        function motionBehavior() {
+            return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                ? 'auto'
+                : 'smooth';
+        }
 
         function scrollToSection(id) {
-            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById(id)?.scrollIntoView({
+                behavior: motionBehavior()
+            });
         }
 
         function switchView(view) {
             const views = ['portfolio', 'elaine', 'solace', 'avanca'];
-            const mainHeader = document.getElementById('main-header');
-            const projectHeader = document.getElementById('project-header');
-            const quoteBanner = document.getElementById('quote-banner');
 
-            views.forEach(v => document.getElementById('view-' + v).classList.add('hidden'));
+            if (!views.includes(view)) return;
 
-            document.getElementById('view-' + (view === 'portfolio' ? 'portfolio' : view)).classList.remove('hidden');
-            
-            if (view !== 'portfolio') {
-                mainHeader.classList.add('hidden');
-                projectHeader.classList.remove('hidden');
-                quoteBanner?.classList.add('hidden');
-            } else {
-                mainHeader.classList.remove('hidden');
-                projectHeader.classList.add('hidden');
-                quoteBanner?.classList.add('hidden');
-            }
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            setTimeout(() => {
-                document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
-            }, 100);
+            views.forEach(name => {
+                document.getElementById(`view-${name}`).classList.toggle(
+                    'hidden',
+                    name !== view
+                );
+            });
+
+            const portfolioVisible = view === 'portfolio';
+
+            document.getElementById('main-header').classList.toggle(
+                'hidden',
+                !portfolioVisible
+            );
+
+            document.getElementById('project-header').classList.toggle(
+                'hidden',
+                portfolioVisible
+            );
+
+            // A citação acompanha Sobre mim, sem ser ocultada separadamente.
+            document.querySelectorAll(`#view-${view} .reveal`)
+                .forEach(element => element.classList.add('active'));
+
+            window.scrollTo({
+                top: 0,
+                behavior: motionBehavior()
+            });
         }
 
         function toggleTheme() {
-            const html = document.documentElement;
-            html.classList.toggle('dark');
-            const isDark = html.classList.contains('dark');
-            const themeIcon = document.getElementById('theme-icon');
-            const themeIconProj = document.getElementById('theme-icon-proj');
-            
-            const iconSvg = isDark ? 
-                '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>' : 
-                '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+            const isDark = document.documentElement.classList.toggle('dark');
 
-            if (themeIcon) themeIcon.innerHTML = iconSvg;
-            if (themeIconProj) themeIconProj.innerHTML = iconSvg;
+            const svg = isDark
+                ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+                : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+
+            ['theme-icon', 'theme-icon-proj'].forEach(id => {
+                document.getElementById(id).innerHTML = svg;
+            });
         }
-    </script>
 
-</body></html>
+        document.addEventListener('DOMContentLoaded', () => {
+            Object.keys(sliders).forEach(initSlider);
+            changeLang(currentLang);
+
+            const reveals = document.querySelectorAll('.reveal');
+
+            if (!('IntersectionObserver' in window)) {
+                reveals.forEach(element => element.classList.add('active'));
+                return;
+            }
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            reveals.forEach(element => observer.observe(element));
+        });
+    </script>
+</body>
+</html>
