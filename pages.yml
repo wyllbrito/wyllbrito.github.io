@@ -1,0 +1,55 @@
+media:
+  input: images
+  output: images
+
+content:
+  - name: projetos
+    label: Projetos
+    type: file
+    path: projetos.json
+    format: json
+    fields:
+      - name: projetos
+        label: Lista de projetos (a ordem daqui é a ordem no site)
+        type: object
+        list: true
+        fields:
+          - name: titulo
+            label: Título
+            type: object
+            fields:
+              - { name: pt, label: Português, type: string }
+              - { name: en, label: English, type: string }
+          - name: tag
+            label: Etiqueta (ex.: Estudo de caso de UX)
+            type: object
+            fields:
+              - { name: pt, label: Português, type: string }
+              - { name: en, label: English, type: string }
+          - name: descricao
+            label: Descrição
+            type: object
+            fields:
+              - { name: pt, label: Português, type: text }
+              - { name: en, label: English, type: text }
+          - name: botao
+            label: Texto do botão (opcional; se vazio, usa "Ver projeto completo")
+            type: object
+            fields:
+              - { name: pt, label: Português, type: string }
+              - { name: en, label: English, type: string }
+          - name: capa
+            label: Capa
+            type: image
+          - name: tipo
+            label: Tipo
+            type: select
+            default: externo
+            options:
+              values: [externo, interno]
+          - name: link
+            label: Link (para projetos do tipo externo)
+            type: string
+          - name: pagina
+            label: Página interna (só para elaine, solace ou avanca)
+            type: string
