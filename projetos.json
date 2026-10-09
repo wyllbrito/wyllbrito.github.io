@@ -1,20 +1,35 @@
 {
   "projetos": [
     {
-      "titulo": { "pt": "Otimizando UX em uma cafeteria to-go", "en": "Optimizing UX in a to-go coffee shop" },
-      "tag": { "pt": "Estudo de caso de UX", "en": "UX case study" },
+      "titulo": {
+        "pt": "Otimizando UX em uma cafeteria to-go",
+        "en": "Optimizing UX in a to-go coffee shop"
+      },
+      "tag": {
+        "pt": "Estudo de caso de UX",
+        "en": "UX case study"
+      },
       "descricao": {
         "pt": "Como utilizei conhecimentos em arquitetura da informação para redesenhar o aplicativo de autoatendimento da cafeteria e reduzir pela metade um fluxo exaustivo de 12 telas, sob a perspectiva de quem atua na linha de frente do café.",
-        "en": "How I applied information architecture to redesign a coffee shop self-service app, cutting an exhausting 12-screen flow in half, from the perspective of front-line staff."
+        "en": "How I applied information architecture to redesign a coffee shop self-service app, cutting an exhausting 12-screen flow in half, from the perspective of front-line barista."
       },
-      "botao": { "pt": "Ver protótipo no Figma ↗", "en": "View prototype on Figma ↗" },
+      "botao": {
+        "pt": "Ver protótipo no Figma ↗",
+        "en": "View prototype on Figma ↗"
+      },
       "capa": "https://i.imgur.com/tkiP1oM.jpg",
       "tipo": "externo",
       "link": "https://www.figma.com/proto/yNHqX5cQlKm59C2xhXnvaJ/UX-Case-Study"
     },
     {
-      "titulo": { "pt": "E-book e identidade visual: Elaine Marcante", "en": "E-book and visual identity: Elaine Marcante" },
-      "tag": { "pt": "Identidade visual e e-book", "en": "Visual identity and e-book" },
+      "titulo": {
+        "pt": "E-book e identidade visual: Elaine Marcante",
+        "en": "E-book and visual identity: Elaine Marcante"
+      },
+      "tag": {
+        "pt": "Identidade visual e e-book",
+        "en": "Visual identity and e-book"
+      },
       "descricao": {
         "pt": "E-book profissional e identidade visual com logomarca, aplicações e conceitos para uma empreendedora no ramo de árvores de Natal.",
         "en": "Professional e-book and visual identity including a logo, applications and concepts for an entrepreneur in the Christmas tree business."
@@ -24,8 +39,14 @@
       "pagina": "elaine"
     },
     {
-      "titulo": { "pt": "Solace — Projeto de mobiliário", "en": "Solace — Furniture design" },
-      "tag": { "pt": "Soluções em design", "en": "Design solutions" },
+      "titulo": {
+        "pt": "Solace — Projeto de mobiliário",
+        "en": "Solace — Furniture design"
+      },
+      "tag": {
+        "pt": "Soluções em design",
+        "en": "Design solutions"
+      },
       "descricao": {
         "pt": "Projeto universitário de desenvolvimento de mobiliário com base em briefing, pesquisa, dados ergonômicos e outras metodologias de design.",
         "en": "University furniture design project based on a brief, research, ergonomic data and other design methodologies."
@@ -35,8 +56,14 @@
       "pagina": "solace"
     },
     {
-      "titulo": { "pt": "Projeto Avança", "en": "Project Avança" },
-      "tag": { "pt": "Processo de aprendizagem", "en": "Learning process" },
+      "titulo": {
+        "pt": "Projeto Avança",
+        "en": "Project Avança"
+      },
+      "tag": {
+        "pt": "Processo de aprendizagem",
+        "en": "Learning process"
+      },
       "descricao": {
         "pt": "Projeto final de conclusão do curso de aprendizagem da ESPRO. Embora antigo, representa meu primeiro projeto completo como designer e marca o nascimento e o estabelecimento de uma estética pessoal.",
         "en": "Final project for the ESPRO learning course. Although an early project, it represents my first complete project as a designer and marks the beginning and establishment of a personal aesthetic."
