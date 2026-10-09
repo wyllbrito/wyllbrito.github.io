@@ -1,0 +1,57 @@
+{
+  "hero": {
+    "tag": { "pt": "UX Designer — 2026", "en": "UX Designer — 2026" },
+    "descricao": {
+      "pt": "Estudante de design de produto com paixão por UX, solucionando problemas reais e transformando estruturas complexas em experiências intuitivas e, acima de tudo, humanas.",
+      "en": "Product design student passionate about UX, solving real-world problems and turning complex structures into intuitive and, above all, human experiences."
+    },
+    "atualmente": { "pt": "UX Designer", "en": "UX Designer" },
+    "base": { "pt": "Curitiba, PR — Brasil", "en": "Curitiba, PR — Brazil" },
+    "disponibilidade": { "pt": "Disponível para projetos", "en": "Available for projects" }
+  },
+  "sobre": {
+    "titulo_inicio": { "pt": "Design centrado em", "en": "Design centered on" },
+    "titulo_destaque": { "pt": "humanidade, clareza e empatia.", "en": "humanity, clarity and empathy." },
+    "paragrafo1": {
+      "pt": "Fazer design é cuidar do outro. Ao fazer design, a estética transcende a decoração e se torna uma ferramenta de clareza guiada pela empatia. Minha filosofia como designer é garantir que a tecnologia resolva problemas reais, transformando estruturas complexas em experiências intuitivas, funcionais e, acima de tudo, humanas.",
+      "en": "Designing is caring for others. In design, aesthetics transcends decoration and becomes a tool for clarity guided by empathy. My philosophy as a designer is to ensure that technology solves real problems, transforming complex structures into intuitive, functional and, above all, human experiences."
+    },
+    "paragrafo2": {
+      "pt": "Acredito que um bom design é tão ordinário quanto uma boa maçaneta.",
+      "en": "I believe that good design is as ordinary as a good doorknob."
+    },
+    "paragrafo3": {
+      "pt": "Minha trajetória no design é profundamente moldada pelo meu contexto como ser humano. Anos de experiência trabalhando em atendimento ao público desenvolveram um olhar natural para as fricções operacionais ao redor. Essa vivência me permitiu olhar o mundo sob uma perspectiva construída além da teoria acadêmica, compreendendo o impacto que cada projeto tem na vida de seres humanos reais.",
+      "en": "My journey in design is deeply shaped by my context as a human being. Years of experience working in customer service developed a natural eye for operational friction around me. This experience allowed me to look at the world from a perspective built beyond academic theory, understanding the impact that each project has on the lives of real people."
+    },
+    "paragrafo4": {
+      "pt": "Acredito em design guiado por propósito, que foge do excesso e do desnecessário. Trabalho na intersecção das necessidades do negócio e do usuário, sem abrir mão de um ou de outro. Estou sempre com papel e caneta ao alcance da mão, nem que seja um guardanapo, anotando ideias e pontos de aprimoramento de tudo que está ao meu redor, e além.",
+      "en": "I believe in purpose-driven design that avoids excess and the unnecessary. I work at the intersection of business and user needs, without giving up one or the other. I always keep pen and paper within reach, even if it is a napkin, noting ideas and opportunities to improve everything around me, and beyond."
+    },
+    "paragrafo5": {
+      "pt": "Quando não estou no mundo das ideias, você provavelmente vai me encontrar tocando baixo ou guitarra, andando de skate, fazendo crochê, experimentando cafés por aí ou procurando alguma forma de expressão artística para ampliar meu repertório.",
+      "en": "When I'm not in the world of ideas, you'll probably find me playing bass or guitar, skateboarding, crocheting, trying out coffee shops or looking for a form of artistic expression to expand my repertoire."
+    }
+  },
+  "ficha": {
+    "nome": { "pt": "Wyllams (Wyll) Brito", "en": "Wyllams (Wyll) Brito" },
+    "idade": { "pt": "24 anos", "en": "24 years old" },
+    "local": { "pt": "Curitiba, PR", "en": "Curitiba, PR" },
+    "idiomas": { "pt": "Português do Brasil / Inglês", "en": "Brazilian Portuguese / English" },
+    "nacionalidade": { "pt": "Brasileiro", "en": "Brazilian" },
+    "formacao": {
+      "curso": { "pt": "Design", "en": "Design" },
+      "detalhe": { "pt": "Universidade Positivo — Cursando, 2025–2028", "en": "Universidade Positivo — Enrolled, 2025–2028" },
+      "certificado": { "pt": "Google UX Design Certificate", "en": "Google UX Design Certificate" }
+    }
+  },
+  "contato": {
+    "titulo_inicio": { "pt": "Vamos criar", "en": "Let's create" },
+    "titulo_destaque": { "pt": "(ou aprimorar)", "en": "(or enhance)" },
+    "titulo_fim": { "pt": "algo juntos?", "en": "something together?" },
+    "descricao": {
+      "pt": "Envie uma mensagem para discutir projetos, parcerias, oportunidades ou só para bater papo sobre design. :)",
+      "en": "Send a message to discuss projects, partnerships, opportunities or just to chat about design. :)"
+    }
+  }
+}
