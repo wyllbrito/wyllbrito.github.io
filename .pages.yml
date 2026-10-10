@@ -1,6 +1,6 @@
 media:
-  input: images
-  output: images
+  input: public/images
+  output: public/images
 
 content:
   - name: projetos
