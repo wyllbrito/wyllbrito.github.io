@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>wyll brito</title>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Preferência aplicada antes da primeira pintura. Sem escolha salva, segue o sistema. -->
+    <!-- Preferência aplicada antes da primeira pintura. Sem escolha salva, abre no modo claro. -->
     <script>
         (() => {
             let saved = null;
             try { saved = localStorage.getItem('wyll-theme'); } catch {}
-            const dark = saved === 'dark' || (saved !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+            const dark = saved === 'dark';
             document.documentElement.classList.toggle('dark', dark);
             document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
         })();
     </script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <!-- Fontes -->
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fondamento:ital@0;1&display=swap" rel="stylesheet">
@@ -324,29 +324,46 @@
             transform: none !important;
         }
         #work [data-i18n$="-tag"] { max-width: 100%; white-space: normal; }
-        #main-nav-links button[aria-current="location"] { color: var(--accent-text); text-decoration: underline; text-underline-offset: 6px; }
+        :is(#main-nav-links, #mobile-nav) button[aria-current="location"] { color: var(--accent-text); text-decoration: underline; text-underline-offset: 6px; }
+        #mobile-nav { display: none; }
         @media (max-width: 767px) {
-            body { padding-top: 0; padding-bottom: calc(116px + env(safe-area-inset-bottom, 0px)); }
-            html { scroll-padding-bottom: calc(130px + env(safe-area-inset-bottom, 0px)); }
-            section[id] { scroll-margin-top: 1rem; }
+            :root {
+                --mobile-top: calc(64px + env(safe-area-inset-top, 0px));
+                --mobile-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+            }
+            body.pt-20 { padding-top: var(--mobile-top); padding-bottom: var(--mobile-bottom); }
+            html { scroll-padding-bottom: calc(var(--mobile-bottom) + 16px); }
+            section[id] { scroll-margin-top: calc(var(--mobile-top) + 16px); }
             #main-header nav, #project-header nav {
-                top: auto; bottom: 0; border-bottom: 0; border-top: 1px solid #b9b7ae;
+                top: 0; bottom: auto;
+                padding-top: env(safe-area-inset-top, 0px);
+                padding-bottom: 0;
+                border-top: 0; border-bottom: 1px solid #b9b7ae;
                 background-color: var(--paper);
-                padding-bottom: env(safe-area-inset-bottom, 0px);
-                box-shadow: 0 -4px 18px rgb(0 0 0 / .08);
+                box-shadow: 0 4px 18px rgb(0 0 0 / .04);
             }
-            .dark #main-header nav, .dark #project-header nav { border-top-color: #41443e; }
-            #main-header nav > div {
-                display: grid; grid-template-columns: 1fr auto; height: auto;
-                padding: 4px max(12px, env(safe-area-inset-right)) 4px max(12px, env(safe-area-inset-left));
+            .dark #main-header nav, .dark #project-header nav { border-bottom-color: #41443e; }
+            #main-header nav > div, #project-header nav > div {
+                display: flex; justify-content: space-between; height: 64px;
+                padding-left: max(12px, env(safe-area-inset-left));
+                padding-right: max(12px, env(safe-area-inset-right));
             }
-            #main-header .wordmark-abbreviation { justify-self: start; grid-column: 1; grid-row: 1; }
-            #main-header nav > div > div:last-child { grid-column: 2; grid-row: 1; gap: 4px; }
-            #main-nav-links { display: flex; grid-column: 1 / -1; grid-row: 2; justify-content: space-between; gap: 4px; }
-            #main-nav-links button { flex: 1; min-height: 44px; letter-spacing: .015em; padding: 8px 4px; }
-            #project-header nav > div { height: 64px; padding-inline: 12px; }
+            #main-nav-links { display: none; }
+            #main-header nav > div > div:last-child,
+            #project-header nav > div > div:last-child { gap: 4px; }
+            #mobile-nav {
+                position: fixed; inset: auto 0 0; z-index: 40;
+                display: flex; align-items: center; justify-content: space-between; gap: 4px;
+                min-height: var(--mobile-bottom); box-sizing: border-box;
+                padding: 10px max(12px, env(safe-area-inset-right))
+                    calc(10px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left));
+                background: var(--paper); border-top: 1px solid #b9b7ae;
+                box-shadow: 0 -4px 18px rgb(0 0 0 / .06);
+            }
+            .dark #mobile-nav { border-top-color: #41443e; }
+            #mobile-nav button { flex: 1; min-height: 44px; padding: 8px 4px; letter-spacing: .015em; }
             button, select { min-height: 44px; }
-            #hero { min-height: calc(100svh - 116px - env(safe-area-inset-bottom, 0px)); }
+            #hero { min-height: calc(100svh - var(--mobile-top) - var(--mobile-bottom)); }
         }
     </style>
 </head>
@@ -480,6 +497,13 @@
             </div>
         </nav>
     </header>
+
+    <!-- Independente dos cabeçalhos: disponível também nas páginas dos projetos. -->
+    <nav id="mobile-nav" aria-label="Navegação principal" data-i18n-aria="mobile-nav-label">
+        <button type="button" onclick="scrollToSection('work')" data-i18n="nav-work" class="font-sans text-xs font-semibold text-neutral-600 dark:text-neutral-400">Projetos</button>
+        <button type="button" onclick="scrollToSection('about')" data-i18n="nav-about" class="font-sans text-xs font-semibold text-neutral-600 dark:text-neutral-400">Sobre mim</button>
+        <button type="button" onclick="scrollToSection('contact')" data-i18n="nav-contact" class="font-sans text-xs font-semibold text-neutral-600 dark:text-neutral-400">Contato</button>
+    </nav>
 
     <main>
         <!-- Portfólio -->
@@ -1136,6 +1160,7 @@
         const translations = {
             pt: {
                 "nav-work": "Projetos",
+                "mobile-nav-label": "Navegação principal",
                 "nav-about": "Sobre mim",
                 "nav-contact": "Contato",
 
@@ -1238,6 +1263,7 @@
             },
 
             en: {
+                "mobile-nav-label": "Main navigation",
                 "nav-work": "Projects",
                 "nav-about": "About me",
                 "nav-contact": "Contact",
@@ -1561,8 +1587,10 @@
         }
 
         function scrollToSection(id) {
-            document.getElementById(id)?.scrollIntoView({
-                behavior: motionBehavior()
+            const portfolio = document.getElementById('view-portfolio');
+            if (portfolio.classList.contains('hidden')) switchView('portfolio');
+            requestAnimationFrame(() => {
+                document.getElementById(id)?.scrollIntoView({ behavior: motionBehavior() });
             });
         }
 
@@ -1645,15 +1673,10 @@
             try { localStorage.setItem('wyll-theme', dark ? 'dark' : 'light'); } catch {}
             applyTheme(dark);
         }
-        matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            let saved = null;
-            try { saved = localStorage.getItem('wyll-theme'); } catch {}
-            if (saved !== 'dark' && saved !== 'light') applyTheme(event.matches);
-        });
         window.addEventListener('storage', event => {
             if (event.key === 'wyll-theme' || event.key === null) {
                 const saved = event.newValue;
-                applyTheme(saved === 'dark' || (saved !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches));
+                applyTheme(saved === 'dark');
             }
         });
 
@@ -1664,7 +1687,7 @@
                 const navObserver = new IntersectionObserver(entries => {
                     entries.forEach(entry => {
                         if (!entry.isIntersecting) return;
-                        document.querySelectorAll('#main-nav-links button').forEach(button => {
+                        document.querySelectorAll('#main-nav-links button, #mobile-nav button').forEach(button => {
                             if (button.getAttribute('onclick') === `scrollToSection('${entry.target.id}')`) {
                                 button.setAttribute('aria-current', 'location');
                             } else button.removeAttribute('aria-current');
