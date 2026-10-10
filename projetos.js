@@ -29,7 +29,11 @@
   // Projeto "interno" abre uma página do próprio site; "externo" abre um link.
   function criarLink(p, classes) {
     let e;
-    if (p.tipo === 'interno' && p.pagina) {
+    if (p.tipo === 'pagina' && p.slug) {
+      e = el('button', classes);
+      e.type = 'button';
+      e.addEventListener('click', () => { location.hash = '#/' + p.slug; });
+    } else if (p.tipo === 'interno' && p.pagina) {
       e = el('button', classes);
       e.type = 'button';
       e.addEventListener('click', () => switchView(p.pagina));
@@ -108,11 +112,13 @@
       return;
     }
     if (!Array.isArray(projetos) || !projetos.length) return;
+    window.PROJETOS = projetos;
     refs = [];
     const cartoes = projetos.map(criarCartao);
     lista.replaceChildren(...cartoes);
     aplicarIdioma();
     revelarAoRolar(cartoes);
+    document.dispatchEvent(new Event('projetos:prontos'));
   }
 
   // Faz a troca de idioma do site também atualizar os cartões.
