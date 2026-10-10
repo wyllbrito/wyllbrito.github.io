@@ -27,6 +27,7 @@
         if (feedback) feedback.hidden = state === 'ready' || state === 'loading';
         refs.forEach(({ p, image, title, description, tags, label, link, frame }) => {
             image.alt = t(p.titulo);
+            image.style.objectFit = p.capa_ajuste === 'preencher' ? 'cover' : 'contain';
             title.textContent = t(p.titulo);
             description.textContent = t(p.descricao);
             tags.replaceChildren();
@@ -48,14 +49,11 @@
         applyLanguage();
     }
     function destination(p) {
-        if (p.tipo === 'pagina') {
+        if (p.tipo === 'pagina' || p.tipo === 'interno') {
             // Preserve the exact slug stored by Pages CMS, including capitals.
-            if (typeof p.slug !== 'string' || !p.slug.trim()) throw new Error('Missing project slug');
-            return '#/' + encodeURIComponent(p.slug);
-        }
-        if (p.tipo === 'interno') {
-            if (!['elaine', 'solace', 'avanca'].includes(p.pagina)) throw new Error('Invalid internal page');
-            return '#/' + p.pagina;
+            const slug = p.slug || p.pagina;
+            if (typeof slug !== 'string' || !slug.trim()) throw new Error('Missing project slug');
+            return '#/' + encodeURIComponent(slug);
         }
         const url = new URL(p.link, document.baseURI);
         if (!p.link || !['http:', 'https:'].includes(url.protocol)) throw new Error('Invalid project link');
@@ -63,10 +61,7 @@
     }
     function configureLink(anchor, p, href) {
         anchor.href = href;
-        if (p.tipo === 'interno') anchor.addEventListener('click', event => {
-            if (event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-            event.preventDefault(); switchView(p.pagina);
-        });
+        // Internal pages use the same hash router and the same CMS data as every other page.
         if (p.tipo !== 'pagina' && p.tipo !== 'interno') {
             anchor.target = '_blank'; anchor.rel = 'noopener noreferrer';
         }
@@ -147,6 +142,7 @@
             refs = []; window.PROJETOS = [];
             list.replaceChildren(); setState('error');
             console.error('Não foi possível carregar projetos.json:', error);
+            document.dispatchEvent(new Event('projetos:erro'));
         } finally { clearTimeout(timeout); pending = false; }
     }
     const previousChangeLang = changeLang;
