@@ -146,8 +146,8 @@
 
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(12px);
+            transition: opacity 360ms ease, transform 360ms cubic-bezier(0.2, 0.7, 0.3, 1);
         }
 
         .reveal.active {
@@ -162,7 +162,7 @@
         }
 
         .hover-float:hover {
-            transform: translateY(-6px);
+            transform: translateY(-2px);
         }
 
         ::-webkit-scrollbar {
@@ -364,6 +364,44 @@
             #mobile-nav button { flex: 1; min-height: 44px; padding: 8px 4px; letter-spacing: .015em; }
             button, select { min-height: 44px; }
             #hero { min-height: calc(100svh - var(--mobile-top) - var(--mobile-bottom)); }
+        }
+    
+        /* Shared motion: short feedback, restrained travel, no layout shift. */
+        [data-i18n="about-title"] .title-neutral { color: #171717; }
+        .dark [data-i18n="about-title"] .title-neutral { color: #fff; }
+        :is(button, a, select):focus-visible {
+            outline: 2px solid var(--accent-text); outline-offset: 4px;
+        }
+        :is(button, a, select) {
+            transition-property: color, background-color, border-color, box-shadow, transform;
+            transition-duration: 180ms;
+            transition-timing-function: cubic-bezier(.2,.7,.3,1);
+        }
+        #download-cv { background: transparent; }
+        .project-status { padding: 2rem 0; color: #666960; font-size: .95rem; }
+        .dark .project-status { color: #b1b4ab; }
+        .project-retry { margin-top: .75rem; padding: .6rem 1rem; min-height: 44px;
+            border: 1px solid currentColor; border-radius: .6rem; background: transparent; }
+        @media (prefers-reduced-motion: no-preference) {
+            @media (hover: hover) and (pointer: fine) {
+                :is(#download-cv, .hero-title-container ~ div button, #project-list a):hover {
+                    transform: translateY(-2px);
+                }
+            }
+            :is(button, #download-cv, #project-list a):active { transform: translateY(1px); }
+        }
+        @media (hover: none) {
+            .hover-float:hover { transform: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important; transition: none !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal, .hover-float:hover, .wordmark-abbreviation,
+            :is(button, a):hover, :is(button, a):active,
+            [class*="group-hover"], [class*="scale-105"] { transform: none !important; }
+            .reveal { opacity: 1 !important; }
         }
     </style>
 </head>
@@ -621,7 +659,12 @@
 
                 <!-- Conteúdo exclusivo de projetos.js, a partir de projetos.json.
                      Não inserir cards fixos aqui: inclusões, exclusões e ordem vêm do CMS. -->
-                <div id="project-list" class="space-y-32"></div>
+                <div id="project-feedback" class="project-status">
+                    <p id="project-status" role="status" aria-live="polite" aria-atomic="true">Carregando projetos…</p>
+                    <button id="project-retry" class="project-retry" type="button" hidden>Tentar novamente</button>
+                </div>
+                <div id="project-list" class="space-y-32" aria-busy="true"></div>
+                <noscript><p>Ative o JavaScript para visualizar os projetos.</p></noscript>
                 <noscript>
                     <p>Ative o JavaScript para visualizar os projetos do portfólio.</p>
                 </noscript>
@@ -704,7 +747,7 @@
                                     href="./Wyllams_Brito_Curriculo_ATS.pdf"
                                     download="Wyllams_Brito_Curriculo_ATS.pdf"
                                     type="application/pdf"
-                                    class="flex w-full min-h-[48px] items-center justify-center gap-2 rounded-xl border border-accent/40 bg-accent/10 px-4 py-3 text-accent font-sans text-sm font-semibold text-center hover:bg-accent/20 hover:border-accent transition-colors"
+                                    class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-transparent px-3 py-2 text-neutral-600 dark:text-neutral-300 font-sans text-xs font-medium text-center hover:border-accent hover:text-accent transition-colors"
                                 >
                                     <svg aria-hidden="true" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M12 3v12m-5-5 5 5 5-5M5 16v5h14v-5"></path>
@@ -1535,6 +1578,27 @@
 
                 if (Object.hasOwn(translations[lang], key)) {
                     element.innerHTML = translations[lang][key];
+                    if (key === 'about-title') {
+                        // Preserve CMS content; only neutralize punctuation and conjunctions.
+                        element.querySelectorAll('.text-accent').forEach(accent => {
+                            const walker = document.createTreeWalker(accent, NodeFilter.SHOW_TEXT);
+                            const nodes = [];
+                            while (walker.nextNode()) nodes.push(walker.currentNode);
+                            nodes.forEach(node => {
+                                const parts = node.textContent.split(/(\b(?:e|and)\b|[,.;:!?])/gi);
+                                const fragment = document.createDocumentFragment();
+                                parts.forEach((part, index) => {
+                                    if (index % 2) {
+                                        const neutral = document.createElement('span');
+                                        neutral.className = 'title-neutral';
+                                        neutral.textContent = part;
+                                        fragment.append(neutral);
+                                    } else fragment.append(document.createTextNode(part));
+                                });
+                                node.replaceWith(fragment);
+                            });
+                        });
+                    }
                 }
             });
 
