@@ -120,6 +120,44 @@
     },
     {
       "titulo": {
+        "pt": "TudoGostoso - Proposta de Onboarding (Sprint)",
+        "en": "TudoGostoso - Onboarding Proposition (Sprint)"
+      },
+      "tag": {
+        "pt": "Estudo de Caso em Experiência do Usuário",
+        "en": "UX Case Study"
+      },
+      "descricao": {
+        "pt": "Projeto desenvolvido como um exercício proposto durante processo da Apple Developer Academy, feito em apenas 1 dia. O objetivo principal não foi o refinamento visual, mas sim treinar a velocidade de execução em pesquisa e a capacidade de reconhecer e seguir o processo de Design chamado de Double Diamond. ",
+        "en": "Project developed as an exercise during the Apple Developer Academy selection process, completed in just one day. The primary goal was not visual refinement, but rather practicing execution speed in research and the ability to recognize and follow the \"Double Diamond\" design process."
+      },
+      "capa": "public/images/wyllbrito_tarefa01@2x.jpg",
+      "tipo": "pagina",
+      "pagina": "onboarding",
+      "slug": "tudogostoso",
+      "info": {
+        "papel": {
+          "pt": "Designer de Experiência do Usuário",
+          "en": "UX Designer"
+        },
+        "ano": {
+          "pt": "2026",
+          "en": "2026"
+        },
+        "escopo": {
+          "pt": "UX, UI, Onboarding, Double Diamond",
+          "en": "UX, UI, Onboarding, Double Diamond"
+        }
+      },
+      "blocos": [
+        {
+          "bloco": "imagem",
+          "imagem": "public/images/wyllbrito_tarefa01@2x (1).jpg"
+        }
+      ]
+    },
+    {
+      "titulo": {
         "pt": "Solace",
         "en": "Solace"
       },
