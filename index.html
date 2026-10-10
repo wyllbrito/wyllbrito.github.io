@@ -1716,17 +1716,112 @@
             });
         }
 
-        function switchView(view) {
-            const views = ['portfolio', 'elaine', 'solace', 'avanca'];
+        // --- INÍCIO DO CÓDIGO SUBSTITUÍDO ---
 
-            if (!views.includes(view)) return;
+        function motionBehavior() {
+            return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                ? 'auto'
+                : 'smooth';
+        }
 
-            views.forEach(name => {
-                document.getElementById(`view-${name}`).classList.toggle(
-                    'hidden',
-                    name !== view
-                );
+        function scrollToSection(id) {
+            document.getElementById(id)?.scrollIntoView({
+                behavior: motionBehavior()
             });
+        }
+
+        // 1. Nova função dinâmica (funciona para qualquer projeto)
+        function switchView(view) {
+            // Atualiza a URL na barra de endereços (para permitir copiar e colar o link)
+            if (window.location.hash !== `#/${view}`) {
+                window.history.pushState(null, null, `#/${view}`);
+            }
+
+            // Esconde todas as seções de visualização
+            document.querySelectorAll('[id^="view-"]').forEach(el => {
+                el.classList.add('hidden');
+            });
+
+            // Tenta encontrar a div do projeto solicitado
+            const targetView = document.getElementById(`view-${view}`);
+
+            // Se o projeto existir, mostra ele. Se não, volta pro portfólio.
+            if (targetView) {
+                targetView.classList.remove('hidden');
+            } else {
+                document.getElementById('view-portfolio').classList.remove('hidden');
+                view = 'portfolio';
+            }
+
+            // Lógica do cabeçalho
+            const portfolioVisible = view === 'portfolio';
+            document.getElementById('main-header').classList.toggle('hidden', !portfolioVisible);
+            document.getElementById('project-header').classList.toggle('hidden', portfolioVisible);
+
+            // Dispara animações
+            document.querySelectorAll(`#view-${view} .reveal`)
+                .forEach(element => element.classList.add('active'));
+
+            window.scrollTo({
+                top: 0,
+                behavior: motionBehavior()
+            });
+        }
+
+        // 2. Roteador: Lê a URL (o #) e abre o projeto certo
+        function handleHashChange() {
+            // Pega o que está na URL, ignorando o # e a /
+            const hash = window.location.hash.replace('#/', '').replace('#', '');
+            
+            if (hash) {
+                switchView(hash);
+            } else {
+                switchView('portfolio');
+            }
+        }
+
+        // 3. Fica escutando mudanças na URL (quando o usuário clica em voltar/avançar no navegador)
+        window.addEventListener('hashchange', handleHashChange);
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+
+            const svg = isDark
+                ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+                : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+
+            ['theme-icon', 'theme-icon-proj'].forEach(id => {
+                document.getElementById(id).innerHTML = svg;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            Object.keys(sliders).forEach(initSlider);
+            changeLang(currentLang);
+
+            // Lê a URL assim que a página carrega pela primeira vez
+            handleHashChange();
+
+            const reveals = document.querySelectorAll('.reveal');
+
+            if (!('IntersectionObserver' in window)) {
+                reveals.forEach(element => element.classList.add('active'));
+                return;
+            }
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            reveals.forEach(element => observer.observe(element));
+        });
 
             const portfolioVisible = view === 'portfolio';
 
