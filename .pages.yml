@@ -23,6 +23,7 @@ content:
           - name: tag
             label: Etiqueta (por exemplo, Estudo de caso de UX)
             type: object
+            list: true
             fields:
               - { name: pt, label: Português, type: string }
               - { name: en, label: English, type: string }
