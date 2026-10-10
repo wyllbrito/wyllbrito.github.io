@@ -2,6 +2,22 @@
 <html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
+    <!-- Google tag: shared by the portfolio and every CMS project page. -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CJ2NC0T4LF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-CJ2NC0T4LF');
+    </script>
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "yvkoj5k2bx");
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>wyll brito</title>
 
@@ -291,11 +307,22 @@
         :root { --paper-grid: rgb(70 65 50 / .055); }
         html.dark { --paper-grid: rgb(255 255 255 / .045); }
         body {
+            isolation: isolate;
             background-color: var(--paper); color: var(--ink);
             background-image:
                 linear-gradient(var(--paper-grid) 1px, transparent 1px),
                 linear-gradient(90deg, var(--paper-grid) 1px, transparent 1px);
             background-size: 28px 28px;
+        }
+        #ambient-grid {
+            position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1;
+            pointer-events: none; user-select: none; filter: blur(.45px); opacity: .9;
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            html.grid-motion-ready body { background-image: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #ambient-grid { display: none !important; }
         }
         body { font-family: 'Satoshi', sans-serif; }
         body .font-sans, button, a, select, input, textarea { font-family: 'Satoshi', sans-serif; }
@@ -552,6 +579,7 @@
 </head>
 
 <body class="bg-offwhite text-neutral-900 dark:bg-pureblack dark:text-[#f4f1ea] transition-colors duration-500 font-sans selection:bg-accent selection:text-white pt-20">
+    <canvas id="ambient-grid" aria-hidden="true" role="presentation" tabindex="-1"></canvas>
 
     <!-- Navegação principal -->
     <header id="main-header">
@@ -1723,6 +1751,202 @@
                 if (records.some(record => record.type === 'childList' || record.target.id?.startsWith('view-'))) adaptGalleries();
             }).observe(main, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
             adaptGalleries();
+        })();
+    </script>
+    <script id="ambient-grid-motion">
+        // A decorative 2D mesh with perspective projection. No content or input depends on it.
+        (() => {
+            const canvas = document.getElementById('ambient-grid');
+            let ctx;
+            try { ctx = canvas?.getContext('2d'); } catch { return; }
+            if (!ctx) return; // The CSS grid remains available if Canvas is unsupported.
+
+            const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+            const fine = matchMedia('(hover: hover) and (pointer: fine)');
+            const root = document.documentElement;
+            const viewer = document.getElementById('project-image-viewer');
+            const waves = [];
+            const target = { x: 0, y: 0, hover: 0, scroll: window.scrollY };
+            const current = { x: 0, y: 0, hover: 0, scroll: window.scrollY };
+            let width = 0, height = 0, cols = 0, rows = 0, spacing = 28;
+            let base = new Float32Array(0), points = new Float32Array(0);
+            let raf = 0, lastPaint = 0, color = '', paused = false;
+            const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+            function canDraw() {
+                return !reduced.matches && !document.hidden && !paused;
+            }
+            function stop() {
+                if (raf) cancelAnimationFrame(raf);
+                raf = 0;
+                lastPaint = 0;
+            }
+            function wake() {
+                if (!raf && canDraw()) raf = requestAnimationFrame(frame);
+            }
+            function updateColor() {
+                color = root.classList.contains('dark') ? 'rgba(255,255,255,.06)' : 'rgba(70,65,50,.07)';
+            }
+            function resize() {
+                width = Math.max(1, document.documentElement.clientWidth || window.innerWidth);
+                height = Math.max(1, window.innerHeight);
+                // Bound the backing bitmap and the number of mesh vertices on large monitors.
+                const dpr = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(2400000 / (width * height)));
+                canvas.width = Math.round(width * dpr);
+                canvas.height = Math.round(height * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                spacing = Math.max(28, Math.ceil(Math.max(width / 110, height / 75)));
+                cols = Math.ceil(width / spacing) + 7;
+                rows = Math.ceil(height / spacing) + 7;
+                base = new Float32Array(cols * rows * 2);
+                points = new Float32Array(base.length);
+                for (let row = 0; row < rows; row++) {
+                    for (let col = 0; col < cols; col++) {
+                        const i = (row * cols + col) * 2;
+                        base[i] = (col - 3) * spacing;
+                        base[i + 1] = (row - 3) * spacing;
+                    }
+                }
+                waves.length = 0;
+                current.scroll = target.scroll = window.scrollY;
+                updateColor();
+                wake();
+            }
+            function draw(now) {
+                ctx.clearRect(0, 0, width, height);
+                const phase = -(current.scroll * (fine.matches ? .04 : .015) % spacing);
+                const angleX = current.y * .009;
+                const angleY = current.x * .012;
+                const cosX = Math.cos(angleX), sinX = Math.sin(angleX);
+                const cosY = Math.cos(angleY), sinY = Math.sin(angleY);
+                const focal = Math.max(width, height) * 1.8;
+                const cursorX = width * (.5 + current.x * .5);
+                const cursorY = height * (.5 + current.y * .5);
+                for (let i = 0; i < base.length; i += 2) {
+                    let bx = base[i], by = base[i + 1] + phase;
+                    const dx = bx - cursorX, dy = by - cursorY;
+                    const influence = Math.exp(-(dx * dx + dy * dy) / (2 * 110 * 110)) * current.hover;
+                    // Mouse movement gently lifts the local mesh rather than producing a ripple.
+                    const localLift = influence * 6;
+                    bx += dx / 110 * influence * 1.8;
+                    by += dy / 110 * influence * 1.8;
+                    for (const wave of waves) {
+                        const progress = clamp((now - wave.born) / 950, 0, 1);
+                        const wx = bx - wave.x, wy = by - wave.y;
+                        const distance = Math.hypot(wx, wy);
+                        const band = distance - (18 + progress * 360);
+                        const displacement = Math.sin(band / 20) * Math.exp(-(band * band) / (2 * 44 * 44)) *
+                            (1 - progress) ** 2 * wave.amplitude;
+                        if (distance > 1) {
+                            bx += wx / distance * displacement;
+                            by += wy / distance * displacement;
+                        }
+                    }
+                    const x = bx - width * .5 + current.x * 3;
+                    const y = by - height * .5 + current.y * 3;
+                    const rotatedY = y * cosX - localLift * sinX;
+                    const depth = y * sinX + localLift * cosX;
+                    const rotatedX = x * cosY + depth * sinY;
+                    const z = -x * sinY + depth * cosY;
+                    const perspective = focal / (focal - z);
+                    points[i] = width * .5 + rotatedX * perspective;
+                    points[i + 1] = height * .5 + rotatedY * perspective;
+                }
+                ctx.beginPath();
+                for (let row = 0; row < rows; row++) {
+                    for (let col = 0; col < cols; col++) {
+                        const i = (row * cols + col) * 2;
+                        if (!col) ctx.moveTo(points[i], points[i + 1]);
+                        else ctx.lineTo(points[i], points[i + 1]);
+                    }
+                }
+                for (let col = 0; col < cols; col++) {
+                    for (let row = 0; row < rows; row++) {
+                        const i = (row * cols + col) * 2;
+                        if (!row) ctx.moveTo(points[i], points[i + 1]);
+                        else ctx.lineTo(points[i], points[i + 1]);
+                    }
+                }
+                ctx.strokeStyle = color;
+                ctx.lineWidth = .85;
+                ctx.stroke();
+                root.classList.add('grid-motion-ready');
+            }
+            function frame(now) {
+                raf = 0;
+                if (!canDraw()) return;
+                // Draw at most 30 times per second, and stop completely once the mesh settles.
+                if (lastPaint && now - lastPaint < 1000 / 30) { wake(); return; }
+                const dt = lastPaint ? Math.min(64, now - lastPaint) : 33;
+                lastPaint = now;
+                const ease = 1 - Math.exp(-dt / 135);
+                let unsettled = false;
+                for (const key of ['x', 'y', 'hover', 'scroll']) {
+                    const delta = target[key] - current[key];
+                    const threshold = key === 'scroll' ? .08 : .001;
+                    if (Math.abs(delta) > threshold) {
+                        current[key] += delta * ease;
+                        unsettled = true;
+                    } else current[key] = target[key];
+                }
+                for (let i = waves.length - 1; i >= 0; i--) {
+                    if (now - waves[i].born >= 950) waves.splice(i, 1);
+                }
+                draw(now);
+                if (unsettled || waves.length) wake();
+                else lastPaint = 0;
+            }
+            function resetPointer() {
+                target.x = target.y = target.hover = 0;
+                wake();
+            }
+            function updatePause() {
+                paused = Boolean(document.fullscreenElement || viewer?.open);
+                if (paused) stop();
+                else wake();
+            }
+            function updatePreference() {
+                stop();
+                waves.length = 0;
+                target.x = target.y = target.hover = 0;
+                current.x = current.y = current.hover = 0;
+                canvas.hidden = reduced.matches;
+                if (reduced.matches) root.classList.remove('grid-motion-ready');
+                else resize();
+            }
+            window.addEventListener('pointermove', event => {
+                if (!canDraw() || !fine.matches || event.pointerType === 'touch') return;
+                target.x = clamp(event.clientX / width * 2 - 1, -1, 1);
+                target.y = clamp(event.clientY / height * 2 - 1, -1, 1);
+                target.hover = 1;
+                wake();
+            }, { passive: true });
+            window.addEventListener('click', event => {
+                // Keyboard activation does not create an animation at arbitrary coordinates.
+                if (!canDraw() || event.button || !event.detail) return;
+                if (waves.length === 3) waves.shift();
+                waves.push({ x: event.clientX, y: event.clientY, born: performance.now(), amplitude: fine.matches ? 2.8 : 1.2 });
+                wake();
+            }, { capture: true, passive: true });
+            window.addEventListener('scroll', () => { target.scroll = window.scrollY; wake(); }, { passive: true });
+            window.addEventListener('resize', resize, { passive: true });
+            document.documentElement.addEventListener('pointerleave', resetPointer, { passive: true });
+            window.addEventListener('blur', resetPointer);
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) { waves.length = 0; stop(); }
+                else wake();
+            });
+            document.addEventListener('fullscreenchange', updatePause);
+            if (viewer) new MutationObserver(updatePause).observe(viewer, { attributes: true, attributeFilter: ['open'] });
+            new MutationObserver(records => {
+                if (records.some(record => (record.oldValue || '').split(/\s+/).includes('dark') !== root.classList.contains('dark'))) {
+                    updateColor();
+                    wake();
+                }
+            }).observe(root, { attributes: true, attributeFilter: ['class'], attributeOldValue: true });
+            reduced.addEventListener('change', updatePreference);
+            fine.addEventListener('change', resetPointer);
+            updatePreference();
         })();
     </script>
 </body>
