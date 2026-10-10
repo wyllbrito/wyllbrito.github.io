@@ -1,18 +1,20 @@
-// Pages CMS: reads { projetos: [...] } from projetos.json.
-// Keep before textos.js and paginas.js, without async or type="module".
+// Pages CMS: lê { projetos: [...] } de projetos.json.
+// Carregar antes de textos.js e paginas.js.
+// Não usar async nem type="module".
+
 (() => {
     'use strict';
 
     const messages = {
         pt: {
-            loading: 'Carregando projetos…',
+            loading: '',
             empty: 'Nenhum projeto cadastrado.',
             error: 'Não foi possível carregar os projetos.',
             retry: 'Tentar novamente',
             open: 'Ver projeto completo'
         },
         en: {
-            loading: 'Loading projects…',
+            loading: '',
             empty: 'No projects added yet.',
             error: 'Could not load projects.',
             retry: 'Try again',
@@ -27,8 +29,10 @@
 
     const el = (tag, classes, text) => {
         const node = document.createElement(tag);
+
         if (classes) node.className = classes;
         if (text != null) node.textContent = text;
+
         return node;
     };
 
@@ -46,14 +50,20 @@
     function applyLanguage() {
         const T = messages[currentLang] || messages.pt;
 
-        if (status) status.textContent = T[state] || '';
+        if (status) {
+            status.textContent = T[state] || '';
+        }
 
         if (retry) {
             retry.textContent = T.retry;
             retry.hidden = state !== 'error';
         }
 
-        if (feedback) feedback.hidden = state === 'ready';
+        if (feedback) {
+            feedback.hidden =
+                state === 'ready' ||
+                state === 'loading';
+        }
 
         refs.forEach(({
             p,
@@ -70,7 +80,9 @@
 
             tags.replaceChildren();
 
-            const values = Array.isArray(p.tag) ? p.tag : [p.tag];
+            const values = Array.isArray(p.tag)
+                ? p.tag
+                : [p.tag];
 
             values.forEach(value => {
                 const text = t(value);
@@ -98,33 +110,32 @@
 
     function setState(next) {
         state = next;
-        list.setAttribute('aria-busy', String(next === 'loading'));
+
+        list.setAttribute(
+            'aria-busy',
+            String(next === 'loading')
+        );
+
         applyLanguage();
     }
 
     function destination(p) {
         if (p.tipo === 'pagina') {
+            // Preserva o slug do CMS, incluindo letras maiúsculas.
             if (
                 typeof p.slug !== 'string' ||
-                (
-                    !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(p.slug) ||
-                    [
-                        'portfolio',
-                        'elaine',
-                        'solace',
-                        'avanca',
-                        'dinamica'
-                    ].includes(p.slug)
-                )
+                !p.slug.trim()
             ) {
-                throw new Error('Invalid project slug');
+                throw new Error('Missing project slug');
             }
 
-            return '#/' + p.slug;
+            return '#/' + encodeURIComponent(p.slug);
         }
 
         if (p.tipo === 'interno') {
-            if (!['elaine', 'solace', 'avanca'].includes(p.pagina)) {
+            if (
+                !['elaine', 'solace', 'avanca'].includes(p.pagina)
+            ) {
                 throw new Error('Invalid internal page');
             }
 
@@ -133,7 +144,10 @@
 
         const url = new URL(p.link, document.baseURI);
 
-        if (!p.link || !['http:', 'https:'].includes(url.protocol)) {
+        if (
+            !p.link ||
+            !['http:', 'https:'].includes(url.protocol)
+        ) {
             throw new Error('Invalid project link');
         }
 
@@ -141,7 +155,11 @@
     }
 
     function createCard(p) {
-        if (!p || typeof p !== 'object' || !t(p.titulo)) {
+        if (
+            !p ||
+            typeof p !== 'object' ||
+            !t(p.titulo)
+        ) {
             throw new Error('Invalid project');
         }
 
@@ -162,10 +180,13 @@
             'w-full aspect-[4/3] object-cover'
         );
 
-        if (p.capa) image.src = p.capa;
+        if (p.capa) {
+            image.src = p.capa;
+        }
 
         image.loading = 'lazy';
         image.decoding = 'async';
+
         frame.append(image);
 
         const content = el('div', 'space-y-6');
@@ -205,13 +226,17 @@
             });
         }
 
-        if (p.tipo !== 'pagina' && p.tipo !== 'interno') {
+        if (
+            p.tipo !== 'pagina' &&
+            p.tipo !== 'interno'
+        ) {
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
         }
 
         const label = el('span');
         const arrow = el('span', '', '↗');
+
         arrow.setAttribute('aria-hidden', 'true');
 
         link.append(label, arrow);
@@ -236,22 +261,30 @@
             !('IntersectionObserver' in window) ||
             matchMedia('(prefers-reduced-motion: reduce)').matches
         ) {
-            cards.forEach(card => card.classList.add('active'));
+            cards.forEach(card => {
+                card.classList.add('active');
+            });
+
             return;
         }
 
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.1
-        });
+        const observer = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                threshold: 0.1
+            }
+        );
 
-        cards.forEach(card => observer.observe(card));
+        cards.forEach(card => {
+            observer.observe(card);
+        });
     }
 
     async function load() {
@@ -261,7 +294,10 @@
         setState('loading');
 
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 15000);
+
+        const timeout = setTimeout(() => {
+            controller.abort();
+        }, 15000);
 
         try {
             const response = await fetch('projetos.json', {
@@ -275,33 +311,65 @@
 
             const data = await response.json();
 
-            if (!data || !Array.isArray(data.projetos)) {
+            if (
+                !data ||
+                !Array.isArray(data.projetos)
+            ) {
                 throw new Error('Expected projetos array');
             }
 
             refs = [];
 
-            const slugs = new Set();
+            // Um cadastro inválido não impede os demais de aparecer.
+            const cards = [];
+            const validProjects = [];
 
-            data.projetos.forEach(p => {
-                if (p?.tipo === 'pagina') {
-                    if (slugs.has(p.slug)) {
-                        throw new Error('Duplicate project slug');
-                    }
+            data.projetos.forEach((p, index) => {
+                try {
+                    const card = createCard(p);
 
-                    slugs.add(p.slug);
+                    cards.push(card);
+                    validProjects.push(p);
+                } catch (error) {
+                    console.warn(
+                        'Projeto ignorado na posição ' + (index + 1) + ':',
+                        error
+                    );
                 }
             });
 
-            const cards = data.projetos.map(createCard);
+            if (
+                data.projetos.length &&
+                !cards.length
+            ) {
+                throw new Error('No renderable projects');
+            }
 
-            window.PROJETOS = data.projetos;
+            window.PROJETOS = validProjects;
+
             list.replaceChildren(...cards);
 
-            setState(cards.length ? 'ready' : 'empty');
-            reveal(cards);
+            setState(
+                cards.length ? 'ready' : 'empty'
+            );
 
-            document.dispatchEvent(new Event('projetos:prontos'));
+            // Falhas na animação não devem ocultar os projetos.
+            try {
+                reveal(cards);
+            } catch (error) {
+                cards.forEach(card => {
+                    card.classList.add('active');
+                });
+
+                console.warn(
+                    'Animação indisponível; projetos exibidos sem movimento:',
+                    error
+                );
+            }
+
+            document.dispatchEvent(
+                new Event('projetos:prontos')
+            );
         } catch (error) {
             refs = [];
             window.PROJETOS = [];
@@ -327,19 +395,25 @@
     };
 
     retry?.addEventListener('click', () => {
-        // Keep keyboard focus stable while the retry button becomes hidden.
+        // Mantém o foco acessível ao esconder o botão durante a tentativa.
         if (status) {
             status.tabIndex = -1;
-            status.focus({ preventScroll: true });
+            status.focus({
+                preventScroll: true
+            });
         }
 
         load();
     });
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', load, {
-            once: true
-        });
+        document.addEventListener(
+            'DOMContentLoaded',
+            load,
+            {
+                once: true
+            }
+        );
     } else {
         load();
     }
