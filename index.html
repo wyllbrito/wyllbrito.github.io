@@ -8,7 +8,9 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-CJ2NC0T4LF');
+        // Page views are sent by the CMS navigation tracker, including each project hash.
+        // Also disable Enhanced Measurement's browser-history page views in the GA panel.
+        gtag('config', 'G-CJ2NC0T4LF', { send_page_view: false });
     </script>
     <!-- Microsoft Clarity -->
     <script type="text/javascript">
@@ -1753,6 +1755,80 @@
             adaptGalleries();
         })();
     </script>
+    <script id="cms-navigation-analytics">
+        (() => {
+            const main = document.querySelector('main');
+            if (!main) return;
+            const siteTitle = document.title;
+            let scheduled = false, previousPage = '', previousTags = '';
+
+            function measure() {
+                scheduled = false;
+                const visible = main.querySelector(':scope > [id^="view-"]:not(.hidden)');
+                const url = new URL(location.href);
+                let type = 'portfolio', slug = '', title = siteTitle;
+                if (visible?.id === 'view-dinamica') {
+                    let route;
+                    try { route = decodeURIComponent(location.hash.slice(2)); } catch { return; }
+                    const project = (window.PROJETOS || []).find(p =>
+                        (p.tipo === 'pagina' || p.tipo === 'interno') && (p.slug === route || p.pagina === route));
+                    const heading = visible.querySelector(':scope > header h1');
+                    // Loading, missing projects and JSON failures are not project page views.
+                    if (!project || !heading) return;
+                    type = 'project';
+                    slug = project.slug || project.pagina;
+                    const projectTitle = heading.textContent.trim();
+                    title = projectTitle ? projectTitle + ' | ' + siteTitle : siteTitle;
+                    url.hash = '/' + encodeURIComponent(slug);
+                } else if (visible?.id === 'view-portfolio') {
+                    // An initial deep link must wait for the CMS router to render its page.
+                    if (location.hash && location.hash !== '#/portfolio' && location.hash !== '#') return;
+                    url.hash = '';
+                } else return;
+
+                document.title = title;
+                const page = url.href;
+                const navigation = page !== previousPage;
+                if (navigation) {
+                    const referrer = previousPage || document.referrer;
+                    previousPage = page;
+                    try {
+                        window.gtag?.('event', 'page_view', {
+                            send_to: 'G-CJ2NC0T4LF', page_location: page,
+                            page_title: title, page_referrer: referrer
+                        });
+                    } catch {} // A blocked analytics script must not interfere with the portfolio.
+                }
+                const tags = {
+                    page_type: type, project_slug: slug,
+                    project_title: type === 'project' ? visible.querySelector(':scope > header h1').textContent.trim() : '',
+                    page_path: url.pathname + url.hash, language: currentLang
+                };
+                const serialized = JSON.stringify(tags);
+                if (serialized !== previousTags) {
+                    previousTags = serialized;
+                    for (const [key, value] of Object.entries(tags)) {
+                        try { window.clarity?.('set', key, String(value).slice(0, 255)); } catch {}
+                    }
+                }
+                if (navigation) {
+                    try { window.clarity?.('event', type === 'project' ? 'project_view' : 'portfolio_view'); } catch {}
+                }
+            }
+            function schedule() {
+                if (scheduled) return;
+                scheduled = true;
+                requestAnimationFrame(measure);
+            }
+            window.addEventListener('hashchange', schedule);
+            window.addEventListener('popstate', schedule);
+            document.addEventListener('projetos:prontos', schedule);
+            new MutationObserver(schedule).observe(main, {
+                childList: true, subtree: true, attributes: true, attributeFilter: ['class']
+            });
+            schedule();
+        })();
+    </script>
     <script id="ambient-grid-motion">
         // A decorative 2D mesh with perspective projection. No content or input depends on it.
         (() => {
@@ -1766,6 +1842,7 @@
             const root = document.documentElement;
             const viewer = document.getElementById('project-image-viewer');
             const waves = [];
+            const waveDuration = 2400;
             const target = { x: 0, y: 0, hover: 0, scroll: window.scrollY };
             const current = { x: 0, y: 0, hover: 0, scroll: window.scrollY };
             let width = 0, height = 0, cols = 0, rows = 0, spacing = 28;
@@ -1815,8 +1892,8 @@
             function draw(now) {
                 ctx.clearRect(0, 0, width, height);
                 const phase = -(current.scroll * (fine.matches ? .04 : .015) % spacing);
-                const angleX = current.y * .009;
-                const angleY = current.x * .012;
+                const angleX = current.y * .013;
+                const angleY = current.x * .018;
                 const cosX = Math.cos(angleX), sinX = Math.sin(angleX);
                 const cosY = Math.cos(angleY), sinY = Math.sin(angleY);
                 const focal = Math.max(width, height) * 1.8;
@@ -1825,23 +1902,34 @@
                 for (let i = 0; i < base.length; i += 2) {
                     let bx = base[i], by = base[i + 1] + phase;
                     const dx = bx - cursorX, dy = by - cursorY;
-                    const influence = Math.exp(-(dx * dx + dy * dy) / (2 * 110 * 110)) * current.hover;
-                    // Mouse movement gently lifts the local mesh rather than producing a ripple.
-                    const localLift = influence * 6;
-                    bx += dx / 110 * influence * 1.8;
-                    by += dy / 110 * influence * 1.8;
+                    // Broad, low-frequency undulations affect the entire mesh as the pointer moves.
+                    // They settle with the pointer: there is no continuous animation while idle.
+                    const spread = Math.max(width, height) * .38;
+                    const distanceToPointer = Math.hypot(dx, dy);
+                    const undulation = Math.sin(distanceToPointer / spread * Math.PI * 2 - current.x * 1.8 + current.y) * current.hover;
+                    const crossWave = Math.sin(bx / spread * 3 + by / spread * 1.6 + current.y * 2) * current.hover;
+                    const localLift = undulation * 14;
+                    bx += undulation * 7 + crossWave * 2;
+                    by += crossWave * 6 - undulation * 2;
+                    let rippleX = 0, rippleY = 0;
                     for (const wave of waves) {
-                        const progress = clamp((now - wave.born) / 950, 0, 1);
+                        const progress = clamp((now - wave.born) / waveDuration, 0, 1);
                         const wx = bx - wave.x, wy = by - wave.y;
                         const distance = Math.hypot(wx, wy);
-                        const band = distance - (18 + progress * 360);
-                        const displacement = Math.sin(band / 20) * Math.exp(-(band * band) / (2 * 44 * 44)) *
-                            (1 - progress) ** 2 * wave.amplitude;
+                        const band = distance - progress * wave.reach;
+                        // A broad train of rings crosses the viewport, then smoothly dissipates.
+                        const displacement = Math.sin(band / 28) * Math.exp(-(band * band) / (2 * 145 * 145)) *
+                            Math.sin(Math.PI * progress) ** .7 * wave.amplitude;
                         if (distance > 1) {
-                            bx += wx / distance * displacement;
-                            by += wy / distance * displacement;
+                            rippleX += wx / distance * displacement;
+                            rippleY += wy / distance * displacement;
                         }
                     }
+                    // Repeated clicks cannot accumulate into an excessive displacement.
+                    const rippleSize = Math.hypot(rippleX, rippleY);
+                    const rippleScale = rippleSize > 24 ? 24 / rippleSize : 1;
+                    bx += rippleX * rippleScale;
+                    by += rippleY * rippleScale;
                     const x = bx - width * .5 + current.x * 3;
                     const y = by - height * .5 + current.y * 3;
                     const rotatedY = y * cosX - localLift * sinX;
@@ -1890,7 +1978,7 @@
                     } else current[key] = target[key];
                 }
                 for (let i = waves.length - 1; i >= 0; i--) {
-                    if (now - waves[i].born >= 950) waves.splice(i, 1);
+                    if (now - waves[i].born >= waveDuration) waves.splice(i, 1);
                 }
                 draw(now);
                 if (unsettled || waves.length) wake();
@@ -1925,7 +2013,9 @@
                 // Keyboard activation does not create an animation at arbitrary coordinates.
                 if (!canDraw() || event.button || !event.detail) return;
                 if (waves.length === 3) waves.shift();
-                waves.push({ x: event.clientX, y: event.clientY, born: performance.now(), amplitude: fine.matches ? 2.8 : 1.2 });
+                const x = clamp(event.clientX, 0, width), y = clamp(event.clientY, 0, height);
+                const reach = Math.hypot(Math.max(x, width - x), Math.max(y, height - y)) + 220;
+                waves.push({ x, y, reach, born: performance.now(), amplitude: fine.matches ? 18 : 9 });
                 wake();
             }, { capture: true, passive: true });
             window.addEventListener('scroll', () => { target.scroll = window.scrollY; wake(); }, { passive: true });
