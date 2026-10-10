@@ -23,29 +23,44 @@
     },
     {
       "titulo": {
-        "pt": "E-book e identidade visual: Elaine Marcante",
-        "en": "E-book and visual identity: Elaine Marcante"
+        "pt": "Elaine Marcante",
+        "en": "Elaine Marcante"
       },
       "tag": {
         "pt": "Identidade visual e e-book",
         "en": "Visual identity and e-book"
       },
       "descricao": {
-        "pt": "E-book profissional e identidade visual com logomarca, aplicações e conceitos para uma empreendedora no ramo de árvores de Natal.",
-        "en": "Professional e-book and visual identity including a logo, applications and concepts for an entrepreneur in the Christmas tree business."
+        "pt": "E-book real e identidade visual com logomarca, aplicações e conceitos para uma empreendedora no segmento de árvores de Natal. Projeto acadêmico pela matéria de \"Projeto Empreendedor\", na faculdade de Design. ",
+        "en": "Real e-book and visual identity including a logo, applications and concepts for an entrepreneur in the Christmas tree business. "
       },
       "capa": "https://i.imgur.com/IjAAVc4.jpg",
       "tipo": "interno",
-      "pagina": "elaine"
+      "pagina": "elaine",
+      "slug": "elainemarcante",
+      "info": {
+        "papel": {
+          "pt": "Confecção do e-book junto á cliente, Ideação de logomarca",
+          "en": "E-book production and logomark ideation"
+        },
+        "ano": {
+          "pt": "2026",
+          "en": "2026"
+        },
+        "escopo": {
+          "pt": "Identidade visual e e-book editorial",
+          "en": "Visual identity and editorial e-book"
+        }
+      }
     },
     {
       "titulo": {
-        "pt": "Solace — Projeto de mobiliário",
-        "en": "Solace — Furniture design"
+        "pt": "Solace",
+        "en": "Solace"
       },
       "tag": {
-        "pt": "Soluções em design",
-        "en": "Design solutions"
+        "pt": "Design de Mobiliário",
+        "en": "Furniture Design"
       },
       "descricao": {
         "pt": "Projeto universitário de desenvolvimento de mobiliário com base em briefing, pesquisa, dados ergonômicos e outras metodologias de design.",
@@ -53,12 +68,27 @@
       },
       "capa": "https://i.imgur.com/mbCL4Wy.jpg",
       "tipo": "interno",
-      "pagina": "solace"
+      "pagina": "solace",
+      "slug": "solace",
+      "info": {
+        "papel": {
+          "pt": "Construção do memorial descritivo e pesquisa",
+          "en": "Descriptive report development and research"
+        },
+        "ano": {
+          "pt": "2026",
+          "en": "2026"
+        },
+        "escopo": {
+          "pt": "Design de mobiliário e ergonomia",
+          "en": "Furniture design and ergonomics"
+        }
+      }
     },
     {
       "titulo": {
-        "pt": "Projeto Avança",
-        "en": "Project Avança"
+        "pt": " Avança",
+        "en": "Avança"
       },
       "tag": {
         "pt": "Processo de aprendizagem",
@@ -70,40 +100,52 @@
       },
       "capa": "https://i.imgur.com/yavEprd.jpg",
       "tipo": "interno",
-      "pagina": "avanca"
+      "pagina": "avanca",
+      "slug": "avanca",
+      "info": {
+        "papel": {
+          "pt": "Aprendiz e criador",
+          "en": "Apprentice and creator"
+        },
+        "ano": {
+          "pt": "2022",
+          "en": "2022"
+        },
+        "escopo": {
+          "pt": "Apresentação pessoal e vídeo institucional",
+          "en": "Personal presentation and institutional video"
+        }
+      }
     },
     {
       "titulo": {
-        "pt": "projeto de teste",
-        "en": "test project"
+        "pt": "SKAMBO",
+        "en": "SKAMBO"
       },
       "tag": {
-        "pt": "teste",
-        "en": "test"
+        "pt": "Branding",
+        "en": "Branding"
       },
       "descricao": {
-        "pt": "teste de projeto",
-        "en": "project test"
+        "pt": "Projeto acadêmico de Branding para a matéria honônima. Aplicação de conceitos e desenvolvimento da identidade. ",
+        "en": "Branding academic project for the homonymous course. Application of concepts and identity development.\n"
       },
-      "botao": {
-        "pt": "veja mais",
-        "en": "see full project"
-      },
-      "capa": "images/60e8844e-faed-4c49-954c-1f92fe20ace7.jpg",
+      "capa": "images/SKAMBO BRANDBOOK@2x (1).jpg",
       "tipo": "pagina",
-      "slug": "teste",
+      "pagina": "SKAMBO",
+      "slug": "SKAMBO",
       "info": {
         "papel": {
-          "pt": "fazedor do teste",
-          "en": "test maker"
+          "pt": "Idealizador e criador.",
+          "en": "Ideation and creation"
         },
         "ano": {
           "pt": "2026",
           "en": "2026"
         },
         "escopo": {
-          "pt": "teste ",
-          "en": "test"
+          "pt": "Branding",
+          "en": "Branding"
         }
       },
       "blocos": [
