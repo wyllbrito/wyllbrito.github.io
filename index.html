@@ -384,7 +384,7 @@
             border: 1px solid currentColor; border-radius: .6rem; background: transparent; }
         @media (prefers-reduced-motion: no-preference) {
             @media (hover: hover) and (pointer: fine) {
-                :is(#download-cv, .hero-title-container ~ div button, #project-list a):hover {
+                :is(#download-cv, .hero-title-container ~ div button, #project-list .project-cta):hover {
                     transform: translateY(-2px);
                 }
             }
@@ -392,6 +392,36 @@
         }
         @media (hover: none) {
             .hover-float:hover { transform: none; }
+        }
+        #project-list .project-cta {
+            color: var(--ink); background: transparent;
+            transition: background-color 180ms ease, color 180ms ease,
+                border-color 180ms ease, transform 180ms ease;
+        }
+        #project-list .project-title { transition: color 180ms ease; }
+        #project-list .project-title:hover { color: var(--accent-text); }
+        /* Uniform cover frames; show the complete artwork without cropping. */
+        #project-list .project-cover {
+            position: relative;
+            aspect-ratio: 16 / 9;
+        }
+        #project-list .project-cover img {
+            position: absolute;
+            inset: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            aspect-ratio: auto;
+            object-fit: contain;
+            object-position: center;
+        }
+        #project-list .project-cta:focus-visible {
+            color: #fff; background: #3a8038; border-color: #3a8038;
+        }
+        @media (hover: hover) {
+            #project-list .project-cta:hover {
+                color: #fff; background: #3a8038; border-color: #3a8038;
+            }
         }
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -1806,9 +1836,9 @@
          textos.js lê textos.json e atualiza o dicionário.
          paginas.js monta as páginas dos slugs recebidos em projetos:prontos.
          .pages.yml pertence ao repositório; não é carregado pelo navegador. -->
-    <script src="projetos.js?v=20261010-2"></script>
-    <script src="textos.js"></script>
-    <script src="paginas.js"></script>
+    <script src="projetos.js?v=20261010-links-3"></script>
+    <script src="textos.js?v=20261010-links-3"></script>
+    <script src="paginas.js?v=20261010-links-3"></script>
 
     <script>
         // Ajusta somente o wordmark à largura disponível, mantendo uma única linha.
