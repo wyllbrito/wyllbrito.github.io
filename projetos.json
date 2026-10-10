@@ -5,6 +5,12 @@
         "pt": "Otimizando UX em uma cafeteria to-go",
         "en": "Optimizing UX in a to-go coffee shop"
       },
+      "tag": [
+        {
+          "pt": "Estudo de caso em Experiência do Usuário",
+          "en": "User Experience Case Study"
+        }
+      ],
       "descricao": {
         "pt": "Como utilizei conhecimentos em arquitetura da informação para redesenhar o aplicativo de autoatendimento da cafeteria e reduzir pela metade um fluxo exaustivo de 12 telas, sob a perspectiva de quem atua na linha de frente do café.",
         "en": "How I applied information architecture to redesign a coffee shop self-service app, cutting an exhausting 12-screen flow in half, from the perspective of front-line barista."
@@ -22,6 +28,16 @@
         "pt": "Elaine Marcante",
         "en": "Elaine Marcante"
       },
+      "tag": [
+        {
+          "pt": "Identidade Visual",
+          "en": "Visual Identity,"
+        },
+        {
+          "pt": "Editorial",
+          "en": "Editorial"
+        }
+      ],
       "descricao": {
         "pt": "E-book real e identidade visual com logomarca, aplicações e conceitos para uma empreendedora no segmento de árvores de Natal. Projeto acadêmico pela matéria de \"Projeto Empreendedor\", na faculdade de Design. ",
         "en": "Real e-book and visual identity including a logo, applications and concepts for an entrepreneur in the Christmas tree business. "
@@ -50,6 +66,12 @@
         "pt": "SKAMBO",
         "en": "SKAMBO"
       },
+      "tag": [
+        {
+          "pt": "Branding",
+          "en": "Branding"
+        }
+      ],
       "descricao": {
         "pt": "Projeto acadêmico de Branding para a matéria honônima. Aplicação de conceitos e desenvolvimento da identidade. ",
         "en": "Branding academic project for the homonymous course. Application of concepts and identity development.\n"
@@ -155,6 +177,12 @@
         "pt": "Solace",
         "en": "Solace"
       },
+      "tag": [
+        {
+          "pt": "Design de Produto",
+          "en": "Product Design"
+        }
+      ],
       "descricao": {
         "pt": "Projeto universitário de desenvolvimento de mobiliário com base em briefing, pesquisa, dados ergonômicos e outras metodologias de design.",
         "en": "University furniture design project based on a brief, research, ergonomic data and other design methodologies."
@@ -183,6 +211,12 @@
         "pt": " Avança",
         "en": "Avança"
       },
+      "tag": [
+        {
+          "pt": "Processo de Aprendizagem",
+          "en": "Apprenticeship Proccess"
+        }
+      ],
       "descricao": {
         "pt": "Projeto final de conclusão do curso de aprendizagem da ESPRO. Embora antigo, representa meu primeiro projeto completo como designer e marca o nascimento e o estabelecimento de uma estética pessoal.",
         "en": "Final project for the ESPRO learning course. Although an early project, it represents my first complete project as a designer and marks the beginning and establishment of a personal aesthetic."
