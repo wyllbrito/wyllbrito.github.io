@@ -43,7 +43,7 @@
         "en": "Real e-book and visual identity including a logo, applications and concepts for an entrepreneur in the Christmas tree business. "
       },
       "capa": "https://i.imgur.com/IjAAVc4.jpg",
-      "tipo": "interno",
+      "tipo": "pagina",
       "pagina": "elaine",
       "slug": "elainemarcante",
       "info": {
@@ -59,7 +59,64 @@
           "pt": "Identidade visual e e-book editorial",
           "en": "Visual identity and editorial e-book"
         }
-      }
+      },
+      "blocos": [
+        {
+          "bloco": "galeria",
+          "titulo": {
+            "pt": "E-book — Elaine Marcante",
+            "en": "E-book — Elaine Marcante"
+          },
+          "imagens": [
+            "https://i.imgur.com/IjAAVc4.jpg",
+            "https://i.imgur.com/iuO6sZO.jpg",
+            "https://i.imgur.com/wh7qu0r.jpg",
+            "https://i.imgur.com/alQXJez.jpg",
+            "https://i.imgur.com/jArC4VP.jpg",
+            "https://i.imgur.com/0Wikesi.jpg",
+            "https://i.imgur.com/DZBD6ru.jpg",
+            "https://i.imgur.com/yrMyyet.jpg",
+            "https://i.imgur.com/FftFmJJ.jpg",
+            "https://i.imgur.com/qYaCVno.jpg",
+            "https://i.imgur.com/kXx9E6P.jpg",
+            "https://i.imgur.com/yLAPbJ3.jpg",
+            "https://i.imgur.com/gH7bB4Z.jpg",
+            "https://i.imgur.com/7S2RK4D.jpg",
+            "https://i.imgur.com/WAsdcqO.jpg",
+            "https://i.imgur.com/9ZuBil4.jpg",
+            "https://i.imgur.com/IRF1n50.jpg",
+            "https://i.imgur.com/yPohOdY.jpg",
+            "https://i.imgur.com/Hvq7gVv.jpg",
+            "https://i.imgur.com/jnvNpy5.jpg",
+            "https://i.imgur.com/ADQDlxb.jpg",
+            "https://i.imgur.com/TCBuvB4.jpg",
+            "https://i.imgur.com/hApOFXa.jpg",
+            "https://i.imgur.com/adsX1j5.jpg",
+            "https://i.imgur.com/omVAsqx.jpg",
+            "https://i.imgur.com/Gve66bg.jpg",
+            "https://i.imgur.com/dbORsOR.jpg",
+            "https://i.imgur.com/EsiLo3q.jpg",
+            "https://i.imgur.com/s6BikmN.jpg",
+            "https://i.imgur.com/qFA8MjR.jpg",
+            "https://i.imgur.com/j3MD096.jpg",
+            "https://i.imgur.com/tc5ymTq.jpg",
+            "https://i.imgur.com/E6NpXqI.jpg",
+            "https://i.imgur.com/PJNVlx1.jpg",
+            "https://i.imgur.com/arwVZZI.jpg",
+            "https://i.imgur.com/uPviNmz.jpg",
+            "https://i.imgur.com/j3dlB8k.jpg",
+            "https://i.imgur.com/o9xfz47.jpg"
+          ]
+        },
+        {
+          "bloco": "imagem",
+          "titulo": {
+            "pt": "Apresentação da logomarca",
+            "en": "Logo presentation"
+          },
+          "imagem": "https://i.imgur.com/g6vCW5w.jpg"
+        }
+      ]
     },
     {
       "titulo": {
@@ -188,7 +245,7 @@
         "en": "University furniture design project based on a brief, research, ergonomic data and other design methodologies."
       },
       "capa": "https://i.imgur.com/mbCL4Wy.jpg",
-      "tipo": "interno",
+      "tipo": "pagina",
       "pagina": "solace",
       "slug": "solace",
       "info": {
@@ -204,7 +261,43 @@
           "pt": "Design de mobiliário e ergonomia",
           "en": "Furniture design and ergonomics"
         }
-      }
+      },
+      "blocos": [
+        {
+          "bloco": "imagem",
+          "titulo": {
+            "pt": "Relatório do projeto",
+            "en": "Project report"
+          },
+          "imagem": "https://i.imgur.com/bUrHstq.jpg"
+        },
+        {
+          "bloco": "imagem",
+          "titulo": {
+            "pt": "Memorial descritivo",
+            "en": "Descriptive report"
+          },
+          "imagem": "https://i.imgur.com/z2Vzd4A.jpg"
+        },
+        {
+          "bloco": "galeria",
+          "titulo": {
+            "pt": "Imagens do mobiliário",
+            "en": "Furniture images"
+          },
+          "imagens": [
+            "https://i.imgur.com/LqoBsgV.jpg",
+            "https://i.imgur.com/iLTXTDp.jpg",
+            "https://i.imgur.com/E5wB6FH.jpg",
+            "https://i.imgur.com/CRiBmaW.jpg",
+            "https://i.imgur.com/FaCd3EL.jpg",
+            "https://i.imgur.com/zSXa04E.jpg",
+            "https://i.imgur.com/WltHSm7.jpg",
+            "https://i.imgur.com/LC3sAna.jpg",
+            "https://i.imgur.com/yfGQ6ir.jpg"
+          ]
+        }
+      ]
     },
     {
       "titulo": {
@@ -222,7 +315,7 @@
         "en": "Final project for the ESPRO learning course. Although an early project, it represents my first complete project as a designer and marks the beginning and establishment of a personal aesthetic."
       },
       "capa": "https://i.imgur.com/yavEprd.jpg",
-      "tipo": "interno",
+      "tipo": "pagina",
       "pagina": "avanca",
       "slug": "avanca",
       "info": {
@@ -238,7 +331,18 @@
           "pt": "Apresentação pessoal e vídeo institucional",
           "en": "Personal presentation and institutional video"
         }
-      }
+      },
+      "blocos": [
+        {
+          "bloco": "video",
+          "titulo": {
+            "pt": "Apresentação em vídeo",
+            "en": "Video presentation"
+          },
+          "youtube": "https://www.youtube-nocookie.com/embed/4B6s227A8VI?si=_PQI2nf24O6TveH9"
+        }
+      ],
+      "capa_ajuste": "preencher"
     }
   ]
 }
