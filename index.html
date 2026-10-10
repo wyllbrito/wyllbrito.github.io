@@ -413,7 +413,7 @@
         }
         #project-list .project-title { transition: color 180ms ease; }
         #project-list .project-title:hover { color: var(--accent-text); }
-        /* Uniform cover frames; show the complete artwork without cropping. */
+        /* Uniform frames; individual fit is controlled by Pages CMS. */
         #project-list .project-cover {
             position: relative;
             aspect-ratio: 16 / 9;
@@ -451,9 +451,9 @@
 
         /* One restrained entrance per block, shared with CMS-created cards. */
         main { overflow-x: clip; container-type: inline-size; }
-        /* Image blocks and gallery stages span the viewport; text keeps its reading width. */
-        :is(#view-dinamica, #view-elaine, #view-solace, #view-avanca) > section > div:has(> img),
-        :is(#view-dinamica, #view-elaine, #view-solace, #view-avanca) [id$="-fullscreen-wrapper"]:not(:fullscreen) {
+        /* Mobile stays edge to edge; desktop retains 30% of the original side margins. */
+        #view-dinamica > section > div:has(> img),
+        #view-dinamica [id$="-fullscreen-wrapper"]:not(:fullscreen) {
             width: 100vw;
             max-width: none;
             margin-inline: calc(50% - 50vw);
@@ -462,13 +462,71 @@
             box-shadow: none;
         }
         @supports (width: 100cqw) {
-            :is(#view-dinamica, #view-elaine, #view-solace, #view-avanca) > section > div:has(> img),
-            :is(#view-dinamica, #view-elaine, #view-solace, #view-avanca) [id$="-fullscreen-wrapper"]:not(:fullscreen) {
+            #view-dinamica > section > div:has(> img),
+            #view-dinamica [id$="-fullscreen-wrapper"]:not(:fullscreen) {
                 width: 100cqw;
                 margin-inline: calc(50% - 50cqw);
             }
         }
-        :is(#view-dinamica, #view-elaine, #view-solace, #view-avanca) > section > div:has(> img) > img {
+        @media (min-width: 768px) {
+            #view-dinamica > section > div:has(> img),
+            #view-dinamica [id$="-fullscreen-wrapper"]:not(:fullscreen) {
+                width: calc(70vw + 30%);
+                margin-inline: calc(35% - 35vw);
+            }
+            @supports (width: 100cqw) {
+                #view-dinamica > section > div:has(> img),
+                #view-dinamica [id$="-fullscreen-wrapper"]:not(:fullscreen) {
+                    width: calc(70cqw + 30%);
+                    margin-inline: calc(35% - 35cqw);
+                }
+            }
+        }
+        .gallery-half {
+            position: absolute; inset-block: 0; z-index: 2; width: 50%; padding: 0;
+            border: 0; border-radius: 0; background: transparent; color: inherit;
+            box-shadow: none; transform: none !important;
+        }
+        .gallery-half:hover, .gallery-half:active { background: transparent; box-shadow: none; }
+        .gallery-half:focus-visible { outline: 3px solid #4c7d45; outline-offset: -4px; }
+        .gallery-half-prev {
+            left: 0; cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='16' fill='%23f7f7f2' stroke='%234c7d45'/%3E%3Cpath d='M22 11l-7 7 7 7m-7-7h12' fill='none' stroke='%234c7d45' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 18 18, w-resize;
+        }
+        .gallery-half-next {
+            right: 0; cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='16' fill='%23f7f7f2' stroke='%234c7d45'/%3E%3Cpath d='M14 11l7 7-7 7m7-7H9' fill='none' stroke='%234c7d45' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 18 18, e-resize;
+        }
+        #project-open-viewer { min-width: 44px; min-height: 44px; }
+        #project-open-viewer[hidden] { display: none; }
+        #project-image-viewer {
+            position: fixed; inset: 0; margin: 0; padding: 0; border: 0;
+            width: 100%; height: 100%; max-width: none; max-height: none;
+            background: #fafaf5; color: #22251f; overflow: hidden;
+        }
+        #project-image-viewer[open] { display: flex; flex-direction: column; }
+        #project-image-viewer:fullscreen { width: 100%; height: 100%; }
+        #image-viewer-surface { display: flex; flex-direction: column; width: 100%; height: 100%; min-height: 0; background: inherit; }
+        #image-viewer-surface:fullscreen { background: #fafaf5; color: #22251f; }
+        .dark #image-viewer-surface:fullscreen { background: #0b0d0a; color: #f5f5ef; }
+        #project-image-viewer [hidden] { display: none !important; }
+        #project-image-viewer::backdrop { background: #fafaf5; }
+        .dark #project-image-viewer { background: #0b0d0a; color: #f5f5ef; }
+        .image-viewer-toolbar {
+            display: flex; align-items: center; justify-content: space-between; gap: 16px;
+            padding: 12px max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left));
+            border-bottom: 1px solid #80808040; flex: 0 0 auto;
+        }
+        .image-viewer-toolbar p { font-size: 12px; line-height: 1.6; margin: 0; }
+        #image-viewer-close { width: 44px; height: 44px; flex: 0 0 auto; border-radius: 10px; }
+        #image-viewer-close:hover { color: #4c7d45; background: #4c7d4510; }
+        #image-viewer-scroll { flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; }
+        #image-viewer-scroll:focus-visible { outline: 2px solid #4c7d45; outline-offset: -2px; }
+        #image-viewer-pages { position: relative; width: 100%; }
+        #image-viewer-pages figure { margin: 0; width: 100%; }
+        #image-viewer-pages figure + figure { margin-top: 16px; }
+        #image-viewer-pages img { display: block; width: 100%; height: auto; max-width: 100%; object-fit: contain; }
+        .image-viewer-failure { padding: 32px 20px; text-align: center; }
+        .image-viewer-failure button { display: inline-block; margin-top: 12px; color: #4c7d45; text-decoration: underline; }
+        #view-dinamica > section > div:has(> img) > img {
             display: block;
             width: 100%;
             height: auto;
@@ -582,13 +640,21 @@
                 <button
                     type="button"
                     onclick="switchView('portfolio')"
-                    class="font-sans text-xs tracking-widest font-bold text-neutral-700 dark:text-neutral-300 hover:text-accent dark:hover:text-accent flex items-center gap-2 px-5 py-3 rounded-xl transition-all group/back nav-glow"
+                    aria-label="Voltar ao início do portfólio de Wyll Brito"
+                    data-i18n-aria="home-label"
+                    class="flex items-center gap-2 px-2 py-2 rounded-xl text-neutral-700 dark:text-neutral-300 hover:text-accent dark:hover:text-accent transition-all group/back nav-glow"
                 >
                     <span aria-hidden="true" class="transform group-hover/back:-translate-x-1 transition-transform text-base">←</span>
-                    <span data-i18n="back-btn">Voltar</span>
+                    <span aria-hidden="true" class="wordmark-abbreviation text-2xl tracking-tight">WB</span>
                 </button>
 
                 <div class="flex items-center gap-4">
+                    <button id="project-open-viewer" type="button" hidden
+                        class="flex items-center justify-center gap-2 px-2 py-2 rounded-xl hover:text-accent transition-colors nav-glow"
+                        aria-label="Abrir imagens em tela cheia" data-i18n-aria="viewer-open">
+                        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <span class="hidden sm:inline text-xs font-semibold" data-i18n="viewer-label">Tela cheia</span>
+                    </button>
                     <div class="relative group">
                         <select
                             aria-label="Selecionar idioma"
@@ -969,290 +1035,6 @@
             </section>
         </div>
 
-        <!-- Página do projeto Elaine Marcante -->
-        <div id="view-elaine" class="hidden min-h-screen py-24 px-6 md:px-12 max-w-5xl mx-auto">
-            <header class="mb-16 border-b border-neutral-200/80 dark:border-neutral-800/80 pb-12">
-                <h1 data-i18n="proj2-title" class="text-5xl md:text-7xl font-bold font-display mt-8 mb-6 text-balance">
-                    E-book e identidade visual: Elaine Marcante
-                </h1>
-                <p data-i18n="proj2-desc" class="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl leading-relaxed font-normal">
-                    E-book profissional e identidade visual com logomarca, aplicações e conceitos para uma empreendedora no ramo de árvores de Natal.
-                </p>
-            </header>
-
-            <section class="mb-16 grid grid-cols-1 md:grid-cols-3 gap-8 bg-neutral-100/50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800/80 p-8 rounded-2xl">
-                <div>
-                    <h3 data-i18n="label-role" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Meu papel</h3>
-                    <p data-i18n="elaine-role" class="text-sm md:text-base font-semibold">Confecção do e-book e ideação de logomarca</p>
-                </div>
-
-                <div>
-                    <h3 data-i18n="label-year" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Ano de realização</h3>
-                    <p data-i18n="elaine-year" class="text-sm md:text-base font-semibold">2026</p>
-                </div>
-
-                <div>
-                    <h3 data-i18n="label-scope" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Escopo do projeto</h3>
-                    <p data-i18n="elaine-scope" class="text-sm md:text-base font-semibold">Identidade visual e e-book editorial</p>
-                </div>
-            </section>
-
-            <section class="mb-20 space-y-8">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <h2 data-i18n="elaine-section-ebook" class="text-3xl md:text-4xl font-bold font-display text-balance">
-                        E-book — Elaine Marcante
-                    </h2>
-
-                    <div class="flex items-center gap-4">
-                        <span id="slide-counter" aria-live="polite" class="font-sans text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-                            1 / 38
-                        </span>
-
-                        <button
-                            type="button"
-                            onclick="toggleFullscreen('elaine')"
-                            aria-label="Alternar tela cheia"
-                            data-i18n-aria="fullscreen-label"
-                            class="w-12 h-12 flex items-center justify-center rounded-xl hover:text-accent transition-all bg-transparent nav-glow"
-                        >
-                            <svg aria-hidden="true" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4m-4 0l5 5m11-5V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                <div id="elaine-fullscreen-wrapper" class="relative rounded-3xl overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-2xl bg-transparent">
-                    <div class="aspect-[4/3] md:aspect-[16/10] w-full flex items-center justify-center overflow-hidden relative">
-                        <img
-                            id="elaine-main-slide"
-                            src="https://i.imgur.com/IjAAVc4.jpg"
-                            alt="Imagem 1"
-                            class="w-full h-full object-contain transition-all duration-500"
-                        >
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-between pt-2">
-                    <button
-                        type="button"
-                        data-i18n="slide-prev"
-                        onclick="moveSlide('elaine', -1)"
-                        class="px-6 py-3 border border-neutral-300 dark:border-neutral-800 rounded-xl hover:border-accent hover:text-accent text-xs font-bold tracking-widest transition-all bg-white/50 dark:bg-neutral-900/50 shadow-sm"
-                    >
-                        ← Anterior
-                    </button>
-
-                    <button
-                        type="button"
-                        data-i18n="slide-next"
-                        onclick="moveSlide('elaine', 1)"
-                        class="px-6 py-3 border border-neutral-300 dark:border-neutral-800 rounded-xl hover:border-accent hover:text-accent text-xs font-bold tracking-widest transition-all bg-white/50 dark:bg-neutral-900/50 shadow-sm"
-                    >
-                        Próximo →
-                    </button>
-                </div>
-
-                <div class="space-y-3 pt-6">
-                    <div data-i18n="preview-pages" class="font-sans text-xs tracking-widest text-neutral-500 dark:text-neutral-400 font-semibold">
-                        Pré-visualização das páginas
-                    </div>
-                    <div id="elaine-thumbnails" class="flex gap-3 overflow-x-auto pb-4 pt-1"></div>
-                </div>
-            </section>
-
-            <section class="mb-20 space-y-6">
-                <h2 data-i18n="elaine-section-logo" class="text-3xl md:text-4xl font-bold font-display text-balance">
-                    Apresentação da logomarca
-                </h2>
-
-                <div class="overflow-hidden rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100/50 dark:bg-neutral-900/30 shadow-xl">
-                    <img
-                        src="https://i.imgur.com/g6vCW5w.jpg"
-                        alt="Apresentação da logomarca"
-                        loading="lazy"
-                        class="w-full h-auto object-cover"
-                    >
-                </div>
-            </section>
-        </div>
-
-        <!-- Página do projeto Solace -->
-        <div id="view-solace" class="hidden min-h-screen py-24 px-6 md:px-12 max-w-5xl mx-auto">
-            <header class="mb-16 border-b border-neutral-200/80 dark:border-neutral-800/80 pb-12">
-                <h1 data-i18n="proj3-title" class="text-5xl md:text-7xl font-bold font-display mt-8 mb-6 text-balance">
-                    Solace — Projeto de mobiliário
-                </h1>
-                <p data-i18n="proj3-desc" class="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl leading-relaxed font-normal">
-                    Projeto universitário de desenvolvimento de mobiliário com base em briefing, pesquisa, dados ergonômicos e outras metodologias de design.
-                </p>
-            </header>
-
-            <section class="mb-16 grid grid-cols-1 md:grid-cols-3 gap-8 bg-neutral-100/50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800/80 p-8 rounded-2xl">
-                <div>
-                    <h3 data-i18n="label-role" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Meu papel</h3>
-                    <p data-i18n="solace-role" class="text-sm md:text-base font-semibold">Construção do memorial descritivo e pesquisa</p>
-                </div>
-
-                <div>
-                    <h3 data-i18n="label-year" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Ano de realização</h3>
-                    <p data-i18n="solace-year" class="text-sm md:text-base font-semibold">2026</p>
-                </div>
-
-                <div>
-                    <h3 data-i18n="label-scope" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Escopo do projeto</h3>
-                    <p data-i18n="solace-scope" class="text-sm md:text-base font-semibold">Design de mobiliário e ergonomia</p>
-                </div>
-            </section>
-
-            <section class="mb-20 space-y-6">
-                <h2 data-i18n="solace-section-report" class="text-3xl md:text-4xl font-bold font-display text-balance">
-                    Relatório do projeto
-                </h2>
-
-                <div class="overflow-hidden rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100/50 dark:bg-neutral-900/30 shadow-xl">
-                    <img
-                        src="https://i.imgur.com/bUrHstq.jpg"
-                        alt="Relatório do projeto"
-                        loading="lazy"
-                        class="w-full h-auto object-cover"
-                    >
-                </div>
-            </section>
-
-            <section class="mb-20 space-y-6">
-                <h2 data-i18n="solace-section-memorial" class="text-3xl md:text-4xl font-bold font-display text-balance">
-                    Memorial descritivo
-                </h2>
-
-                <div class="overflow-hidden rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100/50 dark:bg-neutral-900/30 shadow-xl">
-                    <img
-                        src="https://i.imgur.com/z2Vzd4A.jpg"
-                        alt="Memorial descritivo"
-                        loading="lazy"
-                        class="w-full h-auto object-cover"
-                    >
-                </div>
-            </section>
-
-            <section class="mb-20 space-y-8">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <h2 data-i18n="solace-section-images" class="text-3xl md:text-4xl font-bold font-display text-balance">
-                        Imagens do mobiliário
-                    </h2>
-
-                    <div class="flex items-center gap-4">
-                        <span id="solace-counter" aria-live="polite" class="font-sans text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-                            1 / 9
-                        </span>
-
-                        <button
-                            type="button"
-                            onclick="toggleFullscreen('solace')"
-                            aria-label="Alternar tela cheia"
-                            data-i18n-aria="fullscreen-label"
-                            class="w-12 h-12 flex items-center justify-center rounded-xl hover:text-accent transition-all bg-transparent nav-glow"
-                        >
-                            <svg aria-hidden="true" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4m-4 0l5 5m11-5V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                <div id="solace-fullscreen-wrapper" class="relative rounded-3xl overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-2xl bg-transparent">
-                    <div class="aspect-[4/3] md:aspect-[16/10] w-full flex items-center justify-center overflow-hidden relative">
-                        <img
-                            id="solace-main-slide"
-                            src="https://i.imgur.com/LqoBsgV.jpg"
-                            alt="Imagem 1"
-                            class="w-full h-full object-contain transition-all duration-500"
-                        >
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-between pt-2">
-                    <button
-                        type="button"
-                        data-i18n="slide-prev"
-                        onclick="moveSlide('solace', -1)"
-                        class="px-6 py-3 border border-neutral-300 dark:border-neutral-800 rounded-xl hover:border-accent hover:text-accent text-xs font-bold tracking-widest transition-all bg-white/50 dark:bg-neutral-900/50 shadow-sm"
-                    >
-                        ← Anterior
-                    </button>
-
-                    <button
-                        type="button"
-                        data-i18n="slide-next"
-                        onclick="moveSlide('solace', 1)"
-                        class="px-6 py-3 border border-neutral-300 dark:border-neutral-800 rounded-xl hover:border-accent hover:text-accent text-xs font-bold tracking-widest transition-all bg-white/50 dark:bg-neutral-900/50 shadow-sm"
-                    >
-                        Próximo →
-                    </button>
-                </div>
-
-                <div class="space-y-3 pt-6">
-                    <div data-i18n="preview-pages" class="font-sans text-xs tracking-widest text-neutral-500 dark:text-neutral-400 font-semibold">
-                        Pré-visualização das páginas
-                    </div>
-                    <div id="solace-thumbnails" class="flex gap-3 overflow-x-auto pb-4 pt-1"></div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Página do Projeto Avança -->
-        <div id="view-avanca" class="hidden min-h-screen py-24 px-6 md:px-12 max-w-5xl mx-auto">
-            <header class="mb-16 border-b border-neutral-200/80 dark:border-neutral-800/80 pb-12">
-                <span data-i18n="avanca-meta" class="font-sans text-[10px] font-bold tracking-widest bg-neutral-100 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-4 py-2 rounded-full">
-                    Processo de aprendizagem · ESPRO · 2022
-                </span>
-
-                <h1 data-i18n="avanca-title" class="text-5xl md:text-7xl font-bold font-display mt-8 mb-6 text-balance">
-                    Projeto Avança
-                </h1>
-
-                <p data-i18n="avanca-desc" class="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl leading-relaxed font-normal">
-                    Projeto final de conclusão do curso de aprendizagem da ESPRO. Apresentação sobre trajetória pessoal, inspirações, cotidiano na empresa Solistica e reflexões sobre o futuro.
-                </p>
-            </header>
-
-            <section class="mb-16 grid grid-cols-1 md:grid-cols-3 gap-8 bg-neutral-100/50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800/80 p-8 rounded-2xl">
-                <div>
-                    <h3 data-i18n="label-role" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Meu papel</h3>
-                    <p data-i18n="avanca-role" class="text-sm md:text-base font-semibold">Aprendiz e criador</p>
-                </div>
-
-                <div>
-                    <h3 data-i18n="label-year" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Ano de realização</h3>
-                    <p data-i18n="avanca-year" class="text-sm md:text-base font-semibold">2022</p>
-                </div>
-
-                <div>
-                    <h3 data-i18n="label-scope" class="font-sans text-xs tracking-widest font-bold text-accent mb-2">Escopo do projeto</h3>
-                    <p data-i18n="avanca-scope" class="text-sm md:text-base font-semibold">Apresentação pessoal e vídeo institucional</p>
-                </div>
-            </section>
-
-            <section class="mb-20 space-y-6">
-                <h2 data-i18n="avanca-video-title" class="text-3xl md:text-4xl font-bold font-display text-balance">
-                    Apresentação em vídeo
-                </h2>
-
-                <div class="overflow-hidden rounded-2xl bg-neutral-200 dark:border-neutral-900 aspect-video border border-neutral-200/80 dark:border-neutral-800/80 shadow-lg relative">
-                    <iframe
-                        width="560"
-                        height="315"
-                        src="https://www.youtube-nocookie.com/embed/4B6s227A8VI?si=_PQI2nf24O6TveH9"
-                        title="Apresentação do Projeto Avança"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin"
-                        allowfullscreen
-                        loading="lazy"
-                        class="w-full h-full absolute inset-0 border-0"
-                    ></iframe>
-                </div>
-            </section>
-        </div>
     </main>
 
     <!-- Rodapé -->
@@ -1292,18 +1074,10 @@
 
                 "work-title": "Meus projetos",
 
-                "proj2-title": "E-book e identidade visual: Elaine Marcante",
-                "proj2-desc": "E-book profissional e identidade visual com logomarca, aplicações e conceitos para uma empreendedora no ramo de árvores de Natal.",
+
                 "proj-btn-view": "Ver projeto completo →",
 
-                "proj3-title": "Solace — Projeto de mobiliário",
-                "proj3-desc": "Projeto universitário de desenvolvimento de mobiliário com base em briefing, pesquisa, dados ergonômicos e outras metodologias de design.",
-
-
                 "about-label": "Sobre mim",
-
-
-
 
                 "contact-label": "Contato",
 
@@ -1320,19 +1094,6 @@
                 "label-year": "Ano de realização",
                 "label-scope": "Escopo do projeto",
 
-                "elaine-role": "Confecção do e-book e ideação de logomarca",
-                "elaine-year": "2026",
-                "elaine-scope": "Identidade visual e e-book editorial",
-
-                "solace-role": "Construção do memorial descritivo e pesquisa",
-                "solace-year": "2026",
-                "solace-scope": "Design de mobiliário e ergonomia",
-
-                "avanca-meta": "Processo de aprendizagem · ESPRO · 2022",
-                "avanca-title": "Projeto Avança",
-                "avanca-desc": "Projeto final de conclusão do curso de aprendizagem da ESPRO. Apresentação sobre trajetória pessoal, inspirações, cotidiano na empresa Solistica e reflexões sobre o futuro.",
-                "avanca-video-title": "Apresentação em vídeo",
-
                 "info-name-label": "Nome",
 
                 "info-age-label": "Idade",
@@ -1348,16 +1109,7 @@
                 "info-linkedin-label": "LinkedIn",
                 "info-email-label": "E-mail",
 
-                "elaine-section-ebook": "E-book — Elaine Marcante",
-                "elaine-section-logo": "Apresentação da logomarca",
-                "solace-section-report": "Relatório do projeto",
-                "solace-section-memorial": "Memorial descritivo",
-                "solace-section-images": "Imagens do mobiliário",
                 "preview-pages": "Pré-visualização das páginas",
-
-                "avanca-role": "Aprendiz e criador",
-                "avanca-year": "2022",
-                "avanca-scope": "Apresentação pessoal e vídeo institucional",
 
                 "slide-prev": "← Anterior",
                 "slide-next": "Próximo →",
@@ -1392,18 +1144,10 @@
 
                 "work-title": "My projects",
 
-                "proj2-title": "E-book and visual identity: Elaine Marcante",
-                "proj2-desc": "Professional e-book and visual identity including a logo, applications and concepts for an entrepreneur in the Christmas tree business.",
+
                 "proj-btn-view": "View full project →",
 
-                "proj3-title": "Solace — Furniture design",
-                "proj3-desc": "University furniture design project based on a brief, research, ergonomic data and other design methodologies.",
-
-
                 "about-label": "About me",
-
-
-
 
                 "contact-label": "Contact",
 
@@ -1420,19 +1164,6 @@
                 "label-year": "Year of completion",
                 "label-scope": "Project scope",
 
-                "elaine-role": "E-book production and logomark ideation",
-                "elaine-year": "2026",
-                "elaine-scope": "Visual identity and editorial e-book",
-
-                "solace-role": "Descriptive report development and research",
-                "solace-year": "2026",
-                "solace-scope": "Furniture design and ergonomics",
-
-                "avanca-meta": "Learning process · ESPRO · 2022",
-                "avanca-title": "Project Avança",
-                "avanca-desc": "Final project for the ESPRO learning course. Presentation covering personal background, inspirations, daily routine at Solistica and reflections on the future.",
-                "avanca-video-title": "Video presentation",
-
                 "info-name-label": "Name",
 
                 "info-age-label": "Age",
@@ -1448,16 +1179,7 @@
                 "info-linkedin-label": "LinkedIn",
                 "info-email-label": "E-mail",
 
-                "elaine-section-ebook": "E-book — Elaine Marcante",
-                "elaine-section-logo": "Logo presentation",
-                "solace-section-report": "Project report",
-                "solace-section-memorial": "Descriptive report",
-                "solace-section-images": "Furniture images",
                 "preview-pages": "Page preview",
-
-                "avanca-role": "Apprentice and creator",
-                "avanca-year": "2022",
-                "avanca-scope": "Personal presentation and institutional video",
 
                 "slide-prev": "← Previous",
                 "slide-next": "Next →",
@@ -1475,34 +1197,6 @@
         };
 
         let currentLang = 'pt';
-
-        // Páginas do e-book na ordem original.
-        const elaineSlides = [
-            'IjAAVc4', 'iuO6sZO', 'wh7qu0r', 'alQXJez', 'jArC4VP', '0Wikesi', 'DZBD6ru',
-            'yrMyyet', 'FftFmJJ', 'qYaCVno', 'kXx9E6P', 'yLAPbJ3', 'gH7bB4Z', '7S2RK4D',
-            'WAsdcqO', '9ZuBil4', 'IRF1n50', 'yPohOdY', 'Hvq7gVv', 'jnvNpy5', 'ADQDlxb',
-            'TCBuvB4', 'hApOFXa', 'adsX1j5', 'omVAsqx', 'Gve66bg', 'dbORsOR', 'EsiLo3q',
-            's6BikmN', 'qFA8MjR', 'j3MD096', 'tc5ymTq', 'E6NpXqI', 'PJNVlx1', 'arwVZZI',
-            'uPviNmz', 'j3dlB8k', 'o9xfz47'
-        ];
-
-        const solaceSlides = [
-            'LqoBsgV', 'iLTXTDp', 'E5wB6FH', 'CRiBmaW', 'FaCd3EL', 'zSXa04E',
-            'WltHSm7', 'LC3sAna', 'yfGQ6ir'
-        ];
-
-        const sliders = {
-            elaine: {
-                slides: elaineSlides.map(id => `https://i.imgur.com/${id}.jpg`),
-                index: 0,
-                counter: 'slide-counter'
-            },
-            solace: {
-                slides: solaceSlides.map(id => `https://i.imgur.com/${id}.jpg`),
-                index: 0,
-                counter: 'solace-counter'
-            }
-        };
 
         // Abre o aplicativo de e-mail com os dados do formulário.
         function handleContactSubmit(event) {
@@ -1527,130 +1221,6 @@
 
             window.location.href =
                 `mailto:wyllbrito@outlook.com?subject=${subject}&body=${body}`;
-        }
-
-        // Inicializa as miniaturas de uma galeria.
-        function initSlider(project) {
-            const state = sliders[project];
-            const container = document.getElementById(`${project}-thumbnails`);
-
-            container.replaceChildren();
-
-            state.slides.forEach((url, index) => {
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.onclick = () => setSlide(project, index);
-
-                const img = document.createElement('img');
-                img.src = url;
-                img.alt = '';
-                img.loading = 'lazy';
-                img.className = 'w-full h-full object-cover';
-
-                button.appendChild(img);
-                container.appendChild(button);
-            });
-
-            updateSlide(project);
-        }
-
-        function setSlide(project, index) {
-            const state = sliders[project];
-
-            if (
-                !state ||
-                !Number.isInteger(index) ||
-                index < 0 ||
-                index >= state.slides.length
-            ) {
-                return;
-            }
-
-            state.index = index;
-            updateSlide(project, true);
-        }
-
-        function moveSlide(project, direction) {
-            const state = sliders[project];
-
-            if (!state) return;
-
-            setSlide(
-                project,
-                (state.index + direction + state.slides.length) %
-                    state.slides.length
-            );
-        }
-
-        function updateSlide(project, scrollThumbnail = false) {
-            const state = sliders[project];
-            const dictionary = translations[currentLang];
-            const main = document.getElementById(`${project}-main-slide`);
-
-            main.src = state.slides[state.index];
-
-            const titleKey =
-                project === 'elaine'
-                    ? 'elaine-section-ebook'
-                    : 'solace-section-images';
-
-            main.alt =
-                `${dictionary['slide-label']} ${state.index + 1} — ` +
-                dictionary[titleKey];
-
-            document.getElementById(state.counter).textContent =
-                `${state.index + 1} / ${state.slides.length}`;
-
-            const thumbnails =
-                document.getElementById(`${project}-thumbnails`).children;
-
-            Array.from(thumbnails).forEach((button, index) => {
-                const active = index === state.index;
-
-                button.className =
-                    'shrink-0 w-24 h-16 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ' +
-                    (
-                        active
-                            ? 'border-accent scale-105 shadow-md shadow-accent/20'
-                            : 'border-neutral-300 dark:border-neutral-800 opacity-60 hover:opacity-100'
-                    );
-
-                button.setAttribute(
-                    'aria-label',
-                    `${dictionary['thumbnail-label']} ${index + 1}`
-                );
-
-                button.setAttribute('aria-pressed', String(active));
-
-                const viewVisible =
-                    !document.getElementById(`view-${project}`)
-                        .classList.contains('hidden');
-
-                if (active && scrollThumbnail && viewVisible) {
-                    button.scrollIntoView({
-                        behavior: motionBehavior(),
-                        inline: 'nearest',
-                        block: 'nearest'
-                    });
-                }
-            });
-        }
-
-        async function toggleFullscreen(project) {
-            const element =
-                document.getElementById(`${project}-fullscreen-wrapper`);
-
-            try {
-                if (document.fullscreenElement) {
-                    await document.exitFullscreen();
-                } else if (element?.requestFullscreen) {
-                    await element.requestFullscreen();
-                } else {
-                    alert(translations[currentLang]['fullscreen-error']);
-                }
-            } catch {
-                alert(translations[currentLang]['fullscreen-error']);
-            }
         }
 
         // Atualiza todos os textos e sincroniza os seletores de idioma.
@@ -1705,7 +1275,6 @@
                     select.value = lang;
                 });
 
-            Object.keys(sliders).forEach(project => updateSlide(project));
         }
 
         function motionBehavior() {
@@ -1722,8 +1291,12 @@
             });
         }
 
-        // Exibe vistas fixas. paginas.js complementa esta função para as páginas do CMS.
+        // Only the portfolio lives in HTML. paginas.js owns every project route.
         function switchView(view) {
+            if (view !== 'portfolio') {
+                window.location.hash = '#/' + encodeURIComponent(view);
+                return;
+            }
             // Atualiza a URL na barra de endereços
             if (window.location.hash !== `#/${view}`) {
                 window.history.pushState(null, null, `#/${view}`);
@@ -1734,10 +1307,10 @@
                 el.classList.add('hidden');
             });
 
-            // Tenta encontrar a div do projeto solicitado
+            // The only static view is the portfolio.
             const targetView = document.getElementById(`view-${view}`);
 
-            // Se o projeto existir, mostra ele. Se não, volta pro portfólio.
+            // Show the portfolio; project pages are rendered separately by the CMS router.
             if (targetView) {
                 targetView.classList.remove('hidden');
             } else {
@@ -1760,8 +1333,7 @@
 
         // 2. Roteador: Lê a URL (o #) e abre o projeto certo
         function handleHashChange() {
-            // Este roteador cuida apenas das vistas fixas. paginas.js resolve os slugs
-            // do CMS sem a vista dinâmica ser escondida/resetada antes de resolver.
+            // Project slugs and legacy URLs are resolved exclusively by paginas.js.
             const raw = window.location.hash.replace(/^#\/?/, '');
             let route;
             try { route = decodeURIComponent(raw); } catch { return; }
@@ -1769,7 +1341,7 @@
                 switchView('portfolio');
                 return;
             }
-            if (['portfolio', 'elaine', 'solace', 'avanca'].includes(route)) {
+            if (route === 'portfolio') {
                 switchView(route);
             }
         }
@@ -1825,7 +1397,6 @@
                     if (section) navObserver.observe(section);
                 });
             }
-            Object.keys(sliders).forEach(initSlider);
             changeLang(currentLang);
 
             // Lê a URL assim que a página carrega pela primeira vez
@@ -1872,11 +1443,12 @@
          A base acima fornece translations, currentLang, changeLang e switchView.
          projetos.js lê projetos.json e emite projetos:prontos.
          textos.js lê textos.json e atualiza o dicionário.
-         paginas.js monta as páginas dos slugs recebidos em projetos:prontos.
+         paginas.js monta TODAS as páginas de projeto usando somente projetos.json.
+         Não acrescentar textos, imagens ou páginas fixas de projetos neste HTML.
          .pages.yml pertence ao repositório; não é carregado pelo navegador. -->
-    <script src="projetos.js?v=20261010-links-3"></script>
-    <script src="textos.js?v=20261010-links-3"></script>
-    <script src="paginas.js?v=20261010-links-3"></script>
+    <script src="projetos.js?v=20261010-cms-5"></script>
+    <script src="textos.js?v=20261010-cms-5"></script>
+    <script src="paginas.js?v=20261010-cms-5"></script>
 
     <script>
         // Ajusta somente o wordmark à largura disponível, mantendo uma única linha.
@@ -1920,6 +1492,237 @@
                 attributes: true, attributeFilter: ['class']
             });
             schedule();
+        })();
+    </script>
+    <dialog id="project-image-viewer" aria-labelledby="image-viewer-title" aria-describedby="image-viewer-hint">
+        <div id="image-viewer-surface">
+        <div class="image-viewer-toolbar">
+            <div>
+                <h2 id="image-viewer-title" class="sr-only" data-i18n="viewer-title">Imagens do projeto</h2>
+                <p id="image-viewer-hint" role="status" aria-live="polite"></p>
+            </div>
+            <button id="image-viewer-close" type="button" aria-label="Fechar tela cheia" data-i18n-aria="viewer-close">
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin:auto"><path d="m6 6 12 12M6 18 18 6" stroke-linecap="round"/></svg>
+            </button>
+        </div>
+        <div id="image-viewer-scroll" tabindex="0" role="region" aria-label="Imagens do projeto" data-i18n-aria="viewer-title">
+            <div id="image-viewer-pages"></div>
+        </div>
+        </div>
+    </dialog>
+    <script id="project-image-interactions">
+        // Adapts the existing CMS galleries without changing paginas.js or its data.
+        (() => {
+            Object.assign(translations.pt, {
+                'viewer-label': 'Tela cheia', 'viewer-open': 'Abrir imagens em tela cheia',
+                'viewer-title': 'Imagens do projeto', 'viewer-close': 'Fechar tela cheia',
+                'viewer-hint': 'Esc para sair · ↓ / → rolam para baixo · ↑ / ← rolam para cima',
+                'viewer-prev': 'Imagem anterior', 'viewer-next': 'Próxima imagem',
+                'viewer-image-error': 'Não foi possível carregar esta imagem.', 'viewer-retry': 'Tentar novamente'
+            });
+            Object.assign(translations.en, {
+                'viewer-label': 'Full screen', 'viewer-open': 'Open project images in full screen',
+                'viewer-title': 'Project images', 'viewer-close': 'Close full screen',
+                'viewer-hint': 'Esc to exit · ↓ / → scroll down · ↑ / ← scroll up',
+                'viewer-prev': 'Previous image', 'viewer-next': 'Next image',
+                'viewer-image-error': 'This image could not be loaded.', 'viewer-retry': 'Try again'
+            });
+            const main = document.querySelector('main');
+            const dialog = document.getElementById('project-image-viewer');
+            const surface = document.getElementById('image-viewer-surface');
+            const pane = document.getElementById('image-viewer-scroll');
+            const pages = document.getElementById('image-viewer-pages');
+            const openButton = document.getElementById('project-open-viewer');
+            const hint = document.getElementById('image-viewer-hint');
+            const registered = new WeakSet();
+            let opener = null, nativeEntered = false, positioning = false;
+            let savedOverflow = '', selectedFigure = null, initialFraction = 0;
+            const T = key => translations[currentLang][key];
+
+            function activeProject() {
+                return main.querySelector(':scope > [id^="view-"]:not(.hidden):not(#view-portfolio)');
+            }
+            function imageRecords(view) {
+                const records = [];
+                if (!view) return records;
+                view.querySelectorAll(':scope > section').forEach(section => {
+                    const frame = section.querySelector('[id$="-fullscreen-wrapper"]');
+                    if (frame) {
+                        const principal = frame.querySelector('img');
+                        if (!principal?.getAttribute('src')) return;
+                        const thumbs = [...section.querySelectorAll('button img')].filter(img => !frame.contains(img));
+                        const images = thumbs.length ? thumbs : [principal];
+                        images.forEach((image, index) => {
+                            if (!image.getAttribute('src')) return;
+                            records.push({ image, anchor: principal,
+                                alt: image.alt || section.querySelector('h2')?.textContent || T('viewer-title'),
+                                current: image.src === principal.src, index });
+                        });
+                    } else {
+                        section.querySelectorAll(':scope > div > img').forEach(image => {
+                            if (image.getAttribute('src')) records.push({ image, anchor: image, alt: image.alt, current: true });
+                        });
+                    }
+                });
+                return records;
+            }
+            function adaptGalleries() {
+                main.querySelectorAll('[id$="-fullscreen-wrapper"]').forEach(frame => {
+                    if (registered.has(frame)) return;
+                    const nav = frame.nextElementSibling;
+                    const buttons = nav ? [...nav.children].filter(child => child.tagName === 'BUTTON') : [];
+                    const area = frame.querySelector('img')?.parentElement;
+                    if (buttons.length !== 2 || !area) return;
+                    registered.add(frame);
+                    buttons.forEach((button, index) => {
+                        const key = index ? 'viewer-next' : 'viewer-prev';
+                        button.removeAttribute('data-i18n');
+                        button.setAttribute('data-i18n-aria', key);
+                        button.setAttribute('aria-label', T(key));
+                        button.className = 'gallery-half gallery-half-' + (index ? 'next' : 'prev');
+                        button.replaceChildren();
+                        area.appendChild(button); // Preserves the CMS's original click handler and slide state.
+                    });
+                    nav.remove();
+                    const section = frame.closest('section');
+                    const galleryOpen = section.querySelector('button:not(.gallery-half)');
+                    if (galleryOpen && !frame.contains(galleryOpen)) {
+                        galleryOpen.dataset.projectFullscreen = frame.id;
+                    }
+                });
+                openButton.hidden = !imageRecords(activeProject()).length;
+            }
+            function positionInitialImage() {
+                if (positioning && dialog.open && selectedFigure) {
+                    pane.scrollTop = selectedFigure.offsetTop + selectedFigure.offsetHeight * initialFraction;
+                }
+            }
+            function stopPositioning() { positioning = false; }
+            function addViewerImage(record) {
+                const figure = document.createElement('figure');
+                const image = document.createElement('img');
+                image.alt = record.alt || T('viewer-title');
+                image.decoding = 'async';
+                if (record.image.naturalWidth && record.image.naturalHeight) {
+                    image.width = record.image.naturalWidth;
+                    image.height = record.image.naturalHeight;
+                }
+                const failure = document.createElement('div');
+                failure.className = 'image-viewer-failure';
+                failure.hidden = true;
+                const message = document.createElement('p');
+                message.textContent = T('viewer-image-error');
+                message.setAttribute('role', 'alert');
+                const retry = document.createElement('button');
+                retry.type = 'button';
+                retry.textContent = T('viewer-retry');
+                retry.addEventListener('click', () => {
+                    failure.hidden = true;
+                    image.hidden = false;
+                    image.removeAttribute('src');
+                    image.src = record.image.src;
+                });
+                failure.append(message, retry);
+                image.addEventListener('load', positionInitialImage);
+                image.addEventListener('error', () => {
+                    image.hidden = true;
+                    failure.hidden = false;
+                    positionInitialImage();
+                });
+                // Attribute dimensions reserve space; CSS always fits the width and preserves the full height.
+                image.src = record.image.src;
+                figure.append(image, failure);
+                pages.appendChild(figure);
+                return figure;
+            }
+            function openViewer(startFrame, trigger) {
+                if (dialog.open) return;
+                const records = imageRecords(activeProject());
+                if (!records.length) return;
+                let selected = records.find(record => record.current && startFrame?.contains(record.anchor));
+                if (!selected) {
+                    const center = window.innerHeight / 2;
+                    selected = records.filter(record => record.current).sort((a, b) => {
+                        const distance = record => {
+                            const r = record.anchor.getBoundingClientRect();
+                            return center < r.top ? r.top - center : center > r.bottom ? center - r.bottom : 0;
+                        };
+                        return distance(a) - distance(b);
+                    })[0] || records[0];
+                }
+                const rect = selected.anchor.getBoundingClientRect();
+                initialFraction = startFrame || rect.height === 0 ? 0 : Math.max(0, Math.min(1, -rect.top / rect.height));
+                opener = trigger || document.activeElement;
+                nativeEntered = false;
+                positioning = true;
+                pages.replaceChildren();
+                records.forEach(record => {
+                    const figure = addViewerImage(record);
+                    if (record === selected) selectedFigure = figure;
+                });
+                savedOverflow = document.documentElement.style.overflow;
+                document.documentElement.style.overflow = 'hidden';
+                dialog.showModal();
+                pane.focus({ preventScroll: true });
+                hint.textContent = T('viewer-hint');
+                requestAnimationFrame(positionInitialImage);
+                // Keep the edge-to-edge dialog available when native fullscreen is unsupported or denied.
+                if (surface.requestFullscreen) {
+                    try {
+                        Promise.resolve(surface.requestFullscreen()).then(() => {
+                            if (!dialog.open && document.fullscreenElement === surface) {
+                                document.exitFullscreen().catch(() => {});
+                            }
+                        }).catch(() => {});
+                    } catch {}
+                }
+            }
+            function closeViewer() {
+                if (!dialog.open) return;
+                dialog.close();
+                if (document.fullscreenElement === surface && document.exitFullscreen) {
+                    document.exitFullscreen().catch(() => {});
+                }
+            }
+            dialog.addEventListener('close', () => {
+                positioning = false;
+                nativeEntered = false;
+                selectedFigure = null;
+                document.documentElement.style.overflow = savedOverflow;
+                pages.replaceChildren();
+                hint.textContent = '';
+                opener?.focus({ preventScroll: true });
+                opener = null;
+            });
+            dialog.addEventListener('cancel', event => { event.preventDefault(); closeViewer(); });
+            dialog.addEventListener('keydown', event => {
+                if (event.key === 'Escape') { event.preventDefault(); closeViewer(); return; }
+                const direction = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[event.key];
+                if (!direction || event.altKey || event.ctrlKey || event.metaKey) return;
+                event.preventDefault();
+                stopPositioning();
+                pane.scrollBy({ top: direction * Math.max(120, pane.clientHeight * .65), left: 0, behavior: motionBehavior() });
+            });
+            ['wheel', 'touchstart', 'pointerdown'].forEach(name => pane.addEventListener(name, stopPositioning, { passive: true }));
+            document.addEventListener('fullscreenchange', () => {
+                if (document.fullscreenElement === surface) nativeEntered = true;
+                else if (nativeEntered) closeViewer();
+            });
+            document.getElementById('image-viewer-close').addEventListener('click', closeViewer);
+            openButton.addEventListener('click', () => openViewer(null, openButton));
+            // Capture prevents the old CMS fullscreen listener from opening a cropped gallery stage.
+            document.addEventListener('click', event => {
+                const button = event.target.closest?.('[data-project-fullscreen]');
+                if (!button) return;
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                openViewer(document.getElementById(button.dataset.projectFullscreen), button);
+            }, true);
+            window.addEventListener('hashchange', closeViewer);
+            new MutationObserver(records => {
+                if (records.some(record => record.type === 'childList' || record.target.id?.startsWith('view-'))) adaptGalleries();
+            }).observe(main, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+            adaptGalleries();
         })();
     </script>
 </body>
