@@ -306,8 +306,8 @@
         :root { --paper: #f3efe6; --ink: #242622; --accent-text: #306e2d; }
         html.dark { --paper: #000000; --ink: #f0ede5; --accent-text: #85bf7c; }
         /* Papel quadriculado: linhas suaves, sem ruído sobre o preto. */
-        :root { --paper-grid: rgb(70 65 50 / .055); }
-        html.dark { --paper-grid: rgb(255 255 255 / .045); }
+        :root { --paper-grid: rgb(65 72 60 / .12); }
+        html.dark { --paper-grid: rgb(224 239 228 / .10); }
         body {
             isolation: isolate;
             background-color: var(--paper); color: var(--ink);
@@ -318,7 +318,7 @@
         }
         #ambient-grid {
             position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1;
-            pointer-events: none; user-select: none; filter: blur(.45px); opacity: .9;
+            pointer-events: none; user-select: none; filter: blur(.3px); opacity: .9;
         }
         @media (prefers-reduced-motion: no-preference) {
             html.grid-motion-ready body { background-image: none; }
@@ -1830,174 +1830,268 @@
         })();
     </script>
     <script id="ambient-grid-motion">
-        // A decorative 2D mesh with perspective projection. No content or input depends on it.
+        // Decorative elastic mesh: coherent distortion, inertial input and organic click waves.
         (() => {
             const canvas = document.getElementById('ambient-grid');
             let ctx;
             try { ctx = canvas?.getContext('2d'); } catch { return; }
-            if (!ctx) return; // The CSS grid remains available if Canvas is unsupported.
+            if (!ctx) return; // Keep the CSS paper grid when Canvas is unavailable.
 
             const reduced = matchMedia('(prefers-reduced-motion: reduce)');
             const fine = matchMedia('(hover: hover) and (pointer: fine)');
             const root = document.documentElement;
             const viewer = document.getElementById('project-image-viewer');
             const waves = [];
-            const waveDuration = 2400;
+            const waveDuration = 2850;
             const target = { x: 0, y: 0, hover: 0, scroll: window.scrollY };
-            const current = { x: 0, y: 0, hover: 0, scroll: window.scrollY };
+            const current = { ...target };
+            const inputVelocity = { x: 0, y: 0, hover: 0, scroll: 0 };
             let width = 0, height = 0, cols = 0, rows = 0, spacing = 28;
             let base = new Float32Array(0), points = new Float32Array(0);
-            let raf = 0, lastPaint = 0, color = '', paused = false;
-            const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+            let offsets = new Float32Array(0), velocity = new Float32Array(0);
+            let previousRowShift = 0;
+            let raf = 0, lastFrame = null, paused = false, dark = false;
+            let flowPhase = 0, waveSerial = 0, contrast = 0;
+            const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+            const smooth = (a, b, v) => {
+                const t = clamp((v - a) / (b - a), 0, 1);
+                return t * t * (3 - 2 * t);
+            };
 
-            function canDraw() {
-                return !reduced.matches && !document.hidden && !paused;
-            }
+            function canDraw() { return !reduced.matches && !document.hidden && !paused; }
             function stop() {
                 if (raf) cancelAnimationFrame(raf);
                 raf = 0;
-                lastPaint = 0;
+                lastFrame = null;
             }
             function wake() {
                 if (!raf && canDraw()) raf = requestAnimationFrame(frame);
             }
-            function updateColor() {
-                color = root.classList.contains('dark') ? 'rgba(255,255,255,.06)' : 'rgba(70,65,50,.07)';
-            }
+            function updateColor() { dark = root.classList.contains('dark'); }
             function resize() {
-                width = Math.max(1, document.documentElement.clientWidth || window.innerWidth);
-                height = Math.max(1, window.innerHeight);
-                // Bound the backing bitmap and the number of mesh vertices on large monitors.
-                const dpr = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(2400000 / (width * height)));
+                width = Math.max(1, root.clientWidth || innerWidth);
+                height = Math.max(1, innerHeight);
+                const dpr = Math.min(devicePixelRatio || 1, 1.5, Math.sqrt(2400000 / (width * height)));
                 canvas.width = Math.round(width * dpr);
                 canvas.height = Math.round(height * dpr);
                 ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-                spacing = Math.max(28, Math.ceil(Math.max(width / 110, height / 75)));
-                cols = Math.ceil(width / spacing) + 7;
-                rows = Math.ceil(height / spacing) + 7;
+                // Extra offscreen vertices cover even the strongest allowed deformation.
+                spacing = Math.max(28, Math.ceil(Math.max(width / 94, height / 64)));
+                cols = Math.ceil(width / spacing) + 9;
+                rows = Math.ceil(height / spacing) + 9;
                 base = new Float32Array(cols * rows * 2);
                 points = new Float32Array(base.length);
+                offsets = new Float32Array(base.length);
+                velocity = new Float32Array(base.length);
                 for (let row = 0; row < rows; row++) {
                     for (let col = 0; col < cols; col++) {
-                        const i = (row * cols + col) * 2;
-                        base[i] = (col - 3) * spacing;
-                        base[i + 1] = (row - 3) * spacing;
+                        const n = row * cols + col, i = n * 2;
+                        const x = (col - 4) * spacing, y = (row - 4) * spacing;
+                        base[i] = x; base[i + 1] = y;
                     }
                 }
                 waves.length = 0;
-                current.scroll = target.scroll = window.scrollY;
+                current.scroll = target.scroll = scrollY;
+                inputVelocity.scroll = 0;
+                previousRowShift = Math.floor(current.scroll * (fine.matches ? .04 : .015) / spacing);
                 updateColor();
                 wake();
             }
-            function draw(now) {
-                ctx.clearRect(0, 0, width, height);
-                const phase = -(current.scroll * (fine.matches ? .04 : .015) % spacing);
-                const angleX = current.y * .013;
-                const angleY = current.x * .018;
-                const cosX = Math.cos(angleX), sinX = Math.sin(angleX);
-                const cosY = Math.cos(angleY), sinY = Math.sin(angleY);
-                const focal = Math.max(width, height) * 1.8;
+            function followInput(dt) {
+                let unsettled = false;
+                // Exact critically damped springs: consistent response at 60, 120 or variable FPS.
+                for (const key of ['x', 'y', 'hover', 'scroll']) {
+                    const frequency = key === 'hover' ? 14 : key === 'scroll' ? 18 : 26;
+                    const delta = current[key] - target[key];
+                    const v = inputVelocity[key];
+                    const impulse = (v + frequency * delta) * dt;
+                    const decay = Math.exp(-frequency * dt);
+                    const next = target[key] + (delta + impulse) * decay;
+                    const nextVelocity = (v - frequency * impulse) * decay;
+                    const tolerance = key === 'scroll' ? .015 : .00012;
+                    if (Math.abs(next - target[key]) > tolerance || Math.abs(nextVelocity) > tolerance * 20) {
+                        current[key] = next;
+                        inputVelocity[key] = nextVelocity;
+                        unsettled = true;
+                    } else {
+                        current[key] = target[key];
+                        inputVelocity[key] = 0;
+                    }
+                }
+                return unsettled;
+            }
+            function deform(now, dt) {
+                // Keep scroll coordinates continuous; wrapping only happens in offscreen rows.
+                const scrollOffset = current.scroll * (fine.matches ? .04 : .015);
+                const phase = -scrollOffset;
+                const rowShift = Math.floor(scrollOffset / spacing);
+                const rowDelta = rowShift - previousRowShift;
+                if (rowDelta) {
+                    // Recycle offscreen rows while retaining the springs of visible vertices.
+                    const shift = Math.abs(rowDelta) * cols * 2;
+                    for (const field of [offsets, velocity]) {
+                        if (shift >= field.length) field.fill(0);
+                        else if (rowDelta > 0) { field.copyWithin(0, shift); field.fill(0, field.length - shift); }
+                        else { field.copyWithin(shift, 0, field.length - shift); field.fill(0, 0, shift); }
+                    }
+                    previousRowShift = rowShift;
+                }
                 const cursorX = width * (.5 + current.x * .5);
                 const cursorY = height * (.5 + current.y * .5);
+                const spread = Math.max(width, height) * .4;
+                const inputSpeed = Math.hypot(inputVelocity.x, inputVelocity.y);
+                flowPhase += Math.min(inputSpeed, 6) * dt * .65;
+                const strength = current.hover * (15 + Math.min(inputSpeed * 2, 8));
+                const p = flowPhase + current.x * .85 + current.y * .6;
+
+                // A lightly damped spring for each vertex adds inertia to the whole deformation.
+                const frequency = 30, damping = frequency * .84;
+                const oscillation = Math.sqrt(frequency * frequency - damping * damping);
+                const decay = Math.exp(-damping * dt);
+                const sine = Math.sin(oscillation * dt), cosine = Math.cos(oscillation * dt);
+                let unsettled = false;
+                const angleX = current.y * .012, angleY = current.x * .016;
+                const cosX = Math.cos(angleX), sinX = Math.sin(angleX);
+                const cosY = Math.cos(angleY), sinY = Math.sin(angleY);
+                const focal = Math.max(width, height) * 1.9;
+
                 for (let i = 0; i < base.length; i += 2) {
-                    let bx = base[i], by = base[i + 1] + phase;
-                    const dx = bx - cursorX, dy = by - cursorY;
-                    // Broad, low-frequency undulations affect the entire mesh as the pointer moves.
-                    // They settle with the pointer: there is no continuous animation while idle.
-                    const spread = Math.max(width, height) * .38;
-                    const distanceToPointer = Math.hypot(dx, dy);
-                    const undulation = Math.sin(distanceToPointer / spread * Math.PI * 2 - current.x * 1.8 + current.y) * current.hover;
-                    const crossWave = Math.sin(bx / spread * 3 + by / spread * 1.6 + current.y * 2) * current.hover;
-                    const localLift = undulation * 14;
-                    bx += undulation * 7 + crossWave * 2;
-                    by += crossWave * 6 - undulation * 2;
-                    let rippleX = 0, rippleY = 0;
+                    const bx = base[i];
+                    const by = base[i + 1] + rowShift * spacing + phase;
+                    const nx = (bx - width * .5) / spread, ny = (by - height * .5) / spread;
+                    // Coherent variation in screen space stays continuous across recycled rows.
+                    const material = Math.sin(bx / 133 + Math.sin(by / 167)) * .65 +
+                        Math.sin(by / 91 - bx / 207) * .35;
+                    // Two coupled, domain-warped fields break circular and mirror symmetry.
+                    const curlX = (Math.sin(ny * 2.4 + Math.sin(nx * 1.6 + p) * 1.2 + p * .7) +
+                        Math.sin(nx * 3.1 - ny * 1.4 - p * .45) * .4) / 1.4;
+                    const curlY = (Math.sin(nx * 2.2 + Math.sin(ny * 1.8 - p * .8) + p * .45) +
+                        Math.sin(ny * 3.3 + nx * 1.3 + p * .6) * .35) / 1.35;
+                    // Soft horizontal shear gives a restrained glitch character without jumps or flashes.
+                    const band = ny * 4.5 + Math.sin(nx * 1.7 + p * .5) * .7 + p * .6;
+                    const shear = Math.tanh(Math.sin(band) * 2.8) * current.hover * 5.5;
+                    let gx = curlX * strength * (1 + material * .16) + shear;
+                    let gy = curlY * strength * .8;
                     for (const wave of waves) {
                         const progress = clamp((now - wave.born) / waveDuration, 0, 1);
                         const wx = bx - wave.x, wy = by - wave.y;
                         const distance = Math.hypot(wx, wy);
-                        const band = distance - progress * wave.reach;
-                        // A broad train of rings crosses the viewport, then smoothly dissipates.
-                        const displacement = Math.sin(band / 28) * Math.exp(-(band * band) / (2 * 145 * 145)) *
-                            Math.sin(Math.PI * progress) ** .7 * wave.amplitude;
-                        if (distance > 1) {
-                            rippleX += wx / distance * displacement;
-                            rippleY += wy / distance * displacement;
-                        }
+                        if (distance < 1) continue;
+                        const angle = Math.atan2(wy, wx);
+                        const irregularity = 1 + Math.sin(angle * 3 + wave.seed) * .085 +
+                            Math.sin(angle * 5 - wave.seed * .7) * .045;
+                        const warpedDistance = distance * irregularity + material * 24 * smooth(0, 100, distance);
+                        const ring = warpedDistance - progress * wave.reach;
+                        const envelope = Math.exp(-(ring * ring) / (2 * 165 * 165)) *
+                            smooth(0, .07, progress) * (1 - smooth(.58, 1, progress));
+                        const carrier = (Math.sin(ring / 36) +
+                            Math.sin(ring / 19 + Math.sin(angle * 4 + wave.seed) * .6) * .22) / 1.22;
+                        const displacement = carrier * envelope * wave.amplitude * smooth(0, 105, distance);
+                        const twist = Math.sin(angle * 3 + wave.seed + progress * 2) * .32;
+                        gx += (wx / distance - wy / distance * twist) * displacement;
+                        gy += (wy / distance + wx / distance * twist) * displacement;
                     }
-                    // Repeated clicks cannot accumulate into an excessive displacement.
-                    const rippleSize = Math.hypot(rippleX, rippleY);
-                    const rippleScale = rippleSize > 24 ? 24 / rippleSize : 1;
-                    bx += rippleX * rippleScale;
-                    by += rippleY * rippleScale;
-                    const x = bx - width * .5 + current.x * 3;
-                    const y = by - height * .5 + current.y * 3;
-                    const rotatedY = y * cosX - localLift * sinX;
-                    const depth = y * sinX + localLift * cosX;
+                    const magnitude = Math.hypot(gx, gy);
+                    if (magnitude > 46) { gx *= 46 / magnitude; gy *= 46 / magnitude; }
+                    for (let axis = 0; axis < 2; axis++) {
+                        const j = i + axis, goal = axis ? gy : gx;
+                        const displacement = offsets[j] - goal, v = velocity[j];
+                        const next = goal + decay * (displacement * cosine + (v + damping * displacement) / oscillation * sine);
+                        const nextVelocity = decay * (v * cosine - (damping * v + frequency * frequency * displacement) / oscillation * sine);
+                        if (Math.abs(next - goal) > .006 || Math.abs(nextVelocity) > .08) {
+                            offsets[j] = next;
+                            velocity[j] = nextVelocity;
+                            unsettled = true;
+                        } else { offsets[j] = goal; velocity[j] = 0; }
+                    }
+                    const x = bx - width * .5 + offsets[i] + current.x * 3;
+                    const y = by - height * .5 + offsets[i + 1] + current.y * 3;
+                    const lift = offsets[i] * .6 - offsets[i + 1] * .45;
+                    const rotatedY = y * cosX - lift * sinX;
+                    const depth = y * sinX + lift * cosX;
                     const rotatedX = x * cosY + depth * sinY;
                     const z = -x * sinY + depth * cosY;
                     const perspective = focal / (focal - z);
                     points[i] = width * .5 + rotatedX * perspective;
                     points[i + 1] = height * .5 + rotatedY * perspective;
                 }
+
+                return unsettled;
+            }
+            function paint(dt) {
+                ctx.clearRect(0, 0, width, height);
+                // Curves pass through the vertices instead of exposing polygonal corners in the waves.
+                function line(start, stride, count) {
+                    ctx.moveTo(points[start], points[start + 1]);
+                    for (let k = 1; k < count; k++) {
+                        const a = start + (k - 1) * stride, b = a + stride;
+                        const before = k === 1 ? a : a - stride;
+                        const after = k === count - 1 ? b : b + stride;
+                        ctx.bezierCurveTo(
+                            points[a] + (points[b] - points[before]) / 6,
+                            points[a + 1] + (points[b + 1] - points[before + 1]) / 6,
+                            points[b] - (points[after] - points[a]) / 6,
+                            points[b + 1] - (points[after + 1] - points[a + 1]) / 6,
+                            points[b], points[b + 1]
+                        );
+                    }
+                }
                 ctx.beginPath();
-                for (let row = 0; row < rows; row++) {
-                    for (let col = 0; col < cols; col++) {
-                        const i = (row * cols + col) * 2;
-                        if (!col) ctx.moveTo(points[i], points[i + 1]);
-                        else ctx.lineTo(points[i], points[i + 1]);
-                    }
-                }
-                for (let col = 0; col < cols; col++) {
-                    for (let row = 0; row < rows; row++) {
-                        const i = (row * cols + col) * 2;
-                        if (!row) ctx.moveTo(points[i], points[i + 1]);
-                        else ctx.lineTo(points[i], points[i + 1]);
-                    }
-                }
-                ctx.strokeStyle = color;
-                ctx.lineWidth = .85;
+                for (let row = 0; row < rows; row++) line(row * cols * 2, 2, cols);
+                for (let col = 0; col < cols; col++) line(col * 2, cols * 2, rows);
+                const active = Math.max(current.hover * .85, waves.length ? 1 : 0);
+                const nextContrast = active + (contrast - active) * Math.exp(-dt / .2);
+                const unsettled = Math.abs(nextContrast - active) > .001;
+                if (unsettled) contrast = nextContrast;
+                else contrast = active;
+                const alpha = dark ? .145 + contrast * .06 : .165 + contrast * .055;
+                ctx.strokeStyle = dark ? `rgba(224,239,228,${alpha})` : `rgba(65,72,60,${alpha})`;
+                ctx.lineWidth = 1;
                 ctx.stroke();
                 root.classList.add('grid-motion-ready');
+                return unsettled;
             }
             function frame(now) {
                 raf = 0;
                 if (!canDraw()) return;
-                // Draw at most 30 times per second, and stop completely once the mesh settles.
-                if (lastPaint && now - lastPaint < 1000 / 30) { wake(); return; }
-                const dt = lastPaint ? Math.min(64, now - lastPaint) : 33;
-                lastPaint = now;
-                const ease = 1 - Math.exp(-dt / 135);
-                let unsettled = false;
-                for (const key of ['x', 'y', 'hover', 'scroll']) {
-                    const delta = target[key] - current[key];
-                    const threshold = key === 'scroll' ? .08 : .001;
-                    if (Math.abs(delta) > threshold) {
-                        current[key] += delta * ease;
-                        unsettled = true;
-                    } else current[key] = target[key];
+                // Use the display's animation frames; cap elapsed time after interruptions.
+                const dt = lastFrame === null ? 1 / 60 : clamp((now - lastFrame) / 1000, .001, .05);
+                lastFrame = now;
+                // Small simulation steps keep the same inertia on different refresh rates.
+                // Only the final mesh is painted, so intermediate steps add no Canvas work.
+                const steps = Math.max(1, Math.ceil(dt * 120 - .00001));
+                const stepTime = dt / steps;
+                let inputUnsettled = false, meshUnsettled = false;
+                for (let step = 0; step < steps; step++) {
+                    const instant = now - (steps - step - 1) * stepTime * 1000;
+                    inputUnsettled = followInput(stepTime);
+                    for (let i = waves.length - 1; i >= 0; i--) {
+                        if (instant - waves[i].born >= waveDuration) waves.splice(i, 1);
+                    }
+                    meshUnsettled = deform(instant, stepTime);
                 }
-                for (let i = waves.length - 1; i >= 0; i--) {
-                    if (now - waves[i].born >= waveDuration) waves.splice(i, 1);
-                }
-                draw(now);
-                if (unsettled || waves.length) wake();
-                else lastPaint = 0;
+                const contrastUnsettled = paint(dt);
+                if (inputUnsettled || meshUnsettled || contrastUnsettled || waves.length) wake();
+                else lastFrame = null;
             }
             function resetPointer() {
                 target.x = target.y = target.hover = 0;
                 wake();
             }
+            function clearTransient() {
+                waves.length = 0;
+                resetPointer();
+            }
             function updatePause() {
                 paused = Boolean(document.fullscreenElement || viewer?.open);
-                if (paused) stop();
+                if (paused) { clearTransient(); stop(); }
                 else wake();
             }
             function updatePreference() {
                 stop();
                 waves.length = 0;
-                target.x = target.y = target.hover = 0;
-                current.x = current.y = current.hover = 0;
+                for (const key of ['x', 'y', 'hover']) target[key] = current[key] = inputVelocity[key] = 0;
+                flowPhase = contrast = 0;
                 canvas.hidden = reduced.matches;
                 if (reduced.matches) root.classList.remove('grid-motion-ready');
                 else resize();
@@ -2010,32 +2104,31 @@
                 wake();
             }, { passive: true });
             window.addEventListener('click', event => {
-                // Keyboard activation does not create an animation at arbitrary coordinates.
                 if (!canDraw() || event.button || !event.detail) return;
-                if (waves.length === 3) waves.shift();
+                if (waves.length === 4) waves.shift();
                 const x = clamp(event.clientX, 0, width), y = clamp(event.clientY, 0, height);
-                const reach = Math.hypot(Math.max(x, width - x), Math.max(y, height - y)) + 220;
-                waves.push({ x, y, reach, born: performance.now(), amplitude: fine.matches ? 18 : 9 });
+                const reach = Math.hypot(Math.max(x, width - x), Math.max(y, height - y)) * 1.15 + 240;
+                waves.push({ x, y, reach, born: performance.now(), amplitude: fine.matches ? 36 : 19, seed: ++waveSerial * 2.39996 });
                 wake();
             }, { capture: true, passive: true });
-            window.addEventListener('scroll', () => { target.scroll = window.scrollY; wake(); }, { passive: true });
+            window.addEventListener('scroll', () => { target.scroll = scrollY; wake(); }, { passive: true });
             window.addEventListener('resize', resize, { passive: true });
-            document.documentElement.addEventListener('pointerleave', resetPointer, { passive: true });
+            root.addEventListener('pointerleave', resetPointer, { passive: true });
             window.addEventListener('blur', resetPointer);
             document.addEventListener('visibilitychange', () => {
-                if (document.hidden) { waves.length = 0; stop(); }
+                if (document.hidden) { clearTransient(); stop(); }
                 else wake();
             });
             document.addEventListener('fullscreenchange', updatePause);
             if (viewer) new MutationObserver(updatePause).observe(viewer, { attributes: true, attributeFilter: ['open'] });
             new MutationObserver(records => {
                 if (records.some(record => (record.oldValue || '').split(/\s+/).includes('dark') !== root.classList.contains('dark'))) {
-                    updateColor();
-                    wake();
+                    updateColor(); wake();
                 }
             }).observe(root, { attributes: true, attributeFilter: ['class'], attributeOldValue: true });
             reduced.addEventListener('change', updatePreference);
             fine.addEventListener('change', resetPointer);
+            updatePause();
             updatePreference();
         })();
     </script>
