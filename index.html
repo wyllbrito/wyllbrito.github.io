@@ -2,14 +2,24 @@
 <html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wyllams Brito — Product & UX Designer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>wyll brito</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Preferência aplicada antes da primeira pintura. Sem escolha salva, segue o sistema. -->
+    <script>
+        (() => {
+            let saved = null;
+            try { saved = localStorage.getItem('wyll-theme'); } catch {}
+            const dark = saved === 'dark' || (saved !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+            document.documentElement.classList.toggle('dark', dark);
+            document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+        })();
+    </script>
     <!-- Fontes -->
-    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fondamento:ital@0;1&display=swap" rel="stylesheet">
 
     <script>
@@ -18,7 +28,7 @@
             theme: {
                 extend: {
                     colors: {
-                        offwhite: '#FAFAFA',
+                        offwhite: '#F3EFE6',
                         pureblack: '#000000',
                         accent: {
                             DEFAULT: '#49A046',
@@ -28,7 +38,7 @@
                     },
                     fontFamily: {
                         display: ['Fondamento', 'serif'],
-                        sans: ['Satoshi', 'Inter', 'sans-serif']
+                        sans: ['Satoshi', 'sans-serif']
                     }
                 }
             }
@@ -212,7 +222,7 @@
             }
 
             .hero-title-container {
-                font-size: 3.5rem !important;
+                font-size: clamp(2.5rem, 12vw, 3.5rem);
             }
 
             button,
@@ -272,6 +282,71 @@
             *::after {
                 transition-duration: 0s !important;
             }
+        }
+
+        /* Ajustes visuais: famílias sem alterar pesos e itálicos existentes. */
+        :root { --paper: #f3efe6; --ink: #242622; --accent-text: #306e2d; }
+        html.dark { --paper: #000000; --ink: #f0ede5; --accent-text: #85bf7c; }
+        /* Papel quadriculado: linhas suaves, sem ruído sobre o preto. */
+        :root { --paper-grid: rgb(70 65 50 / .055); }
+        html.dark { --paper-grid: rgb(255 255 255 / .045); }
+        body {
+            background-color: var(--paper); color: var(--ink);
+            background-image:
+                linear-gradient(var(--paper-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--paper-grid) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+        body { font-family: 'Satoshi', sans-serif; }
+        body .font-sans, button, a, select, input, textarea { font-family: 'Satoshi', sans-serif; }
+        body :is(h1, h2, h3, h4, h5, h6), body .font-display,
+        body .wordmark-abbreviation, body [data-i18n="marquee"] {
+            font-family: 'Fondamento', serif;
+        }
+        /* A citação preserva sua tipografia e itálico originais. */
+        #quote-banner blockquote { font-family: 'Fondamento', serif; }
+        #quote-banner figcaption { font-family: 'Satoshi', sans-serif; }
+        [data-i18n="marquee"] { text-transform: lowercase; }
+        body .text-accent { color: var(--accent-text); }
+        [data-i18n^="info-"][data-i18n$="-label"] { color: #666960; }
+        .dark [data-i18n^="info-"][data-i18n$="-label"] { color: #b1b4ab; }
+        #work article > * { min-width: 0; }
+        main :is(h1, h2, h3):not(#hero-title-container) {
+            white-space: normal; overflow-wrap: normal; word-break: normal;
+        }
+        #hero-title-container {
+            white-space: nowrap;
+            min-width: 0;
+            font-size: clamp(3rem, 8vw, 8rem);
+        }
+        #hero-title-container > span {
+            display: inline;
+            transform: none !important;
+        }
+        #work [data-i18n$="-tag"] { max-width: 100%; white-space: normal; }
+        #main-nav-links button[aria-current="location"] { color: var(--accent-text); text-decoration: underline; text-underline-offset: 6px; }
+        @media (max-width: 767px) {
+            body { padding-top: 0; padding-bottom: calc(116px + env(safe-area-inset-bottom, 0px)); }
+            html { scroll-padding-bottom: calc(130px + env(safe-area-inset-bottom, 0px)); }
+            section[id] { scroll-margin-top: 1rem; }
+            #main-header nav, #project-header nav {
+                top: auto; bottom: 0; border-bottom: 0; border-top: 1px solid #b9b7ae;
+                background-color: var(--paper);
+                padding-bottom: env(safe-area-inset-bottom, 0px);
+                box-shadow: 0 -4px 18px rgb(0 0 0 / .08);
+            }
+            .dark #main-header nav, .dark #project-header nav { border-top-color: #41443e; }
+            #main-header nav > div {
+                display: grid; grid-template-columns: 1fr auto; height: auto;
+                padding: 4px max(12px, env(safe-area-inset-right)) 4px max(12px, env(safe-area-inset-left));
+            }
+            #main-header .wordmark-abbreviation { justify-self: start; grid-column: 1; grid-row: 1; }
+            #main-header nav > div > div:last-child { grid-column: 2; grid-row: 1; gap: 4px; }
+            #main-nav-links { display: flex; grid-column: 1 / -1; grid-row: 2; justify-content: space-between; gap: 4px; }
+            #main-nav-links button { flex: 1; min-height: 44px; letter-spacing: .015em; padding: 8px 4px; }
+            #project-header nav > div { height: 64px; padding-inline: 12px; }
+            button, select { min-height: 44px; }
+            #hero { min-height: calc(100svh - 116px - env(safe-area-inset-bottom, 0px)); }
         }
     </style>
 </head>
@@ -416,17 +491,17 @@
                 <!-- Letreiro superior -->
                 <div class="relative flex overflow-hidden border-y border-neutral-200 dark:border-neutral-800/80 bg-neutral-100/30 dark:bg-neutral-900/30 py-3.5">
                     <div class="animate-marquee whitespace-nowrap flex items-center min-w-full shrink-0">
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
                     </div>
 
                     <div aria-hidden="true" class="animate-marquee whitespace-nowrap flex items-center min-w-full shrink-0">
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
                     </div>
                 </div>
 
@@ -507,17 +582,17 @@
                 <!-- Letreiro inferior -->
                 <div class="relative flex overflow-hidden border-y border-neutral-200 dark:border-neutral-800/80 bg-neutral-100/30 dark:bg-neutral-900/30 py-3.5">
                     <div class="animate-marquee whitespace-nowrap flex items-center min-w-full shrink-0" style="animation-direction: reverse;">
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
                     </div>
 
                     <div aria-hidden="true" class="animate-marquee whitespace-nowrap flex items-center min-w-full shrink-0" style="animation-direction: reverse;">
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
-                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ Human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
+                        <span data-i18n="marquee" class="font-display text-xs tracking-widest px-8 text-accent">⛤ human-centered designer</span>
                     </div>
                 </div>
             </section>
@@ -530,175 +605,12 @@
                     </h2>
                 </div>
 
-                <div id="project-list" class="space-y-32">
-
-                    <!-- Projeto 1 -->
-                    <article class="border-b border-neutral-200/80 dark:border-neutral-800/80 pb-20 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center group reveal">
-                        <a
-                            href="https://www.figma.com/proto/yNHqX5cQlKm59C2xhXnvaJ/UX-Case-Study"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="block w-full overflow-hidden rounded-2xl bg-neutral-200 dark:bg-neutral-900 aspect-video border border-neutral-200/80 dark:border-neutral-800/80 shadow-md hover-float relative focus:ring-2 focus:ring-accent"
-                        >
-                            <img
-                                src="https://i.imgur.com/tkiP1oM.jpg"
-                                alt="Otimizando UX em uma cafeteria to-go"
-                                loading="lazy"
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                            >
-                        </a>
-
-                        <div class="flex flex-col justify-center min-w-0">
-                            <div data-i18n="proj1-tag" class="font-sans text-[10px] text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full inline-block w-max mb-5 tracking-wider font-semibold bg-neutral-100/60 dark:bg-neutral-900/60">
-                                Estudo de caso de UX
-                            </div>
-
-                            <a
-                                href="https://www.figma.com/proto/yNHqX5cQlKm59C2xhXnvaJ/UX-Case-Study"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="text-left w-full"
-                            >
-                                <h3 data-i18n="proj1-title" class="text-4xl md:text-5xl font-bold font-display mb-6 text-balance hover:text-accent transition-colors w-full">
-                                    Otimizando UX em uma cafeteria to-go
-                                </h3>
-                            </a>
-
-                            <p data-i18n="proj1-desc" class="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed mb-8 font-normal">
-                                Como utilizei conhecimentos em arquitetura da informação para redesenhar o aplicativo de autoatendimento da cafeteria e reduzir pela metade um fluxo exaustivo de 12 telas, sob a perspectiva de quem atua na linha de frente do café.
-                            </p>
-
-                            <a
-                                href="https://www.figma.com/proto/yNHqX5cQlKm59C2xhXnvaJ/UX-Case-Study"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="inline-flex items-center gap-2 text-sm font-bold text-accent hover:text-accent-hover transition-colors duration-200 p-1"
-                            >
-                                <span data-i18n="proj1-btn">Ver protótipo no Figma ↗</span>
-                            </a>
-                        </div>
-                    </article>
-
-                    <!-- Projeto 2 -->
-                    <article class="border-b border-neutral-200/80 dark:border-neutral-800/80 pb-20 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center group reveal">
-                        <button
-                            type="button"
-                            onclick="switchView('elaine')"
-                            class="block w-full overflow-hidden rounded-2xl bg-neutral-200 dark:bg-neutral-900 aspect-video border border-neutral-200/80 dark:border-neutral-800/80 shadow-md hover-float relative focus:ring-2 focus:ring-accent"
-                        >
-                            <img
-                                src="https://i.imgur.com/IjAAVc4.jpg"
-                                alt="E-book e identidade visual: Elaine Marcante"
-                                loading="lazy"
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                            >
-                        </button>
-
-                        <div class="flex flex-col justify-center min-w-0">
-                            <div data-i18n="proj2-tag" class="font-sans text-[10px] text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full inline-block w-max mb-5 tracking-wider font-semibold bg-neutral-100/60 dark:bg-neutral-900/60">
-                                Identidade visual e e-book
-                            </div>
-
-                            <button type="button" onclick="switchView('elaine')" class="text-left w-full">
-                                <h3 data-i18n="proj2-title" class="text-4xl md:text-5xl font-bold font-display mb-6 text-balance hover:text-accent transition-colors w-full">
-                                    E-book e identidade visual: Elaine Marcante
-                                </h3>
-                            </button>
-
-                            <p data-i18n="proj2-desc" class="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed mb-8 font-normal">
-                                E-book profissional e identidade visual com logomarca, aplicações e conceitos para uma empreendedora no ramo de árvores de Natal.
-                            </p>
-
-                            <button
-                                type="button"
-                                onclick="switchView('elaine')"
-                                class="inline-flex items-center gap-2 text-sm font-bold text-accent hover:text-accent-hover transition-colors duration-200 p-1"
-                            >
-                                <span data-i18n="proj-btn-view">Ver projeto completo →</span>
-                            </button>
-                        </div>
-                    </article>
-
-                    <!-- Projeto 3 -->
-                    <article class="border-b border-neutral-200/80 dark:border-neutral-800/80 pb-20 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center group reveal">
-                        <button
-                            type="button"
-                            onclick="switchView('solace')"
-                            class="block w-full overflow-hidden rounded-2xl bg-neutral-200 dark:bg-neutral-900 aspect-video border border-neutral-200/80 dark:border-neutral-800/80 shadow-md hover-float relative focus:ring-2 focus:ring-accent"
-                        >
-                            <img
-                                src="https://i.imgur.com/mbCL4Wy.jpg"
-                                alt="Solace — Projeto de mobiliário"
-                                loading="lazy"
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                            >
-                        </button>
-
-                        <div class="flex flex-col justify-center min-w-0">
-                            <div data-i18n="proj3-tag" class="font-sans text-[10px] text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full inline-block w-max mb-5 tracking-wider font-semibold bg-neutral-100/60 dark:bg-neutral-900/60">
-                                Soluções em design
-                            </div>
-
-                            <button type="button" onclick="switchView('solace')" class="text-left w-full">
-                                <h3 data-i18n="proj3-title" class="text-4xl md:text-5xl font-bold font-display mb-6 text-balance hover:text-accent transition-colors w-full">
-                                    Solace — Projeto de mobiliário
-                                </h3>
-                            </button>
-
-                            <p data-i18n="proj3-desc" class="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed mb-8 font-normal">
-                                Projeto universitário de desenvolvimento de mobiliário com base em briefing, pesquisa, dados ergonômicos e outras metodologias de design.
-                            </p>
-
-                            <button
-                                type="button"
-                                onclick="switchView('solace')"
-                                class="inline-flex items-center gap-2 text-sm font-bold text-accent hover:text-accent-hover transition-colors duration-200 p-1"
-                            >
-                                <span data-i18n="proj-btn-view">Ver projeto completo →</span>
-                            </button>
-                        </div>
-                    </article>
-
-                    <!-- Projeto 4 -->
-                    <article class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center group reveal">
-                        <button
-                            type="button"
-                            onclick="switchView('avanca')"
-                            class="block w-full overflow-hidden rounded-2xl bg-neutral-200 dark:bg-neutral-900 aspect-video border border-neutral-200/80 dark:border-neutral-800/80 shadow-md hover-float relative focus:ring-2 focus:ring-accent"
-                        >
-                            <img
-                                src="https://i.imgur.com/yavEprd.jpg"
-                                alt="Projeto Avança"
-                                loading="lazy"
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                            >
-                        </button>
-
-                        <div class="flex flex-col justify-center min-w-0">
-                            <div data-i18n="proj4-tag" class="font-sans text-[10px] text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full inline-block w-max mb-5 tracking-wider font-semibold bg-neutral-100/60 dark:bg-neutral-900/60">
-                                Processo de aprendizagem
-                            </div>
-
-                            <button type="button" onclick="switchView('avanca')" class="text-left w-full">
-                                <h3 data-i18n="proj4-title" class="text-4xl md:text-5xl font-bold font-display mb-6 text-balance hover:text-accent transition-colors w-full">
-                                    Projeto Avança
-                                </h3>
-                            </button>
-
-                            <p data-i18n="proj4-desc" class="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed mb-8 font-normal">
-                                Projeto final de conclusão do curso de aprendizagem da ESPRO. Embora antigo, representa meu primeiro projeto completo como designer e marca o nascimento e o estabelecimento de uma estética pessoal.
-                            </p>
-
-                            <button
-                                type="button"
-                                onclick="switchView('avanca')"
-                                class="inline-flex items-center gap-2 text-sm font-bold text-accent hover:text-accent-hover transition-colors duration-200 p-1"
-                            >
-                                <span data-i18n="proj-btn-view">Ver projeto completo →</span>
-                            </button>
-                        </div>
-                    </article>
-                </div>
+                <!-- Conteúdo exclusivo de projetos.js, a partir de projetos.json.
+                     Não inserir cards fixos aqui: inclusões, exclusões e ordem vêm do CMS. -->
+                <div id="project-list" class="space-y-32"></div>
+                <noscript>
+                    <p>Ative o JavaScript para visualizar os projetos do portfólio.</p>
+                </noscript>
             </section>
 
             <!-- Sobre mim -->
@@ -1240,23 +1152,13 @@
 
                 "work-title": "Meus projetos",
 
-                "proj1-tag": "Estudo de caso de UX",
-                "proj1-title": "Otimizando UX em uma cafeteria to-go",
-                "proj1-desc": "Como utilizei conhecimentos em arquitetura da informação para redesenhar o aplicativo de autoatendimento da cafeteria e reduzir pela metade um fluxo exaustivo de 12 telas, sob a perspectiva de quem atua na linha de frente do café.",
-                "proj1-btn": "Ver protótipo no Figma ↗",
-
-                "proj2-tag": "Identidade visual e e-book",
                 "proj2-title": "E-book e identidade visual: Elaine Marcante",
                 "proj2-desc": "E-book profissional e identidade visual com logomarca, aplicações e conceitos para uma empreendedora no ramo de árvores de Natal.",
                 "proj-btn-view": "Ver projeto completo →",
 
-                "proj3-tag": "Soluções em design",
                 "proj3-title": "Solace — Projeto de mobiliário",
                 "proj3-desc": "Projeto universitário de desenvolvimento de mobiliário com base em briefing, pesquisa, dados ergonômicos e outras metodologias de design.",
 
-                "proj4-tag": "Processo de aprendizagem",
-                "proj4-title": "Projeto Avança",
-                "proj4-desc": "Projeto final de conclusão do curso de aprendizagem da ESPRO. Embora antigo, representa meu primeiro projeto completo como designer e marca o nascimento e o estabelecimento de uma estética pessoal.",
 
                 "about-label": "Sobre mim",
                 "about-title": 'Design centrado em <span class="text-accent">humanidade, clareza e empatia.</span>',
@@ -1323,7 +1225,7 @@
 
                 "slide-prev": "← Anterior",
                 "slide-next": "Próximo →",
-                "marquee": "⛤ Human-centered designer",
+                "marquee": "⛤ human-centered designer",
 
                 "home-label": "Voltar ao início do portfólio de Wyll Brito",
                 "language-label": "Selecionar idioma",
@@ -1353,23 +1255,13 @@
 
                 "work-title": "My projects",
 
-                "proj1-tag": "UX case study",
-                "proj1-title": "Optimizing UX in a to-go coffee shop",
-                "proj1-desc": "How I applied information architecture to redesign a coffee shop self-service app, cutting an exhausting 12-screen flow in half, from the perspective of front-line staff.",
-                "proj1-btn": "View prototype on Figma ↗",
-
-                "proj2-tag": "Visual identity and e-book",
                 "proj2-title": "E-book and visual identity: Elaine Marcante",
                 "proj2-desc": "Professional e-book and visual identity including a logo, applications and concepts for an entrepreneur in the Christmas tree business.",
                 "proj-btn-view": "View full project →",
 
-                "proj3-tag": "Design solutions",
                 "proj3-title": "Solace — Furniture design",
                 "proj3-desc": "University furniture design project based on a brief, research, ergonomic data and other design methodologies.",
 
-                "proj4-tag": "Learning process",
-                "proj4-title": "Project Avança",
-                "proj4-desc": "Final project for the ESPRO learning course. Although an early project, it represents my first complete project as a designer and marks the beginning and establishment of a personal aesthetic.",
 
                 "about-label": "About me",
                 "about-title": 'Design centered on <span class="text-accent">humanity, clarity and empathy.</span>',
@@ -1436,7 +1328,7 @@
 
                 "slide-prev": "← Previous",
                 "slide-next": "Next →",
-                "marquee": "⛤ Human-centered designer",
+                "marquee": "⛤ human-centered designer",
 
                 "home-label": "Return to the beginning of Wyll Brito’s portfolio",
                 "language-label": "Select language",
@@ -1674,7 +1566,7 @@
             });
         }
 
-        // 1. Nova função dinâmica (funciona para qualquer projeto)
+        // Exibe vistas fixas. paginas.js complementa esta função para as páginas do CMS.
         function switchView(view) {
             // Atualiza a URL na barra de endereços
             if (window.location.hash !== `#/${view}`) {
@@ -1714,32 +1606,76 @@
 
         // 2. Roteador: Lê a URL (o #) e abre o projeto certo
         function handleHashChange() {
-            // Pega o que está na URL, ignorando o # e a /
-            const hash = window.location.hash.replace('#/', '').replace('#', '');
-            
-            if (hash) {
-                switchView(hash);
-            } else {
+            // Este roteador cuida apenas das vistas fixas. paginas.js resolve os slugs
+            // do CMS sem a vista dinâmica ser escondida/resetada antes de resolver.
+            const raw = window.location.hash.replace(/^#\/?/, '');
+            let route;
+            try { route = decodeURIComponent(raw); } catch { return; }
+            if (!route) {
                 switchView('portfolio');
+                return;
+            }
+            if (['portfolio', 'elaine', 'solace', 'avanca'].includes(route)) {
+                switchView(route);
             }
         }
 
         // 3. Fica escutando mudanças na URL
         window.addEventListener('hashchange', handleHashChange);
 
-        function toggleTheme() {
-            const isDark = document.documentElement.classList.toggle('dark');
+        function applyTheme(isDark) {
+            document.documentElement.classList.toggle('dark', isDark);
+            document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
 
             const svg = isDark
                 ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
                 : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
 
             ['theme-icon', 'theme-icon-proj'].forEach(id => {
-                document.getElementById(id).innerHTML = svg;
+                const icon = document.getElementById(id);
+                if (icon) icon.innerHTML = svg;
+            });
+            document.querySelectorAll('[onclick="toggleTheme()"]').forEach(button => {
+                button.setAttribute('aria-pressed', String(isDark));
             });
         }
 
+        function toggleTheme() {
+            const dark = !document.documentElement.classList.contains('dark');
+            try { localStorage.setItem('wyll-theme', dark ? 'dark' : 'light'); } catch {}
+            applyTheme(dark);
+        }
+        matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            let saved = null;
+            try { saved = localStorage.getItem('wyll-theme'); } catch {}
+            if (saved !== 'dark' && saved !== 'light') applyTheme(event.matches);
+        });
+        window.addEventListener('storage', event => {
+            if (event.key === 'wyll-theme' || event.key === null) {
+                const saved = event.newValue;
+                applyTheme(saved === 'dark' || (saved !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches));
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
+            applyTheme(document.documentElement.classList.contains('dark'));
+            // Feedback da seção atual; não depende dos arquivos externos.
+            if ('IntersectionObserver' in window) {
+                const navObserver = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) return;
+                        document.querySelectorAll('#main-nav-links button').forEach(button => {
+                            if (button.getAttribute('onclick') === `scrollToSection('${entry.target.id}')`) {
+                                button.setAttribute('aria-current', 'location');
+                            } else button.removeAttribute('aria-current');
+                        });
+                    });
+                }, { rootMargin: '-10% 0px -55% 0px', threshold: 0 });
+                ['hero', 'work', 'about', 'contact'].forEach(id => {
+                    const section = document.getElementById(id);
+                    if (section) navObserver.observe(section);
+                });
+            }
             Object.keys(sliders).forEach(initSlider);
             changeLang(currentLang);
 
@@ -1767,8 +1703,59 @@
             reveals.forEach(element => observer.observe(element));
         });
     </script>
+    <!-- Integração Pages CMS: scripts clássicos em ordem; não usar async ou type="module".
+         A base acima fornece translations, currentLang, changeLang e switchView.
+         projetos.js lê projetos.json e emite projetos:prontos.
+         textos.js lê textos.json e atualiza o dicionário.
+         paginas.js monta as páginas dos slugs recebidos em projetos:prontos.
+         .pages.yml pertence ao repositório; não é carregado pelo navegador. -->
     <script src="projetos.js"></script>
     <script src="textos.js"></script>
     <script src="paginas.js"></script>
+
+    <script>
+        // Ajusta somente o wordmark à largura disponível, mantendo uma única linha.
+        // Recalcula após fontes carregadas, tradução, mudança de página e resize.
+        (() => {
+            const selector = '#hero-title-container';
+            let pending = false;
+            function fitTitles() {
+                pending = false;
+                document.querySelectorAll(selector).forEach(title => {
+                    if (!title.getClientRects().length || !title.clientWidth) return;
+                    title.style.removeProperty('font-size');
+                    const maximum = parseFloat(getComputedStyle(title).fontSize);
+                    const available = title.clientWidth - 10; // Reserva para a sombra do wordmark.
+                    const range = document.createRange();
+                    range.selectNodeContents(title);
+                    const width = () => range.getBoundingClientRect().width;
+                    if (width() <= available) return;
+                    let low = 1, high = maximum;
+                    for (let step = 0; step < 14; step++) {
+                        const size = (low + high) / 2;
+                        title.style.fontSize = size + 'px';
+                        if (width() <= available - 1) low = size;
+                        else high = size;
+                    }
+                    title.style.fontSize = low.toFixed(3) + 'px';
+                });
+            }
+            function schedule() {
+                if (!pending) { pending = true; requestAnimationFrame(fitTitles); }
+            }
+            window.addEventListener('resize', schedule, { passive: true });
+            window.addEventListener('load', schedule);
+            document.fonts.ready.then(schedule);
+            document.fonts.addEventListener('loadingdone', schedule);
+            new MutationObserver(records => {
+                if (records.some(record => record.type !== 'attributes' ||
+                    record.target.id?.startsWith('view-'))) schedule();
+            }).observe(document.querySelector('main'), {
+                subtree: true, childList: true, characterData: true,
+                attributes: true, attributeFilter: ['class']
+            });
+            schedule();
+        })();
+    </script>
 </body>
 </html>
