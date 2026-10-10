@@ -8,7 +8,10 @@
     capa: 'block w-full overflow-hidden rounded-2xl bg-neutral-200 dark:bg-neutral-900 aspect-video border border-neutral-200/80 dark:border-neutral-800/80 shadow-md hover-float relative focus:ring-2 focus:ring-accent',
     img: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-700',
     texto: 'flex flex-col justify-center min-w-0',
-    tag: 'font-sans text-[10px] text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full inline-block w-max mb-5 tracking-wider font-semibold bg-neutral-100/60 dark:bg-neutral-900/60',
+    // Transformamos a tag em um flex container para agrupar as bolhas
+    tagContainer: 'flex flex-wrap gap-2 mb-5',
+    // Estilo individual de cada bolha (etiqueta)
+    tagPill: 'font-sans text-[10px] text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full inline-block tracking-wider font-semibold bg-neutral-100/60 dark:bg-neutral-900/60',
     link: 'text-left w-full',
     h3: 'text-4xl md:text-5xl font-bold font-display mb-6 text-balance hover:text-accent transition-colors w-full',
     desc: 'text-neutral-600 dark:text-neutral-400 text-base leading-relaxed mb-8 font-normal',
@@ -56,7 +59,7 @@
     capa.appendChild(img);
 
     const texto = el('div', C.texto);
-    const tag = el('div', C.tag);
+    const tagContainer = el('div', C.tagContainer); // Nosso novo contêiner para múltiplas etiquetas
     const link = criarLink(p, C.link);
     const h3 = el('h3', C.h3);
     link.appendChild(h3);
@@ -65,9 +68,11 @@
     const span = el('span');
     botao.appendChild(span);
 
-    texto.append(tag, link, desc, botao);
+    texto.append(tagContainer, link, desc, botao);
     artigo.append(capa, texto);
-    refs.push({ p, img, tag, h3, desc, span });
+    
+    // Agora passamos o tagContainer para atualizar depois, em vez de uma única tag
+    refs.push({ p, img, tagContainer, h3, desc, span });
     return artigo;
   }
 
@@ -75,7 +80,26 @@
     const padrao = translations[currentLang]['proj-btn-view'];
     refs.forEach(r => {
       r.img.alt = t(r.p.titulo);
-      r.tag.textContent = t(r.p.tag);
+      
+      // Limpa as tags antigas
+      r.tagContainer.innerHTML = '';
+      
+      // Pega o campo tag. Como agora é list: true, pode ser um Array de objetos ou não.
+      // Se for vazio ou indefinido, criamos um array vazio.
+      let etiquetasBrutas = r.p.tag || [];
+      // Garante que é sempre um Array
+      if (!Array.isArray(etiquetasBrutas)) etiquetasBrutas = [etiquetasBrutas];
+      
+      // Para cada item, traduz e cria uma bolinha
+      etiquetasBrutas.forEach(etiqueta => {
+         const textoEtiqueta = t(etiqueta);
+         if(textoEtiqueta) {
+             const span = el('span', C.tagPill);
+             span.textContent = textoEtiqueta;
+             r.tagContainer.appendChild(span);
+         }
+      });
+
       r.h3.textContent = t(r.p.titulo);
       r.desc.textContent = t(r.p.descricao);
       r.span.textContent = t(r.p.botao) || padrao;
