@@ -394,9 +394,22 @@
             .hover-float:hover { transform: none; }
         }
         #project-list .project-cta {
-            color: var(--ink); background: transparent;
-            transition: background-color 180ms ease, color 180ms ease,
-                border-color 180ms ease, transform 180ms ease;
+            color: var(--accent-text);
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+            padding: .5rem 0;
+            box-shadow: none;
+            font-family: 'Fondamento', serif;
+            font-size: 1.125rem;
+            font-weight: 400;
+            font-style: italic;
+            letter-spacing: .01em;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 5px;
+            transition: color 180ms ease, text-decoration-thickness 180ms ease,
+                transform 180ms ease;
         }
         #project-list .project-title { transition: color 180ms ease; }
         #project-list .project-title:hover { color: var(--accent-text); }
@@ -416,11 +429,13 @@
             object-position: center;
         }
         #project-list .project-cta:focus-visible {
-            color: #fff; background: #3a8038; border-color: #3a8038;
+            color: var(--accent-text); background: transparent;
+            text-decoration-thickness: 2px;
         }
         @media (hover: hover) {
             #project-list .project-cta:hover {
-                color: #fff; background: #3a8038; border-color: #3a8038;
+                color: var(--accent-text); background: transparent;
+                text-decoration-thickness: 2px;
             }
         }
         @media (prefers-reduced-motion: reduce) {
@@ -435,7 +450,30 @@
         }
 
         /* One restrained entrance per block, shared with CMS-created cards. */
-        main { overflow-x: clip; }
+        main { overflow-x: clip; container-type: inline-size; }
+        /* Image blocks and gallery stages span the viewport; text keeps its reading width. */
+        :is(#view-dinamica, #view-elaine, #view-solace, #view-avanca) > section > div:has(> img),
+        :is(#view-dinamica, #view-elaine, #view-solace, #view-avanca) [id$="-fullscreen-wrapper"]:not(:fullscreen) {
+            width: 100vw;
+            max-width: none;
+            margin-inline: calc(50% - 50vw);
+            border-radius: 0;
+            border-inline: 0;
+            box-shadow: none;
+        }
+        @supports (width: 100cqw) {
+            :is(#view-dinamica, #view-elaine, #view-solace, #view-avanca) > section > div:has(> img),
+            :is(#view-dinamica, #view-elaine, #view-solace, #view-avanca) [id$="-fullscreen-wrapper"]:not(:fullscreen) {
+                width: 100cqw;
+                margin-inline: calc(50% - 50cqw);
+            }
+        }
+        :is(#view-dinamica, #view-elaine, #view-solace, #view-avanca) > section > div:has(> img) > img {
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
         #project-list > article.reveal { --reveal-x: -28px; --reveal-y: 0px; }
         #project-list > article.reveal:nth-child(even) { --reveal-x: 28px; }
         #quote-banner.reveal { --reveal-x: -24px; --reveal-y: 0px; }
