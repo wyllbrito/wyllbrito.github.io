@@ -1,17 +1,35 @@
 {
   "hero": {
-    "tag": { "pt": "UX Designer — 2026", "en": "UX Designer — 2026" },
+    "tag": {
+      "pt": "UX Designer — 2026",
+      "en": "UX Designer — 2026"
+    },
     "descricao": {
       "pt": "Estudante de design de produto com paixão por UX, solucionando problemas reais e transformando estruturas complexas em experiências intuitivas e, acima de tudo, humanas.",
       "en": "Product design student passionate about UX, solving real-world problems and turning complex structures into intuitive and, above all, human experiences."
     },
-    "atualmente": { "pt": "UX Designer", "en": "UX Designer" },
-    "base": { "pt": "Curitiba, PR — Brasil", "en": "Curitiba, PR — Brazil" },
-    "disponibilidade": { "pt": "Disponível para projetos", "en": "Available for projects" }
+    "atualmente": {
+      "pt": "UX Designer",
+      "en": "UX Designer"
+    },
+    "base": {
+      "pt": "Curitiba, PR — Brasil",
+      "en": "Curitiba, PR — Brazil"
+    },
+    "disponibilidade": {
+      "pt": "Online",
+      "en": "Online"
+    }
   },
   "sobre": {
-    "titulo_inicio": { "pt": "Design centrado em", "en": "Design centered on" },
-    "titulo_destaque": { "pt": "humanidade, clareza e empatia.", "en": "humanity, clarity and empathy." },
+    "titulo_inicio": {
+      "pt": "Design centrado em",
+      "en": "Design centered on"
+    },
+    "titulo_destaque": {
+      "pt": "humanidade, clareza e empatia.",
+      "en": "humanity, clarity and empathy."
+    },
     "paragrafo1": {
       "pt": "Fazer design é cuidar do outro. Ao fazer design, a estética transcende a decoração e se torna uma ferramenta de clareza guiada pela empatia. Minha filosofia como designer é garantir que a tecnologia resolva problemas reais, transformando estruturas complexas em experiências intuitivas, funcionais e, acima de tudo, humanas.",
       "en": "Designing is caring for others. In design, aesthetics transcends decoration and becomes a tool for clarity guided by empathy. My philosophy as a designer is to ensure that technology solves real problems, transforming complex structures into intuitive, functional and, above all, human experiences."
@@ -34,21 +52,54 @@
     }
   },
   "ficha": {
-    "nome": { "pt": "Wyllams (Wyll) Brito", "en": "Wyllams (Wyll) Brito" },
-    "idade": { "pt": "24 anos", "en": "24 years old" },
-    "local": { "pt": "Curitiba, PR", "en": "Curitiba, PR" },
-    "idiomas": { "pt": "Português do Brasil / Inglês", "en": "Brazilian Portuguese / English" },
-    "nacionalidade": { "pt": "Brasileiro", "en": "Brazilian" },
+    "nome": {
+      "pt": "Wyllams (Wyll) Brito",
+      "en": "Wyllams (Wyll) Brito"
+    },
+    "idade": {
+      "pt": "24 anos",
+      "en": "24 years old"
+    },
+    "local": {
+      "pt": "Curitiba, PR",
+      "en": "Curitiba, PR"
+    },
+    "idiomas": {
+      "pt": "Português do Brasil / Inglês",
+      "en": "Brazilian Portuguese / English"
+    },
+    "nacionalidade": {
+      "pt": "Brasileiro",
+      "en": "Brazilian"
+    },
     "formacao": {
-      "curso": { "pt": "Design", "en": "Design" },
-      "detalhe": { "pt": "Universidade Positivo — Cursando, 2025–2028", "en": "Universidade Positivo — Enrolled, 2025–2028" },
-      "certificado": { "pt": "Google UX Design Certificate", "en": "Google UX Design Certificate" }
+      "curso": {
+        "pt": "Design",
+        "en": "Design"
+      },
+      "detalhe": {
+        "pt": "Universidade Positivo — Cursando, 2025–2028",
+        "en": "Universidade Positivo — Enrolled, 2025–2028"
+      },
+      "certificado": {
+        "pt": "Google UX Design Certificate",
+        "en": "Google UX Design Certificate"
+      }
     }
   },
   "contato": {
-    "titulo_inicio": { "pt": "Vamos criar", "en": "Let's create" },
-    "titulo_destaque": { "pt": "(ou aprimorar)", "en": "(or enhance)" },
-    "titulo_fim": { "pt": "algo juntos?", "en": "something together?" },
+    "titulo_inicio": {
+      "pt": "Vamos criar",
+      "en": "Let's create"
+    },
+    "titulo_destaque": {
+      "pt": "(ou aprimorar)",
+      "en": "(or enhance)"
+    },
+    "titulo_fim": {
+      "pt": "algo juntos?",
+      "en": "something together?"
+    },
     "descricao": {
       "pt": "Envie uma mensagem para discutir projetos, parcerias, oportunidades ou só para bater papo sobre design. :)",
       "en": "Send a message to discuss projects, partnerships, opportunities or just to chat about design. :)"
