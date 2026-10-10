@@ -42,20 +42,26 @@ content:
           - name: capa
             label: Capa
             type: image
+          - name: capa_ajuste
+            label: Enquadramento da capa (inteira preserva a arte; preencher ocupa toda a moldura com recorte)
+            type: select
+            default: inteira
+            options:
+              values: [inteira, preencher]
           - name: tipo
-            label: Tipo (externo abre um link, pagina abre uma página por blocos, interno é das páginas antigas)
+            label: Tipo (externo abre um link; pagina usa somente os dados e blocos do CMS)
             type: select
             default: externo
             options:
-              values: [externo, pagina, interno]
+              values: [externo, pagina]
           - name: link
             label: Link (para projetos do tipo externo)
             type: string
           - name: pagina
-            label: Página interna (só para elaine, solace ou avanca)
+            label: Endereço anterior (opcional, para manter links antigos)
             type: string
           - name: slug
-            label: Endereço da página (só letras minúsculas, números e hífen; para o tipo pagina)
+            label: Endereço da página (preserve maiúsculas e minúsculas; sem espaços)
             type: string
           - name: info
             label: Papel, ano e escopo (para o tipo pagina)
