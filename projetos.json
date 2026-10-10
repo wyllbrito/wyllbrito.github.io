@@ -55,6 +55,71 @@
     },
     {
       "titulo": {
+        "pt": "SKAMBO",
+        "en": "SKAMBO"
+      },
+      "tag": {
+        "pt": "Branding",
+        "en": "Branding"
+      },
+      "descricao": {
+        "pt": "Projeto acadêmico de Branding para a matéria honônima. Aplicação de conceitos e desenvolvimento da identidade. ",
+        "en": "Branding academic project for the homonymous course. Application of concepts and identity development.\n"
+      },
+      "capa": "images/SKAMBO BRANDBOOK@2x (1).jpg",
+      "tipo": "pagina",
+      "pagina": "SKAMBO",
+      "slug": "SKAMBO",
+      "info": {
+        "papel": {
+          "pt": "Idealizador e criador",
+          "en": "Ideation and creation"
+        },
+        "ano": {
+          "pt": "2026",
+          "en": "2026"
+        },
+        "escopo": {
+          "pt": "Branding",
+          "en": "Branding"
+        }
+      },
+      "blocos": [
+        {
+          "bloco": "imagem",
+          "imagem": "public/images/SKAMBO BRANDBOOK@2x (2).jpg",
+          "alt": {
+            "pt": "Todo o conteúdo foi feito por mim, com ajuda de IA generativa apenas na etapa de aplicações. ",
+            "en": "Everything made by me, mockups made collaboratively with generative AI."
+          }
+        },
+        {
+          "bloco": "texto",
+          "titulo": {
+            "pt": "disclaimer",
+            "en": "disclaimer"
+          },
+          "texto": {
+            "pt": "Todo o conteúdo foi feito por mim, com ajuda de IA generativa apenas na etapa de aplicações. ",
+            "en": "Everything made by me, mockups made collaboratively with generative AI."
+          }
+        },
+        {
+          "bloco": "galeria",
+          "titulo": {
+            "pt": "Análise de similares",
+            "en": "Analysis of similar"
+          },
+          "imagens": [
+            "public/images/similares-2_page-0001.jpg",
+            "public/images/similares-1_page-0001.jpg",
+            "public/images/similares_page-0001.jpg"
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": {
         "pt": "Solace",
         "en": "Solace"
       },
@@ -116,71 +181,6 @@
           "en": "Personal presentation and institutional video"
         }
       }
-    },
-    {
-      "titulo": {
-        "pt": "SKAMBO",
-        "en": "SKAMBO"
-      },
-      "tag": {
-        "pt": "Branding",
-        "en": "Branding"
-      },
-      "descricao": {
-        "pt": "Projeto acadêmico de Branding para a matéria honônima. Aplicação de conceitos e desenvolvimento da identidade. ",
-        "en": "Branding academic project for the homonymous course. Application of concepts and identity development.\n"
-      },
-      "capa": "images/SKAMBO BRANDBOOK@2x (1).jpg",
-      "tipo": "pagina",
-      "pagina": "SKAMBO",
-      "slug": "SKAMBO",
-      "info": {
-        "papel": {
-          "pt": "Idealizador e criador.",
-          "en": "Ideation and creation"
-        },
-        "ano": {
-          "pt": "2026",
-          "en": "2026"
-        },
-        "escopo": {
-          "pt": "Branding",
-          "en": "Branding"
-        }
-      },
-      "blocos": [
-        {
-          "bloco": "imagem",
-          "imagem": "public/images/SKAMBO BRANDBOOK@2x (2).jpg",
-          "alt": {
-            "pt": "Todo o conteúdo foi feito por mim, com ajuda de IA generativa apenas na etapa de aplicações. ",
-            "en": "Everything made by me, mockups made collaboratively with generative AI."
-          }
-        },
-        {
-          "bloco": "texto",
-          "titulo": {
-            "pt": "disclaimer",
-            "en": "disclaimer"
-          },
-          "texto": {
-            "pt": "Todo o conteúdo foi feito por mim, com ajuda de IA generativa apenas na etapa de aplicações. ",
-            "en": "Everything made by me, mockups made collaboratively with generative AI."
-          }
-        },
-        {
-          "bloco": "galeria",
-          "titulo": {
-            "pt": "Análise de similares",
-            "en": "Analysis of similar"
-          },
-          "imagens": [
-            "public/images/similares-2_page-0001.jpg",
-            "public/images/similares-1_page-0001.jpg",
-            "public/images/similares_page-0001.jpg"
-          ]
-        }
-      ]
     }
   ]
 }
