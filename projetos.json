@@ -151,46 +151,34 @@
       "blocos": [
         {
           "bloco": "imagem",
-          "titulo": {
-            "pt": "imagem",
-            "en": "images"
-          },
-          "imagem": "images/930131316.jpg",
+          "imagem": "public/images/SKAMBO BRANDBOOK@2x (2).jpg",
           "alt": {
-            "pt": "alexa",
-            "en": "alex"
+            "pt": "Todo o conteúdo foi feito por mim, com ajuda de IA generativa apenas na etapa de aplicações. ",
+            "en": "Everything made by me, mockups made collaboratively with generative AI."
+          }
+        },
+        {
+          "bloco": "texto",
+          "titulo": {
+            "pt": "disclaimer",
+            "en": "disclaimer"
+          },
+          "texto": {
+            "pt": "Todo o conteúdo foi feito por mim, com ajuda de IA generativa apenas na etapa de aplicações. ",
+            "en": "Everything made by me, mockups made collaboratively with generative AI."
           }
         },
         {
           "bloco": "galeria",
           "titulo": {
-            "pt": "galeria",
-            "en": "galery"
+            "pt": "Análise de similares",
+            "en": "Analysis of similar"
           },
           "imagens": [
-            "images/IMG-20260915-WA0022.jpg",
-            "images/IMG-20260915-WA0019.jpg",
-            "images/IMG-20260915-WA0018.jpg"
+            "public/images/similares-2_page-0001.jpg",
+            "public/images/similares-1_page-0001.jpg",
+            "public/images/similares_page-0001.jpg"
           ]
-        },
-        {
-          "bloco": "video",
-          "titulo": {
-            "pt": "teste video",
-            "en": "video test"
-          },
-          "youtube": "https://youtu.be/UVsZzJ9dFNA?si=0qBhaEthTRmkjM4E"
-        },
-        {
-          "bloco": "texto",
-          "titulo": {
-            "pt": "texto teste",
-            "en": "text test"
-          },
-          "texto": {
-            "pt": "texto teste para testar o texto do teste\n\nteste? teste o texto.",
-            "en": "test text to test test text\n\ntest? test the text."
-          }
         }
       ]
     }
