@@ -1,16 +1,21 @@
-// Monta páginas de projeto a partir dos blocos definidos em projetos.json (tipo "pagina").
-// Cada projeto ganha um endereço próprio: seusite/#/slug
+// Every project page uses only the current data and blocks from projetos.json.
+// No fixed pages, media lists, descriptions or project-specific defaults.
 (function () {
   let projetos = [];
   let atual = null;
+  let carregado = false;
+  let falhou = false;
   const estado = {}; // guarda qual imagem de cada galeria está aberta
-  const vistasAntigas = ['portfolio', 'elaine', 'solace', 'avanca'];
 
   const H2 = 'text-3xl md:text-4xl font-bold font-display text-balance';
   const MOLDURA = 'overflow-hidden rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100/50 dark:bg-neutral-900/30 shadow-xl';
   const BTN = 'px-6 py-3 border border-neutral-300 dark:border-neutral-800 rounded-xl hover:border-accent hover:text-accent text-xs font-bold tracking-widest transition-all bg-white/50 dark:bg-neutral-900/50 shadow-sm';
 
-  const t = c => (c ? (c[currentLang] || c.pt || '') : '');
+  const t = c => typeof c === 'string' ? c : (c ? (c[currentLang] || c.pt || '') : '');
+  const mensagens = {
+    pt: { ausente: 'Projeto não encontrado.', erro: 'Não foi possível carregar este projeto.', repetir: 'Tentar novamente', bloco: 'Não foi possível exibir este bloco.' },
+    en: { ausente: 'Project not found.', erro: 'This project could not be loaded.', repetir: 'Try again', bloco: 'This block could not be displayed.' }
+  };
   const el = (tag, cls, txt) => {
     const e = document.createElement(tag);
     if (cls) e.className = cls;
@@ -29,6 +34,7 @@
   }
 
   function blocoImagem(b) {
+    if (typeof b.imagem !== 'string' || !b.imagem) return null;
     const s = secao(b);
     const m = el('div', MOLDURA);
     const img = el('img', 'w-full h-auto object-cover');
@@ -67,15 +73,15 @@
   }
 
   function blocoGaleria(b, i) {
-    const fotos = (b.imagens || []).filter(Boolean);
+    const fotos = Array.isArray(b.imagens) ? b.imagens.filter(url => typeof url === 'string' && url) : [];
     if (!fotos.length) return null;
     const T = translations[currentLang];
-    const chave = atual.slug + ':' + i;
+    const chave = (atual.slug || atual.pagina) + ':' + i;
     let n = Math.min(estado[chave] || 0, fotos.length - 1);
 
     const s = el('section', 'mb-20 space-y-8');
     const topo = el('div', 'flex flex-col md:flex-row md:items-center justify-between gap-4');
-    topo.appendChild(el('h2', H2, t(b.titulo)));
+    if (t(b.titulo)) topo.appendChild(el('h2', H2, t(b.titulo)));
     const dir = el('div', 'flex items-center gap-4');
     const contador = el('span', 'font-sans text-sm font-semibold text-neutral-700 dark:text-neutral-300');
     contador.setAttribute('aria-live', 'polite');
@@ -151,15 +157,14 @@
     view.replaceChildren();
 
     const cab = el('header', 'mb-16 border-b border-neutral-200/80 dark:border-neutral-800/80 pb-12');
-    cab.append(
-      el('h1', 'text-5xl md:text-7xl font-bold font-display mt-8 mb-6 text-balance', t(p.titulo)),
-      el('p', 'text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl leading-relaxed font-normal', t(p.descricao))
-    );
+    cab.appendChild(el('h1', 'text-5xl md:text-7xl font-bold font-display mt-8 mb-6 text-balance', t(p.titulo)));
+    if (t(p.descricao)) cab.appendChild(el('p', 'text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl leading-relaxed font-normal', t(p.descricao)));
     view.appendChild(cab);
 
-    if (p.info) {
+    const infos = [['label-role', p.info?.papel], ['label-year', p.info?.ano], ['label-scope', p.info?.escopo]].filter(([, value]) => t(value));
+    if (infos.length) {
       const caixa = el('section', 'mb-16 grid grid-cols-1 md:grid-cols-3 gap-8 bg-neutral-100/50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800/80 p-8 rounded-2xl');
-      [['label-role', p.info.papel], ['label-year', p.info.ano], ['label-scope', p.info.escopo]].forEach(([k, v]) => {
+      infos.forEach(([k, v]) => {
         const d = el('div');
         d.append(
           el('h3', 'font-sans text-xs tracking-widest font-bold text-accent mb-2', T[k]),
@@ -170,34 +175,73 @@
       view.appendChild(caixa);
     }
 
-    (p.blocos || []).forEach((b, i) => {
+    (Array.isArray(p.blocos) ? p.blocos : []).forEach((b, i) => {
+      if (!b || typeof b !== 'object') return;
       const fabrica = { imagem: blocoImagem, galeria: blocoGaleria, video: blocoVideo, texto: blocoTexto }[b.bloco];
-      const secaoPronta = fabrica && fabrica(b, i);
-      if (secaoPronta) view.appendChild(secaoPronta);
+      try {
+        const secaoPronta = fabrica && fabrica(b, i);
+        if (secaoPronta) view.appendChild(secaoPronta);
+      } catch (error) {
+        const feedback = el('p', 'project-status', mensagens[currentLang].bloco);
+        feedback.setAttribute('role', 'alert');
+        view.appendChild(feedback);
+        console.warn('Bloco do CMS não pôde ser exibido:', error);
+      }
     });
+  }
+
+  function mostrarVista() {
+    document.querySelectorAll('main > [id^="view-"]').forEach(n => n.classList.add('hidden'));
+    document.getElementById('main-header').classList.add('hidden');
+    document.getElementById('project-header').classList.remove('hidden');
+    view.classList.remove('hidden');
   }
 
   function mostrar(p) {
     atual = p;
-    vistasAntigas.forEach(n => document.getElementById('view-' + n).classList.add('hidden'));
-    document.getElementById('main-header').classList.add('hidden');
-    document.getElementById('project-header').classList.remove('hidden');
-    view.classList.remove('hidden');
+    mostrarVista();
     desenhar();
     window.scrollTo(0, 0);
   }
 
   function resolver() {
     const m = location.hash.match(/^#\/(.+)$/);
-    const slug = m ? decodeURIComponent(m[1]) : '';
-    const p = projetos.find(x => x.tipo === 'pagina' && x.slug === slug);
+    let slug = '';
+    try { slug = m ? decodeURIComponent(m[1]) : ''; } catch { slug = '\uFFFD'; }
+    if (!slug || slug === 'portfolio') return;
+    const p = projetos.find(x => (x.tipo === 'pagina' || x.tipo === 'interno') && (x.slug === slug || x.pagina === slug));
     if (p) mostrar(p);
-    else if (atual) switchView('portfolio');
+    else {
+      atual = null;
+      mostrarVista();
+      view.replaceChildren();
+      // Loading stays silent; never display content from a fixed project page.
+      if (!carregado && !falhou) return;
+      const message = el('p', 'project-status', mensagens[currentLang][falhou ? 'erro' : 'ausente']);
+      message.setAttribute('role', 'alert');
+      view.appendChild(message);
+      if (falhou) {
+        const retry = el('button', 'project-retry', mensagens[currentLang].repetir);
+        retry.type = 'button';
+        retry.onclick = () => {
+          falhou = false;
+          resolver();
+          document.getElementById('project-retry')?.click();
+        };
+        view.appendChild(retry);
+      }
+    }
   }
 
-  // "Voltar" e os cartões antigos continuam funcionando; só escondemos a página montada por blocos.
+  // Home and legacy URLs share one router; all project content still comes from CMS.
   const trocarVista = switchView;
   switchView = function (vista) {
+    if (vista !== 'portfolio') {
+      const route = '#/' + encodeURIComponent(vista);
+      if (location.hash === route) resolver();
+      else location.hash = route;
+      return;
+    }
     view.classList.add('hidden');
     atual = null;
     trocarVista(vista);
@@ -210,11 +254,21 @@
   changeLang = function (lang) {
     trocarIdioma(lang);
     if (atual) desenhar();
+    else resolver();
   };
 
   document.addEventListener('projetos:prontos', () => {
     projetos = window.PROJETOS || [];
+    carregado = true;
+    falhou = false;
+    resolver();
+  });
+  document.addEventListener('projetos:erro', () => {
+    projetos = [];
+    carregado = false;
+    falhou = true;
     resolver();
   });
   window.addEventListener('hashchange', resolver);
+  resolver();
 })();
