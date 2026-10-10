@@ -5,10 +5,6 @@
         "pt": "Otimizando UX em uma cafeteria to-go",
         "en": "Optimizing UX in a to-go coffee shop"
       },
-      "tag": {
-        "pt": "Estudo de Caso em Experiência do Usuário",
-        "en": "UX Case Study"
-      },
       "descricao": {
         "pt": "Como utilizei conhecimentos em arquitetura da informação para redesenhar o aplicativo de autoatendimento da cafeteria e reduzir pela metade um fluxo exaustivo de 12 telas, sob a perspectiva de quem atua na linha de frente do café.",
         "en": "How I applied information architecture to redesign a coffee shop self-service app, cutting an exhausting 12-screen flow in half, from the perspective of front-line barista."
@@ -25,10 +21,6 @@
       "titulo": {
         "pt": "Elaine Marcante",
         "en": "Elaine Marcante"
-      },
-      "tag": {
-        "pt": "Identidade visual e e-book",
-        "en": "Visual identity and e-book"
       },
       "descricao": {
         "pt": "E-book real e identidade visual com logomarca, aplicações e conceitos para uma empreendedora no segmento de árvores de Natal. Projeto acadêmico pela matéria de \"Projeto Empreendedor\", na faculdade de Design. ",
@@ -57,10 +49,6 @@
       "titulo": {
         "pt": "SKAMBO",
         "en": "SKAMBO"
-      },
-      "tag": {
-        "pt": "Branding",
-        "en": "Branding"
       },
       "descricao": {
         "pt": "Projeto acadêmico de Branding para a matéria honônima. Aplicação de conceitos e desenvolvimento da identidade. ",
@@ -123,10 +111,16 @@
         "pt": "TudoGostoso (Sprint)",
         "en": "TudoGostoso (Sprint)"
       },
-      "tag": {
-        "pt": "Estudo de Caso em Experiência do Usuário",
-        "en": "UX Case Study"
-      },
+      "tag": [
+        {
+          "pt": "Estudo de caso de UX",
+          "en": "UX Case Study"
+        },
+        {
+          "pt": "Onboarding",
+          "en": "Onboarding"
+        }
+      ],
       "descricao": {
         "pt": "Projeto desenvolvido como um exercício proposto durante processo da Apple Developer Academy, feito em apenas 1 dia. O objetivo principal não foi o refinamento visual, mas sim treinar a velocidade de execução em pesquisa e a capacidade de reconhecer e seguir o processo Double Diamond. ",
         "en": "Project developed as an exercise during the Apple Developer Academy selection process, completed in just one day. The primary goal was not visual refinement, but rather practicing execution speed in research and the ability to recognize and follow the \"Double Diamond\" design process."
@@ -161,10 +155,6 @@
         "pt": "Solace",
         "en": "Solace"
       },
-      "tag": {
-        "pt": "Design de Mobiliário",
-        "en": "Furniture Design"
-      },
       "descricao": {
         "pt": "Projeto universitário de desenvolvimento de mobiliário com base em briefing, pesquisa, dados ergonômicos e outras metodologias de design.",
         "en": "University furniture design project based on a brief, research, ergonomic data and other design methodologies."
@@ -192,10 +182,6 @@
       "titulo": {
         "pt": " Avança",
         "en": "Avança"
-      },
-      "tag": {
-        "pt": "Processo de aprendizagem",
-        "en": "Learning process"
       },
       "descricao": {
         "pt": "Projeto final de conclusão do curso de aprendizagem da ESPRO. Embora antigo, representa meu primeiro projeto completo como designer e marca o nascimento e o estabelecimento de uma estética pessoal.",
